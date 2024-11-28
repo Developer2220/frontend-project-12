@@ -2,7 +2,7 @@
 
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
-import App from './components/App.jsx';
+import App from './App.jsx';
 import resources from './locales/index.js';
 
 const init = async () => {
