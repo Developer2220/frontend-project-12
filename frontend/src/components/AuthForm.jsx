@@ -15,7 +15,6 @@ const Authform = () => {
       <Form className="col-12 col-md-6 mt-3 mt-md-0">
         <h1 className="text-center mb-4">Войти</h1>
         <div className="form-floating mb-3">
-          <label htmlFor="userName">Ваш ник</label>
           <Field
             id="userName"
             name="userName"
@@ -23,9 +22,9 @@ const Authform = () => {
             className="form-control"
             required
           />
+          <label className="form-label" htmlFor="userName">Ваш ник</label>
         </div>
         <div className="form-floating mb-4">
-          <label htmlFor="password">Пароль</label>
           <Field
             id="password"
             name="password"
@@ -35,6 +34,7 @@ const Authform = () => {
             autocomplete="current-password"
             type="password"
           />
+          <label className="form-label" htmlFor="password">Пароль</label>
         </div>
         <button type="submit" className="w-100 mb-3 btn btn-outline-primary">
           Войти
@@ -43,4 +43,5 @@ const Authform = () => {
     </Formik>
   );
 };
+
 export default Authform;
