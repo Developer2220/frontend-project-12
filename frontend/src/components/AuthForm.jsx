@@ -1,28 +1,54 @@
 import { Formik, Form, Field } from "formik";
+import useAuth from "../hooks/useAuth";
 
 const Authform = () => {
+    const {authenticate} = useAuth();
   return (
     <Formik
       initialValues={{
-        userName: "",
+        username: "",
         password: "",
       }}
-      onSubmit={async (values) => {
-        await new Promise((r) => setTimeout(r, 500));
-        alert(JSON.stringify(values, null, 2));
-      }}
+    //   onSubmit={async (values) => {
+    //     await new Promise((r) => setTimeout(r, 500));
+    //     alert(JSON.stringify(values, null, 2));
+    //   }}
+
+    onSubmit={async(values, { setSubmitting }) => {
+        console.log(values)
+        // fetch("/api/v1/login", {
+        //     method: "POST",
+        //     body: JSON.stringify(values),
+        // })
+        // .then(response => response.json())
+        // .then(data => {
+        //     console.log("Ответ от сервера:", data);
+        //     setSubmitting(false); // Сброс флага после обработки
+        // })
+        // .catch(error => {
+        //     console.error("Ошибка:", error);
+        //     setSubmitting(false); // Сброс флага даже в случае ошибки
+        // });
+
+
+        const result = await authenticate(values);
+        console.log("Ответ от сервера:", result);
+        setSubmitting(false);
+    }}
+
+
     >
       <Form className="col-12 col-md-6 mt-3 mt-md-0">
         <h1 className="text-center mb-4">Войти</h1>
         <div className="form-floating mb-3">
           <Field
-            id="userName"
-            name="userName"
+            id="username"
+            name="username"
             placeholder="Ваш ник"
             className="form-control"
             required
           />
-          <label className="form-label" htmlFor="userName">Ваш ник</label>
+          <label className="form-label" htmlFor="username">Ваш ник</label>
         </div>
         <div className="form-floating mb-4">
           <Field
