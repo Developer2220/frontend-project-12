@@ -1,8 +1,13 @@
 import { Formik, Form, Field } from "formik";
 import useAuth from "../hooks/useAuth";
+import useAuthContext from "../auth/authProvider";
+
+
 
 const Authform = () => {
     const {authenticate} = useAuth();
+    const {logIn} = useAuthContext();
+
   return (
     <Formik
       initialValues={{
@@ -32,7 +37,14 @@ const Authform = () => {
 
 
         const result = await authenticate(values);
-        console.log("Ответ от сервера:", result);
+        console.log("Ответ от сервера:", result.token);
+        if (result) {
+            localStorage.setItem("token", result.token);
+            // localStorage.removeItem("token", result.token);
+            console.log("Before calling logIn");
+            logIn()
+            console.log("After calling logIn");
+        }
         setSubmitting(false);
     }}
 
