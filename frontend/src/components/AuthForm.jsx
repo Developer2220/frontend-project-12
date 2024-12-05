@@ -4,7 +4,9 @@ import useAuthContext from "../auth/authProvider";
 
 const Authform = () => {
   const { authenticate } = useAuth();
-  const { logIn } = useAuthContext();
+  const { token, logIn } = useAuthContext();
+  // console.log('useAuthContext', useAuthContext())
+
 
   return (
     <Formik
@@ -40,7 +42,7 @@ const Authform = () => {
             localStorage.setItem("token", result.token);
             // localStorage.removeItem("token", result.token);
             // console.log("Before calling logIn");
-            logIn();
+            logIn(token);
             // console.log("After calling logIn");
           } else {
             throw new Error("Invalid credentials");

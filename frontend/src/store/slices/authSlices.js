@@ -3,7 +3,7 @@ import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 const authAdapter = createEntityAdapter();
 
 const initialState = authAdapter.getInitialState({
-    isAuthenticated: !!localStorage.getItem("token"),
+    isAuthenticated: !!localStorage.getItem('token'),
   });
 
   // console.log('initialState', initialState)

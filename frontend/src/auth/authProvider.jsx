@@ -1,4 +1,4 @@
-import { useContext, createContext } from "react";
+import { useContext, createContext, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -10,14 +10,24 @@ const AuthContext = createContext({});
 
 const useAuthContext = () => useContext(AuthContext);
 
-export const AuthProvider = ({ children }) => {
+export const AuthContextProvider = ({ children }) => {
   const isAuthenticated = useSelector(isAuthenticatedSelector);
+
+  const token = localStorage.getItem('token');
+  console.log('token>>>>', token)
+
+  const [authState, setAuthState] = useState({
+    token: token || null,
+  });
+
+  console.log('authState', authState)
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const logIn = () => {
+  const logIn = (token) => {
     dispatch(setAuthenticated(true));
+    setAuthState({token: token})
     navigate("/");
   };
 
@@ -27,7 +37,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, logIn, logOut }}>
+    <AuthContext.Provider value={{ ...authState, isAuthenticated, logIn, logOut }}>
       {children}
     </AuthContext.Provider>
   );
