@@ -1,22 +1,33 @@
 import { useState, useEffect } from 'react';
 import useAuthContext from '../auth/authProvider';
+import { useDispatch } from 'react-redux';
+import { setData, setError, setLoading } from '../store/slices/dataSlices'; 
+import { selectData, selectError, selectLoading } from '../store/slices/dataSlices';
+import { useSelector } from 'react-redux';
 
 const API_BASE_URL = '/api/v1';
 
 
 const useFetch = (path) => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+//   const [data, setData] = useState(null);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
 //   const { token, logIn } = useAuthContext();
+const data = useSelector(selectData);
+const loading = useSelector(selectLoading);
+const error = useSelector(selectError);
+
+
 const { token, logIn } = useAuthContext();
 console.log('useAuthContext', useAuthContext())
+
+const dispatch = useDispatch();
 
 
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
+      dispatch(setLoading(true));
       const url = `${API_BASE_URL}${path}`;
       try {
         const response = await fetch(url, {
@@ -49,18 +60,18 @@ console.log('useAuthContext', useAuthContext())
         //   }
         // }
         const result = await response.json();
-        setData(result);
+        dispatch(setData(result));
       } catch (err) {
-        setError(err);
+        dispatch(setError(err));
       } finally {
-        setLoading(false);
+        dispatch(setLoading(false));
       }
     };
     if (token) {
       fetchData();
     } else {
-      setLoading(false);
-      setError(new Error('No token available'));
+      dispatch(setLoading(false));
+      dispatch(setError(new Error('No token available')));
     }
   }, [path, token]);
 
