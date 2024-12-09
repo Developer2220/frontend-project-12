@@ -2,6 +2,8 @@ import useAuthContext from "../auth/authProvider";
 import useFetch from "../hooks/useFetch";
 import NavBar from "../components/NavBar";
 import Channels from "../components/Channels";
+import Messages from "../components/Messages";
+import MessageInput from "../components/MessageInput";
 
 const HomePage = () => {
   const { logOut } = useAuthContext();
@@ -31,9 +33,15 @@ const HomePage = () => {
           </div>
           <div className="col p-0 h-100">
             <div className="d-flex flex-column h-100">
-              
+              <div className="bg-light mb-4 p-3 shadow-sm small">
+                <p className="m-0">
+                  <b>Название канала</b>
+                </p>
+                <span className="text-muted">Кол-во сообщений</span>
+              </div>
+              <Messages/>
+              <MessageInput/>
             </div>
-
           </div>
 
 
