@@ -1,19 +1,32 @@
 import useFetch from "../hooks/useFetch";
 
+import { useDispatch } from "react-redux";
+import { setCurrentChannel } from "../store/slices/dataSlices";
+
 const Channels = () => {
-    const { data } = useFetch("/channels");
+  const channels = useFetch("/channels");
+  const dispatch = useDispatch();
+  const handleСlick = (channelName) => dispatch(setCurrentChannel(channelName));
+
   return (
-    <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
-    {data.map((channel) => (
-      <li key={channel.id} className="nav-item w-100">
-        <button type="button" className="w-100 rounded-0 text-start btn btn-secondary"> 
-        <span className="me-1">#</span>
-        {channel.name}
-        </button>
-      </li>
-    ))}
-  </ul>
-  )
-}
+    <ul
+      id="channels-box"
+      className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
+    >
+      {channels.data.map((channel) => (
+        <li key={channel.id} className="nav-item w-100">
+          <button
+            type="button"
+            className="w-100 rounded-0 text-start btn btn-secondary"
+            onClick={()=> handleСlick(channel.name)}
+          >
+            <span className="me-1">#</span>
+            {channel.name}
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
+};
 
 export default Channels;

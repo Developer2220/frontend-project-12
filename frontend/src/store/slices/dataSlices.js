@@ -4,6 +4,7 @@ const initialState = {
   data: [],
   isLoading: false,
   error: null,
+  currentChannel: 'general',
 };
 
 const dataSlices = createSlice({
@@ -22,13 +23,17 @@ const dataSlices = createSlice({
     setLoading: (state) => {
       state.isLoading = true;
     },
+    setCurrentChannel: (state, action)=> {
+        state.currentChannel = action.payload;
+    }
   },
 });
 
 const selectData = (state) => state.data.data;
 const selectLoading = (state) => state.data.isLoading;
 const selectError = (state) => state.data.error;
+const selectCurrentChannel = (state) => state.data.currentChannel;
 
-export const { setData, setError, setLoading } = dataSlices.actions;
+export const { setData, setError, setLoading, setCurrentChannel } = dataSlices.actions;
 export default dataSlices.reducer;
-export { selectData, selectLoading, selectError };
+export { selectData, selectLoading, selectError, selectCurrentChannel };

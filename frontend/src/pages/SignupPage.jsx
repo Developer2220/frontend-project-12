@@ -1,11 +1,11 @@
-import Authform from '../components/AuthForm';
-
+import Authform from "../components/AuthForm";
+import Messages from "../components/Messages";
 
 const SignupPage = () => {
-    return (
-        <div>SignupPage
-        </div>
-    )
-}
+  return <div>
+    <div>SignupPage</div>
+    <Messages />
+    </div>;
+};
 
-export default SignupPage
+export default SignupPage;

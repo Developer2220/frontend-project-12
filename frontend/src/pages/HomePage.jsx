@@ -5,17 +5,45 @@ import Channels from "../components/Channels";
 import Messages from "../components/Messages";
 import MessageInput from "../components/MessageInput";
 
+// import { useDispatch } from "react-redux";
+// import { setCurrentChannel } from "../store/slices/dataSlices";
+import { useSelector } from "react-redux";
+import { selectCurrentChannel } from "../store/slices/dataSlices";
+
+
+
 const HomePage = () => {
   const { logOut } = useAuthContext();
-  const { data, loading, error } = useFetch("/channels");
-  console.log("data in channels", data);
+  // const { data, loading, error } = useFetch("/channels");
+  // console.log("data in channels", data);
+  const channels = useFetch("/channels");
+  console.log("data in channels", channels.data);
 
-  // const { data, loading, error } = useFetch('/messages');
-  // console.log('data in messages', data)
+
+  
+  const currentChannel = useSelector(selectCurrentChannel)
+
+  // const { data, loading, error } = useFetch("/messages");
+  // const messages = useFetch("/messages")
+  // console.log('data in messages', messages)
+  
+  // const numberMessages = (data) => {
+  //   if (data.length === 0) {
+  //     return 0
+  //   }
+  //   else {
+  //     return data.length
+  //   }
+  // } 
+
+  // console.log('numberMessages', numberMessages(data))
+
+
+
 
   return (
     <div className="d-flex flex-column h-100">
-      <NavBar/>
+      <NavBar showLogout={true}/>
       <div className="container h-100 my-4 overflow-hidden rounded shadow">
         <div className="row h-100 bg-white flex-md-row">
           <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
@@ -35,7 +63,7 @@ const HomePage = () => {
             <div className="d-flex flex-column h-100">
               <div className="bg-light mb-4 p-3 shadow-sm small">
                 <p className="m-0">
-                  <b>Название канала</b>
+                  <b># {currentChannel}</b>
                 </p>
                 <span className="text-muted">Кол-во сообщений</span>
               </div>
