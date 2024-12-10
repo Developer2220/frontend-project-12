@@ -16,7 +16,10 @@ import { selectCurrentChannel } from "../store/slices/dataSlices";
 
 
 const HomePage = () => {
-  const { logOut } = useAuthContext();
+  const { logOut, isAuthenticated } = useAuthContext();
+  console.log('useAuthContext()',useAuthContext())
+  console.log('isAuthenticated',isAuthenticated)
+
   // const { data, loading, error } = useFetch("/channels");
   // console.log("data in channels", data);
   // const channels = useFetch("/channels");
