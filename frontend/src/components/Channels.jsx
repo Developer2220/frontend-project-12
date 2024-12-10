@@ -1,10 +1,14 @@
-import useFetch from "../hooks/useFetch";
+// import useFetch from "../hooks/useFetch";
+import useFetchChannels from "../hooks/useFetchChannels";
 
 import { useDispatch } from "react-redux";
 import { setCurrentChannel } from "../store/slices/dataSlices";
 
 const Channels = () => {
-  const channels = useFetch("/channels");
+//   const channels = useFetch("/channels");
+  const channels = useFetchChannels("/channels");
+  console.log('channels', channels)
+
   const dispatch = useDispatch();
   const handleСlick = (channelName) => dispatch(setCurrentChannel(channelName));
 

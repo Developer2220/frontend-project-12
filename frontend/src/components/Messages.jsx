@@ -1,8 +1,8 @@
-import useFetch from "../hooks/useFetch"
+// import useFetch from "../hooks/useFetch"
 
 const Messages = () => {
-  const messages = useFetch('/messages')
-  console.log('messages.data in Messages', messages.data)
+//   const messages = useFetch('/messages')
+//   console.log('messages.data in Messages', messages.data)
 
     return (
     <div id="messages-box" className="chat-messages overflow-auto px-5 ">

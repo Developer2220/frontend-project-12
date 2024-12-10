@@ -1,5 +1,7 @@
 import useAuthContext from "../auth/authProvider";
-import useFetch from "../hooks/useFetch";
+// import useFetch from "../hooks/useFetch";
+import useFetchMessages from "../hooks/useFetchMessages";
+
 import NavBar from "../components/NavBar";
 import Channels from "../components/Channels";
 import Messages from "../components/Messages";
@@ -12,14 +14,16 @@ import { selectCurrentChannel } from "../store/slices/dataSlices";
 
 
 
+
 const HomePage = () => {
   const { logOut } = useAuthContext();
   // const { data, loading, error } = useFetch("/channels");
   // console.log("data in channels", data);
-  const channels = useFetch("/channels");
-  console.log("data in channels", channels.data);
+  // const channels = useFetch("/channels");
+  // console.log("data in channels", channels.data);
 
-
+  const messages = useFetchMessages("/messages");
+  console.log("data im messages", messages);
   
   const currentChannel = useSelector(selectCurrentChannel)
 
