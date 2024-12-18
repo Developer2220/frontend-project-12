@@ -4,13 +4,29 @@ import useFetchChannels from "../hooks/useFetchChannels";
 import { useDispatch } from "react-redux";
 import { setCurrentChannel } from "../store/slices/dataSlices";
 
+import { useState, useEffect } from "react";
+
 const Channels = () => {
-//   const channels = useFetch("/channels");
+  //   const channels = useFetch("/channels");
   const channels = useFetchChannels("/channels");
-  console.log('channels', channels)
+  console.log("channels", channels);
+
+  const [activeChannel, setActiveChannel] = useState(null);
 
   const dispatch = useDispatch();
-  const handleСlick = (channelName) => dispatch(setCurrentChannel(channelName));
+
+  useEffect(() => {
+    if (channels.data.length > 0) {
+      const defaultChannel = channels.data[0];
+      setActiveChannel(defaultChannel.id);
+      dispatch(setCurrentChannel(defaultChannel.name));
+    }
+  }, [channels.data, dispatch]);
+
+  const handleСlick = (channelName, channelId) => {
+    dispatch(setCurrentChannel(channelName));
+    setActiveChannel(channelId);
+  };
 
   return (
     <ul
@@ -21,8 +37,10 @@ const Channels = () => {
         <li key={channel.id} className="nav-item w-100">
           <button
             type="button"
-            className="w-100 rounded-0 text-start btn btn-secondary"
-            onClick={()=> handleСlick(channel.name)}
+            className={`w-100 rounded-0 text-start btn ${
+              activeChannel === channel.id ? "btn-secondary" : ""
+            }`}
+            onClick={() => handleСlick(channel.name, channel.id)}
           >
             <span className="me-1">#</span>
             {channel.name}

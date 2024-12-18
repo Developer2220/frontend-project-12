@@ -5,6 +5,8 @@ import MyVerticallyCenteredModal from "../components/ModalWindow";
 import { useState } from "react";
 import Button from 'react-bootstrap/Button';
 
+import Example from "../components/Example";
+
 const SignupPage = () => {
     const [modalShow, setModalShow] = useState(false);
   return <div>
@@ -17,7 +19,11 @@ const SignupPage = () => {
     show={modalShow}
     onHide={() => setModalShow(false)}
     />
+<Example />
+    
     </div>;
 };
 
 export default SignupPage;
+
+
