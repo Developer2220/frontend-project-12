@@ -1,21 +1,25 @@
 import io from 'socket.io-client'
 import useAuthContext from '../auth/authProvider';
 
-const socket = io()
+import { useGetChannelsQuery } from '../API/channels'; 
 
-socket.on('connect', () => {
-    console.log('Соединение установлено с сервером!');
-    console.log('ID сокета:', socket.id);
-});
+import { useGetMessagesQuery } from '../API/messages';
 
-// Обработка входящих сообщений
-socket.on('newMessage', (message) => {
-    console.log('Ответ от сервера:', message);
-});
+// const socket = io()
 
-socket.on('disconnect', () => {
-    console.log('Соединение разорвано');
-});
+// socket.on('connect', () => {
+//     console.log('Соединение установлено с сервером!');
+//     console.log('ID сокета:', socket.id);
+// });
+
+// // Обработка входящих сообщений
+// socket.on('newMessage', (message) => {
+//     console.log('Ответ от сервера:', message);
+// });
+
+// socket.on('disconnect', () => {
+//     console.log('Соединение разорвано');
+// });
 
 
 
@@ -30,46 +34,55 @@ socket.on('disconnect', () => {
 //     console.log('Ответ от сервера:', message);
 // });
 
-const API_BASE_URL = '/api/v1';
+
+
+// const Example = () => {
+//     const { data: channels, error, isLoading } = useGetChannelsQuery();
+//     console.log('channels in Example', channels)
+
+// //     <ul>
+// //         {channels.map((channel) => (
+// //           <li key={channel.id}>
+// //             {channel.name}
+// //           </li>
+// //         ))}
+// //       </ul>
+// //   </>
+
+//   return (
+//    <div>Example</div>
+//   )
+// }
+
+// export default Example
 
 
 const Example = () => {
- 
-    const { token, logIn } = useAuthContext();
-    console.log('token in Example', token)
+    const { data: channels, error, isLoading } = useGetChannelsQuery();
+  
+    // Логируем только после загрузки
+    if (!isLoading && channels) {
+      console.log('channels in Example', channels);
+    }
 
-    const postData = async (url = '', data = {}) => {
-        // Формируем запрос
-        const response = await fetch(url, {
-          // Метод, если не указывать, будет использоваться GET
-          method: 'POST',
-         // Заголовок запроса
-          headers: {
-            Authorization: token ? `Bearer ${token}` : undefined,
-            'Content-Type': 'application/json'
-          },
-          // Данные
-          body: JSON.stringify(data)
-        });
-        return response.json(); 
-      }
-    
-      const newMessage = { body: 'new message', channelId: '1', username: 'admin' };
-      
-    //   const url = `${API_BASE_URL}${path}`;
-    const url = '/api/v1/messages'
-    
-    //   postData(url, newMessage)
-    //   .then((data) => {
-    //     console.log('data', data); 
-    //   });
-    
-
-  return (
-    <div>
-        <div>Example</div>
-    </div>
-  )
-}
-
-export default Example
+//     const {data: messages} = useGetMessagesQuery();
+//   if (messages) {
+//       console.log('messages in Example', messages);
+//     }
+  
+    return (
+      <div>
+        {isLoading && <p>Loading channels...</p>}
+        {error && <p>Error loading channels: {error.message}</p>}
+        {channels && (
+          <ul>
+            {channels.map((channel) => (
+              <li key={channel.id}>{channel.name}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+    );
+  };
+  
+  export default Example;

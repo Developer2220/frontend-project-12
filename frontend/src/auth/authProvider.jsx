@@ -6,6 +6,10 @@ import {
   isAuthenticatedSelector,
 } from "../store/slices/authSlices";
 
+export const getToken = () => {
+  return localStorage.getItem('token'); // Или другое хранилище токена
+};
+
 const AuthContext = createContext({});
 
 const useAuthContext = () => useContext(AuthContext);

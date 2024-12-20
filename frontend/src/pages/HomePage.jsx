@@ -14,23 +14,35 @@ import { useSelector } from "react-redux";
 import { selectCurrentChannel } from "../store/slices/dataSlices";
 
 import ModalWindow from "../components/ModalWindow";
+import { useGetMessagesQuery } from "../API/messages";
+
+import { useGetChannelsQuery } from "../API/channels";
 
 
 
 
 const HomePage = () => {
-  const { logOut, isAuthenticated } = useAuthContext();
-  console.log('useAuthContext()',useAuthContext())
-  console.log('isAuthenticated',isAuthenticated)
+  // const { logOut, isAuthenticated } = useAuthContext();
+  // console.log('useAuthContext()',useAuthContext())
+  // console.log('isAuthenticated',isAuthenticated)
 
   // const { data, loading, error } = useFetch("/channels");
   // console.log("data in channels", data);
   // const channels = useFetch("/channels");
   // console.log("data in channels", channels.data);
 
-  const {data} = useFetchMessages("/messages");
-  console.log("data im messages", data);
+  // const {data} = useFetchMessages("/messages");
+  // console.log("data im messages", data);
 
+// const {data: messages, error, isLoading} = useGetMessagesQuery();
+//   if (!isLoading && messages) {
+//       console.log('messages in Homepage', messages);
+//     }
+
+const {data: channels,error, isLoading} = useGetChannelsQuery();
+if (!isLoading && channels) {
+  console.log('channels in Homepage', channels);
+}
   
   const currentChannel = useSelector(selectCurrentChannel)
 
@@ -64,13 +76,19 @@ const HomePage = () => {
 
 // use:
 
-const showNumberMessages = declOfNum(data.length, ['сообщение', 'сообщения', 'сообщений']);
+// const showNumberMessages = declOfNum(channels.length, ['сообщение', 'сообщения', 'сообщений']);
+const showNumberMessages = channels
+  ? declOfNum(channels.length, ['сообщение', 'сообщения', 'сообщений'])
+  : 'Загрузка сообщений...';
+
 
 const [modalShow, setModalShow] = useState(false);
 
 
   return (
     <div className="d-flex flex-column h-100">
+
+
       <NavBar showLogout={true}/>
       <div className="container h-100 my-4 overflow-hidden rounded shadow">
         <div className="row h-100 bg-white flex-md-row">
@@ -99,7 +117,6 @@ const [modalShow, setModalShow] = useState(false);
               <MessageInput/>
             </div>
           </div>
-
 
         </div>
       </div>
