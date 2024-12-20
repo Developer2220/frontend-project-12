@@ -19,29 +19,14 @@ import { useGetMessagesQuery } from "../API/messages";
 import { useGetChannelsQuery } from "../API/channels";
 
 
-
-
 const HomePage = () => {
   // const { logOut, isAuthenticated } = useAuthContext();
   // console.log('useAuthContext()',useAuthContext())
   // console.log('isAuthenticated',isAuthenticated)
 
-  // const { data, loading, error } = useFetch("/channels");
-  // console.log("data in channels", data);
-  // const channels = useFetch("/channels");
-  // console.log("data in channels", channels.data);
-
-  // const {data} = useFetchMessages("/messages");
-  // console.log("data im messages", data);
-
-// const {data: messages, error, isLoading} = useGetMessagesQuery();
-//   if (!isLoading && messages) {
-//       console.log('messages in Homepage', messages);
-//     }
-
-const {data: channels,error, isLoading} = useGetChannelsQuery();
-if (!isLoading && channels) {
-  console.log('channels in Homepage', channels);
+const {data: messages,error, isLoading} = useGetMessagesQuery();
+if (!isLoading && messages) {
+  console.log('messages in Homepage', messages);
 }
   
   const currentChannel = useSelector(selectCurrentChannel)
@@ -49,36 +34,15 @@ if (!isLoading && channels) {
   // const { data, loading, error } = useFetch("/messages");
   // const messages = useFetch("/messages")
   // console.log('data in messages', messages)
-  
-  // const numberMessages = (data) => {
-  //   const strDataLength = data.length;
-  //   if (data.length === 0) {
-  //     return `0 сообщений`
-  //   }
-  //   if (strDataLength.endsWith(2)||strDataLength.endsWith(3)||strDataLength.endsWith(4)) {
-  //     return `${data.length} сообщения`
-  //   }
-  //   if (strDataLength.endsWith(1)||strDataLength.endsWith(3)||strDataLength.endsWith(4)) {
-  //     return `${data.length} сообщение`
-  //   }
-  //   else {
-  //     return `${data.length} сообщений`
-  //   }
-  // } 
-  // console.log('data.length', data.length)
-  // console.log('numberMessages', numberMessages(data))
-
 
   const declOfNum = (number, titles) => {  
     let cases = [2, 0, 1, 1, 1, 2];  
     return `${number} ${titles[ (number%100>4 && number%100<20)? 2 : cases[(number%10<5)?number%10:5] ]}`;  
 }
 
-// use:
-
-// const showNumberMessages = declOfNum(channels.length, ['сообщение', 'сообщения', 'сообщений']);
-const showNumberMessages = channels
-  ? declOfNum(channels.length, ['сообщение', 'сообщения', 'сообщений'])
+// const showNumberMessages = declOfNum(messages.length, ['сообщение', 'сообщения', 'сообщений']);
+const showNumberMessages = messages
+  ? declOfNum(messages.length, ['сообщение', 'сообщения', 'сообщений'])
   : 'Загрузка сообщений...';
 
 

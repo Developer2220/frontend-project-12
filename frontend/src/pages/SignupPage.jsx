@@ -11,7 +11,6 @@ const SignupPage = () => {
     const [modalShow, setModalShow] = useState(false);
   return <div>
     <div>SignupPage</div>
-    <Messages />
     <Button variant="primary" onClick={() => setModalShow(true)}>
         Launch vertically centered modal
       </Button>

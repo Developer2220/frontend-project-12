@@ -26,29 +26,64 @@
 //           <span className="visually-hidden">Отправить</span>
 //         </button>
 //         </div>
-//       </form>   
+//       </form>
 //     </div>
 //   );
 // };
 
 // export default MessageInput;
 
-import React from "react";
+import React, { useState } from "react";
 import { Form, InputGroup, Button } from "react-bootstrap";
+import { useAddMessageMutation } from "../API/messages";
+import { useGetChannelsQuery } from "../API/channels";
 
 const MessageInput = () => {
+  const [addMessage] = useAddMessageMutation();
+const {data:channels} = useGetChannelsQuery()
+
+//   const handleAddMessage = async () => {
+//     await addMessage({ text: "New message" });
+//   };
+
+const handleAddMessage = async (event) =>  {
+    event.preventDefault()
+    await addMessage(formData);
+}
+
+// const handleAddMessage = (e) => {
+//     e.preventDefault()
+//     console.log(formData)
+// }
+
+const [formData, setFormData] = useState({
+    channelId: '1', username: 'admin'
+});
+// console.log('formData', formData)
+
+const handleChange = (event) => {
+    setFormData({
+      ...formData,
+      body: event.target.value,
+    });
+  };
+
+
   return (
     <div className="mt-auto px-5 py-3">
-      <Form noValidate className="py-1 border rounded-2">
-        <InputGroup hasValidation>
+      <Form noValidate className="py-1 border rounded-2" onSubmit={handleAddMessage}>
+        <InputGroup hasValidation >
           <Form.Control
             name="body"
             aria-label="Новое сообщение"
             placeholder="Введите сообщение..."
             className="border-0 ps-2"
             defaultValue=""
+            // value={value}
+            // value={formData.username || ''} 
+            onChange={handleChange} 
           />
-          <Button type="submit" variant="light" disabled>
+          <Button type="submit" variant="light">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
@@ -70,4 +105,3 @@ const MessageInput = () => {
 };
 
 export default MessageInput;
-
