@@ -37,12 +37,12 @@ const Authform = () => {
 
         try {
           const result = await authenticate(values);
-          console.log("Ответ от сервера:", result.token);
+          console.log("Ответ от сервера:", result);
           if (result) {
             localStorage.setItem("token", result.token);
             // localStorage.removeItem("token", result.token);
             // console.log("Before calling logIn");
-            logIn(token);
+            logIn(token, result.username);
             // console.log("After calling logIn");
           } else {
             throw new Error("Invalid credentials");

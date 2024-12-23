@@ -33,41 +33,67 @@
 
 // export default MessageInput;
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, InputGroup, Button } from "react-bootstrap";
 import { useAddMessageMutation } from "../API/messages";
 import { useGetChannelsQuery } from "../API/channels";
+import { useSelector } from "react-redux";
+import { selectCurrentChannel } from "../store/slices/dataSlices";
+import useAuthContext from "../auth/authProvider";
+
+
 
 const MessageInput = () => {
   const [addMessage] = useAddMessageMutation();
 const {data:channels} = useGetChannelsQuery()
+console.log('channels in MessageInput', channels)
+
+const currentChannel = useSelector(selectCurrentChannel)
+console.log('currentChannel in MessageInput:', currentChannel)
+
+const {user} = useAuthContext();
+// console.log('state.user:', state.user)
+
 
 //   const handleAddMessage = async () => {
 //     await addMessage({ text: "New message" });
 //   };
 
-const handleAddMessage = async (event) =>  {
-    event.preventDefault()
-    await addMessage(formData);
-}
-
-// const handleAddMessage = (e) => {
-//     e.preventDefault()
-//     console.log(formData)
-// }
-
 const [formData, setFormData] = useState({
-    channelId: '1', username: 'admin'
+    // channelId: '1', username: 'admin'
+    body: '',
+    channelId: null, 
+    username: user,
 });
-// console.log('formData', formData)
+console.log('formData in MessageInput', formData) 
 
-const handleChange = (event) => {
-    setFormData({
-      ...formData,
-      body: event.target.value,
-    });
-  };
+useEffect(()=> {
+    if (currentChannel) {
+        setFormData((prev)=> ({
+            ...prev, 
+            channelId: currentChannel.id,
+        }))
+    }
+}, [currentChannel])
 
+
+    const handleChange = (event) => {
+        setFormData({
+        ...formData,
+        body: event.target.value,
+        });
+    };
+
+
+    const handleAddMessage = async (event) =>  {
+        event.preventDefault()
+        if (!formData.body.trim()) return;
+        await addMessage(formData);
+        setFormData((prev)=> ({
+            ...prev, 
+            body:'',
+        }))
+    }
 
   return (
     <div className="mt-auto px-5 py-3">

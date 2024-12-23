@@ -1,8 +1,12 @@
 // import useFetch from "../hooks/useFetch"
+import { useSelector } from "react-redux";
 import { useGetMessagesQuery } from "../API/messages";
+import { selectCurrentChannel } from "../store/slices/dataSlices";
 
 const Messages = () => {
   const { data: messages, error, isLoading } = useGetMessagesQuery();
+  const currentChannel = useSelector(selectCurrentChannel)
+
 
   //   const messages = useFetch('/messages')
   //   console.log('messages.data in Messages', messages.data)
@@ -24,14 +28,19 @@ if (isLoading) {
     return <p>No messages available.</p>;
   }
 
+  const filteredMessages = messages.filter(
+    (message) => message.channelId === currentChannel.id
+  );
+
   return (
     <div id="messages-box" className="chat-messages overflow-auto px-5 ">
-      {messages.map((message) => (
+      {filteredMessages.map((message)=> (
         <div key={message.id} className="text-break mb-2">
           <b>{message.username}:</b> <br />
           {message.body}
         </div>
-      ))}
+        ) 
+      )}
     </div>
   );
 };

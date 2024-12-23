@@ -22,6 +22,7 @@ export const AuthContextProvider = ({ children }) => {
 
   const [authState, setAuthState] = useState({
     token: token || null,
+    user: null,
   });
 
   console.log('authState', authState)
@@ -29,9 +30,9 @@ export const AuthContextProvider = ({ children }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const logIn = (token) => {
+  const logIn = (token, user) => {
     dispatch(setAuthenticated(true));
-    setAuthState({token: token})
+    setAuthState({token: token, user: user})
     navigate("/");
   };
 
