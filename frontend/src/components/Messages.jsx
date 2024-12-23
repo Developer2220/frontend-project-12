@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useGetMessagesQuery } from "../API/messages";
 import { selectCurrentChannel } from "../store/slices/dataSlices";
 
+
 const Messages = () => {
   const { data: messages, error, isLoading } = useGetMessagesQuery();
   const currentChannel = useSelector(selectCurrentChannel)
@@ -41,7 +42,7 @@ if (isLoading) {
         </div>
         ) 
       )}
-    </div>
+    </div>  
   );
 };
 

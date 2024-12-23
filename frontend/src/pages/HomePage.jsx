@@ -30,6 +30,7 @@ if (!isLoading && messages) {
 }
   
   const currentChannel = useSelector(selectCurrentChannel)
+  console.log('currentChannel in HomePage', currentChannel.id)
 
   // const { data, loading, error } = useFetch("/messages");
   // const messages = useFetch("/messages")
@@ -40,12 +41,14 @@ if (!isLoading && messages) {
     return `${number} ${titles[ (number%100>4 && number%100<20)? 2 : cases[(number%10<5)?number%10:5] ]}`;  
 }
 
-const filteredMessages = messages.filter(
-  (message) => message.channelId === currentChannel.id
-);
+const filteredMessages = messages && currentChannel ? messages.filter(
+      (message) => message.channelId === currentChannel.id
+    ): [];
+    console.log('filteredMessages', filteredMessages)
+
 
 // const showNumberMessages = declOfNum(messages.length, ['сообщение', 'сообщения', 'сообщений']);
-const showNumberMessages = filteredMessages
+const showNumberMessages = filteredMessages.length > 0
   ? declOfNum(filteredMessages.length, ['сообщение', 'сообщения', 'сообщений'])
   : 'Загрузка сообщений...';
 
