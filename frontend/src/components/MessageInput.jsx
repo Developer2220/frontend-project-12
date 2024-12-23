@@ -52,7 +52,7 @@ const currentChannel = useSelector(selectCurrentChannel)
 console.log('currentChannel in MessageInput:', currentChannel)
 
 const {user} = useAuthContext();
-// console.log('state.user:', state.user)
+console.log('user in MessageInput:', user)
 
 
 //   const handleAddMessage = async () => {

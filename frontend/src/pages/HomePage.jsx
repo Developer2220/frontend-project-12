@@ -40,9 +40,13 @@ if (!isLoading && messages) {
     return `${number} ${titles[ (number%100>4 && number%100<20)? 2 : cases[(number%10<5)?number%10:5] ]}`;  
 }
 
+const filteredMessages = messages.filter(
+  (message) => message.channelId === currentChannel.id
+);
+
 // const showNumberMessages = declOfNum(messages.length, ['сообщение', 'сообщения', 'сообщений']);
-const showNumberMessages = messages
-  ? declOfNum(messages.length, ['сообщение', 'сообщения', 'сообщений'])
+const showNumberMessages = filteredMessages
+  ? declOfNum(filteredMessages.length, ['сообщение', 'сообщения', 'сообщений'])
   : 'Загрузка сообщений...';
 
 
