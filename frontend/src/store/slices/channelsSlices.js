@@ -4,7 +4,7 @@ const initialState = {
   channels: [],
   isLoading: false,
   error: null,
-  currentChannel: 'general',
+  currentChannel: null,
 };
 
 const channelsSlices = createSlice({
