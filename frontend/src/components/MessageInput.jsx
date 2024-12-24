@@ -42,7 +42,6 @@ import { selectCurrentChannel } from "../store/slices/dataSlices";
 import useAuthContext from "../auth/authProvider";
 
 
-
 const MessageInput = () => {
   const [addMessage] = useAddMessageMutation();
 const {data:channels} = useGetChannelsQuery()

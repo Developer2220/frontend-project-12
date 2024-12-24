@@ -1,49 +1,59 @@
-// import useFetch from "../hooks/useFetch"
 import { useSelector } from "react-redux";
 import { useGetMessagesQuery } from "../API/messages";
 import { selectCurrentChannel } from "../store/slices/dataSlices";
+import { useState, useEffect } from "react";
+import io from 'socket.io-client';
 
+const LoadingState = () => <p>Loading messages...</p>;
+const ErrorState = ({ message }) => <p>Error loading messages: {message}</p>;
 
 const Messages = () => {
-  const { data: messages, error, isLoading } = useGetMessagesQuery();
-  const currentChannel = useSelector(selectCurrentChannel)
+    const { data: initialMessages, error, isLoading } = useGetMessagesQuery();
+    const currentChannel = useSelector(selectCurrentChannel);
+    const [messages, setMessages] = useState([]);
+    const [socket, setSocket] = useState(null);
 
+    // Подключение WebSocket
+    useEffect(() => {
+        const socketInstance = io(); // Создаем сокет
+        setSocket(socketInstance);
 
-  //   const messages = useFetch('/messages')
-  //   console.log('messages.data in Messages', messages.data)
+        socketInstance.on('connect', () => {
+            console.log('Соединение установлено с сервером:', socketInstance.id);
+        });
 
-//   if (!isLoading && messages) {
-//     console.log("messages in Messages", messages);
-//   }
+        socketInstance.on('newMessage', (payload) => {
+            setMessages((prevMessages) => [...prevMessages, payload]);
+        });
 
+        return () => {
+            socketInstance.disconnect(); // Отключаем сокет при размонтировании
+        };
+    }, []);
 
-if (isLoading) {
-    return <p>Loading messages...</p>;
-  }
+    // Обновление сообщений при смене канала
+    useEffect(() => {
+        if (initialMessages) {
+            const channelMessages = initialMessages.filter(
+                (message) => message.channelId === currentChannel.id
+            );
+            setMessages(channelMessages);
+        }
+    }, [initialMessages, currentChannel]);
 
-  if (error) {
-    return <p>Error loading messages: {error.message}</p>;
-  }
+    if (isLoading) return <LoadingState />;
+    if (error) return <ErrorState message={error.message} />;
 
-  if (!messages || messages.length === 0) {
-    return <p>No messages available.</p>;
-  }
-
-  const filteredMessages = messages.filter(
-    (message) => message.channelId === currentChannel.id
-  );
-
-  return (
-    <div id="messages-box" className="chat-messages overflow-auto px-5 ">
-      {filteredMessages.map((message)=> (
-        <div key={message.id} className="text-break mb-2">
-          <b>{message.username}:</b> <br />
-          {message.body}
+    return (
+        <div id="messages-box" className="chat-messages overflow-auto px-5 ">
+            {messages.map((message) => (
+                <div key={message.id} className="text-break mb-2">
+                    <b>{message.username}:</b> <br />
+                    {message.body}
+                </div>
+            ))}
         </div>
-        ) 
-      )}
-    </div>  
-  );
+    );
 };
 
 export default Messages;

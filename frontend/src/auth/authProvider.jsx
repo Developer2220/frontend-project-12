@@ -20,9 +20,14 @@ export const AuthContextProvider = ({ children }) => {
   const token = localStorage.getItem('token');
   console.log('token>>>>', token)
 
+  const storedUser = localStorage.getItem('user');
+
+
   const [authState, setAuthState] = useState({
     token: token || null,
-    user: null,
+    // user: null,
+    user: storedUser ? JSON.parse(storedUser) : null, // Парсим пользователя из JSON
+
   });
 
   console.log('authState', authState)
@@ -32,12 +37,16 @@ export const AuthContextProvider = ({ children }) => {
 
   const logIn = (token, user) => {
     dispatch(setAuthenticated(true));
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("user", JSON.stringify(user));
     setAuthState({token: token, user: user})
     navigate("/");
   };
 
   const logOut = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setAuthState({ token: null, user: null });
     navigate("/login");
   };
 
