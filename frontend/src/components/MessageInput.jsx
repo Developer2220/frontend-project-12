@@ -64,7 +64,7 @@ const [formData, setFormData] = useState({
     channelId: null, 
     username: user,
 });
-console.log('formData in MessageInput', formData) 
+// console.log('formData in MessageInput', formData) 
 
 useEffect(()=> {
     if (currentChannel) {
