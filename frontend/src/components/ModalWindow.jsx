@@ -3,18 +3,43 @@ import Modal from "react-bootstrap/Modal";
 import Container from "react-bootstrap/Container";
 
 import { useAddChannelMutation } from "../API/channels";
+import { useGetChannelsQuery } from "../API/channels";
+  
 import { Formik, Form, Field } from "formik";
 
 import * as Yup from "yup";
 
 const ModalWindow = (props) => {
   const [addChannel] = useAddChannelMutation();
+  const { data: channels, error, isLoading } = useGetChannelsQuery();
+
+
+  //проверка на уникальность значения в поле
+  const checkUsernameUnique = (channels, username) => {
+    if (!channels) return true;
+    const channelName = channels.map((channel)=> channel.name)
+    console.log(channelName)
+      return !channelName.includes(username); 
+    };
+
 
   const ModalSchema = Yup.object().shape({
     name: Yup.string()
       .min(3, "От 3 до 20 символов")
       .max(20, "От 3 до 20 символов")
-      .required("Обязательное поле"),
+      .required("Обязательное поле")
+
+      .test(
+        "unique", // Название теста
+        "Должно быть уникальным", // Сообщение об ошибке
+        async (value) => {
+          console.log('value', value)
+          if (!value || isLoading || error) return false; // Не проверять пустое значение
+          console.log('channels in ModalWindow', channels)
+          return await checkUsernameUnique(channels, value);
+        }
+      ),
+      
   });
 
   return (
