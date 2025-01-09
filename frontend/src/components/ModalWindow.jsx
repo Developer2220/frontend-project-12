@@ -9,11 +9,17 @@ import { Formik, Form, Field } from "formik";
 
 import * as Yup from "yup";
 
+import { setCurrentChannel } from "../store/slices/dataSlices";
+import { useDispatch } from "react-redux";
+
+
 const ModalWindow = (props) => {
   const [addChannel] = useAddChannelMutation();
   const { data: channels, error, isLoading } = useGetChannelsQuery();
 
-
+  const dispatch = useDispatch();
+  
+  
   //проверка на уникальность значения в поле
   const checkUsernameUnique = (channels, username) => {
     if (!channels) return true;
@@ -21,6 +27,10 @@ const ModalWindow = (props) => {
     console.log(channelName)
       return !channelName.includes(username); 
     };
+
+    console.log('channels in ModalWindow', channels)
+
+
 
 
   const ModalSchema = Yup.object().shape({
@@ -35,8 +45,21 @@ const ModalWindow = (props) => {
         async (value) => {
           console.log('value', value)
           if (!value || isLoading || error) return false; // Не проверять пустое значение
-          console.log('channels in ModalWindow', channels)
-          return await checkUsernameUnique(channels, value);
+        
+
+          const isUnique = await checkUsernameUnique(channels, value);
+
+          const lastAddedChannel = channels[channels.length - 1]
+          console.log('lastAddedChannel', lastAddedChannel)
+
+          if (isUnique) {
+            dispatch(setCurrentChannel(lastAddedChannel))
+          }
+          return isUnique
+
+          // return await checkUsernameUnique(channels, value);
+
+      
         }
       ),
       
@@ -72,10 +95,23 @@ const ModalWindow = (props) => {
           validateOnChange={false}
           validateOnBlur={false}
           onSubmit={async (values, { setSubmitting, setFieldError }) => {
-            console.log(values);
+            console.log('values', values);
             try {
-              const result = await addChannel(values);
+              const result = await addChannel(values).unwrap();
               console.log("Ответ от сервера:", result);
+              dispatch(setCurrentChannel(result)); // Диспатч нового канала как текущего
+
+
+              // if (channels) {
+                // const newChannel = {
+                //   ...values,
+                //   id: result.id, // Подставьте идентификатор канала из ответа сервера
+                //   removable: result.removable,
+                // };
+                // console.log('newChannel', newChannel)
+                // dispatch(setCurrentChannel(newChannel)); // Диспатч нового канала как текущего
+              // }
+
               props.onHide();
             } catch (error) {
               console.error("Ошибка", error);

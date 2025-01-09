@@ -1,11 +1,13 @@
 // import useFetch from "../hooks/useFetch";
 // import useFetchChannels from "../hooks/useFetchChannels";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCurrentChannel } from "../store/slices/dataSlices";
+import { selectCurrentChannel } from "../store/slices/dataSlices";
+
 
 import { useState, useEffect } from "react";
-import { useGetChannelsQuery } from "../API/channels";
+import { useGetChannelsQuery, channelsApi } from "../API/channels";
 
 import io from "socket.io-client";
 
@@ -33,14 +35,25 @@ const Channels = () => {
   const [channels, setChannels] = useState([]);
   const [socket, setSocket] = useState(null);
 
-  const [activeChannel, setActiveChannel] = useState(null);
+//   const [activeChannel, setActiveChannel] = useState(null);
 
   const dispatch = useDispatch();
+
+  const currentChannel = useSelector(selectCurrentChannel);
+console.log('currentChannel in Channels', currentChannel)
+
+//загрузка каналов 
+useEffect(() => {
+    if (initialChannels) {
+      setChannels(initialChannels);
+    }
+  }, [initialChannels]);
+
 
   useEffect(() => {
     if (channels && channels.length > 0) {
       const defaultChannel = channels[0];
-      setActiveChannel(defaultChannel.id);
+    //   setActiveChannel(defaultChannel.id);
       //   dispatch(setCurrentChannel(defaultChannel.name));
       dispatch(setCurrentChannel(defaultChannel));
     }
@@ -49,7 +62,7 @@ const Channels = () => {
   const handleСlick = (channel) => {
     //   const handleСlick = (channelName, channelId) => {
     dispatch(setCurrentChannel(channel));
-    setActiveChannel(channel.id);
+    // setActiveChannel(channel.id);
   };
 
 
@@ -64,19 +77,21 @@ const Channels = () => {
     
         socketInstance.on("newChannel", (payload) => {
             setChannels((prevChannels) => [...prevChannels, payload]);
+             // Обновляем кэш RTK Query
+    dispatch(
+        channelsApi.util.updateQueryData("getChannels", undefined, (draft) => {
+          draft.push(payload); // Добавляем новый канал в кэш
+        })
+      );
         });
+        
     
-        // return () => {
-        //   socketInstance.disconnect(); // Отключаем сокет при размонтировании
-        // };
+        return () => {
+          socketInstance.disconnect(); // Отключаем сокет при размонтировании
+        };
       }, []);
 
-//загрузка каналов 
-  useEffect(() => {
-    if (initialChannels) {
-      setChannels(initialChannels);
-    }
-  }, [initialChannels]);
+
 
 
   if (isLoading) return <LoadingState />;
@@ -93,7 +108,7 @@ const Channels = () => {
             <button
               type="button"
               className={`w-100 rounded-0 text-start btn ${
-                activeChannel === channel.id ? "btn-secondary" : ""
+                currentChannel.id === channel.id ? "btn-secondary" : ""
               }`}
               // onClick={() => handleСlick(channel.name, channel.id)}
               onClick={() => handleСlick(channel)}
