@@ -24,7 +24,7 @@ const ModalWindow = (props) => {
   const checkUsernameUnique = (channels, username) => {
     if (!channels) return true;
     const channelName = channels.map((channel)=> channel.name)
-    console.log(channelName)
+    // console.log(channelName)
       return !channelName.includes(username); 
     };
 
@@ -46,18 +46,10 @@ const ModalWindow = (props) => {
           console.log('value', value)
           if (!value || isLoading || error) return false; // Не проверять пустое значение
         
+          // const isUnique = await checkUsernameUnique(channels, value);
+          // return isUnique
 
-          const isUnique = await checkUsernameUnique(channels, value);
-
-          const lastAddedChannel = channels[channels.length - 1]
-          console.log('lastAddedChannel', lastAddedChannel)
-
-          if (isUnique) {
-            dispatch(setCurrentChannel(lastAddedChannel))
-          }
-          return isUnique
-
-          // return await checkUsernameUnique(channels, value);
+          return await checkUsernameUnique(channels, value);
 
       
         }
@@ -100,18 +92,6 @@ const ModalWindow = (props) => {
               const result = await addChannel(values).unwrap();
               console.log("Ответ от сервера:", result);
               dispatch(setCurrentChannel(result)); // Диспатч нового канала как текущего
-
-
-              // if (channels) {
-                // const newChannel = {
-                //   ...values,
-                //   id: result.id, // Подставьте идентификатор канала из ответа сервера
-                //   removable: result.removable,
-                // };
-                // console.log('newChannel', newChannel)
-                // dispatch(setCurrentChannel(newChannel)); // Диспатч нового канала как текущего
-              // }
-
               props.onHide();
             } catch (error) {
               console.error("Ошибка", error);

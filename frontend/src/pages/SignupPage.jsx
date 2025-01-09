@@ -19,6 +19,7 @@ const SignupPage = () => {
     onHide={() => setModalShow(false)}
     />
 <Example />
+
     
     </div>;
 };

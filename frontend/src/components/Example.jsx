@@ -5,6 +5,9 @@ import { useGetChannelsQuery } from '../API/channels';
 
 import { useGetMessagesQuery } from '../API/messages';
 
+
+// import { useAddChannelMutation } from '../API/channels';
+
 // const socket = io()
 
 // socket.on('connect', () => {
@@ -77,7 +80,9 @@ const Example = () => {
         {channels && (
           <ul>
             {channels.map((channel) => (
-              <li key={channel.id}>{channel.name}</li>
+              <li key={channel.id}>
+
+                {channel.name}</li>
             ))}
           </ul>
         )}
