@@ -15,6 +15,7 @@ import io from "socket.io-client";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Dropdown from "react-bootstrap/Dropdown";
+import { useDeleteMessagesByChannelIdMutation, messagesApi } from "../API/messages";
 
 const LoadingState = () => <p>Loading channels...</p>;
 const ErrorState = ({ message }) => <p>Error loading channels: {message}</p>;
@@ -31,6 +32,7 @@ const Channels = () => {
   // console.log('initialChannels', initialChannels)
 
   const [deleteChannel] = useDeleteChannelMutation();
+  const [deleteMessagesByChannelId]= useDeleteMessagesByChannelIdMutation();
 
   const [channels, setChannels] = useState([]);
   const [socket, setSocket] = useState(null);
@@ -66,14 +68,20 @@ const Channels = () => {
 
   const handleDeleteChannel = async (channelId) => {
     try {
-      await deleteChannel(channelId);
+      await deleteChannel(channelId).unwrap();
       // После успешного удаления поста, удаляем все связанные сообщения
     //   dispatch(deleteAllMessages());
+      await deleteMessagesByChannelId(channelId);
     dispatch(
         channelsApi.util.updateQueryData("getChannels", undefined, (draft) => {
           return draft.filter((channel) => channel.id !== channelId);
         })
       );
+      
+      dispatch(messagesApi.util.updateQueryData('getMessages', undefined, (draft) => {
+        return draft.filter((message) => message.channelId !== channelId);
+      }));
+
     } catch (error) {
       console.error('Ошибка при удалении канала:', error);
     }
