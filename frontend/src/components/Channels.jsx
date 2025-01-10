@@ -6,7 +6,7 @@ import { setCurrentChannel } from "../store/slices/dataSlices";
 import { selectCurrentChannel } from "../store/slices/dataSlices";
 
 import { useState, useEffect } from "react";
-import { useGetChannelsQuery, channelsApi } from "../API/channels";
+import { useGetChannelsQuery, channelsApi, useDeleteChannelMutation } from "../API/channels";
 
 import io from "socket.io-client";
 
@@ -15,37 +15,6 @@ import io from "socket.io-client";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Dropdown from "react-bootstrap/Dropdown";
-
-const addedChannels = [
-  {
-    name: "мой канал",
-    removable: true,
-    id: "4",
-  },
-  {
-    name: "test",
-    removable: true,
-    id: "6",
-  },
-  {
-    name: "test2",
-    removable: true,
-    id: "8",
-  },
-];
-
-const firstChannels = [
-  {
-    id: "1",
-    name: "general",
-    removable: false,
-  },
-  {
-    id: "2",
-    name: "random",
-    removable: false,
-  },
-];
 
 const LoadingState = () => <p>Loading channels...</p>;
 const ErrorState = ({ message }) => <p>Error loading channels: {message}</p>;
@@ -60,6 +29,8 @@ const Channels = () => {
   //       console.log('channels in Channels', channels);
   //     }
   // console.log('initialChannels', initialChannels)
+
+  const [deleteChannel] = useDeleteChannelMutation();
 
   const [channels, setChannels] = useState([]);
   const [socket, setSocket] = useState(null);
@@ -91,6 +62,21 @@ const Channels = () => {
     //   const handleСlick = (channelName, channelId) => {
     dispatch(setCurrentChannel(channel));
     // setActiveChannel(channel.id);
+  };
+
+  const handleDeleteChannel = async (channelId) => {
+    try {
+      await deleteChannel(channelId);
+      // После успешного удаления поста, удаляем все связанные сообщения
+    //   dispatch(deleteAllMessages());
+    dispatch(
+        channelsApi.util.updateQueryData("getChannels", undefined, (draft) => {
+          return draft.filter((channel) => channel.id !== channelId);
+        })
+      );
+    } catch (error) {
+      console.error('Ошибка при удалении канала:', error);
+    }
   };
 
   // Подключение WebSocket
@@ -159,7 +145,7 @@ const Channels = () => {
                 id="dropdown-split-basic"
               />
               <Dropdown.Menu>
-                <Dropdown.Item href="#/action-1">Удалить</Dropdown.Item>
+                <Dropdown.Item onClick={()=> handleDeleteChannel(channel.id)} >Удалить</Dropdown.Item>
                 <Dropdown.Item href="#/action-2">Переименовать</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>

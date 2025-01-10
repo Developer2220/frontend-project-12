@@ -27,7 +27,13 @@ export const messagesApi = createApi({
         body: newMessage,
       }),
     }),
+    deleteMessagesByChannelId: builder.mutation({
+        query: (channelId) =>({
+            url: `messages/${channelId}`,
+            method: "DELETE",
+        })
+    })
   }),
 });
 
-export const { useGetMessagesQuery, useAddMessageMutation } = messagesApi;
+export const { useGetMessagesQuery, useAddMessageMutation, useDeleteMessagesByChannelIdMutation } = messagesApi;
