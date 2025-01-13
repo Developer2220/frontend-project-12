@@ -4,6 +4,8 @@ import useAuthContext from '../auth/authProvider';
 import { useGetChannelsQuery } from '../API/channels'; 
 
 import { useGetMessagesQuery } from '../API/messages';
+// import ModalDeleteChannel from './ModalDeleteChannel';
+
 
 
 // import { useAddChannelMutation } from '../API/channels';
@@ -72,6 +74,9 @@ const Example = () => {
 //   if (messages) {
 //       console.log('messages in Example', messages);
 //     }
+
+
+
   
     return (
       <div>
@@ -81,11 +86,11 @@ const Example = () => {
           <ul>
             {channels.map((channel) => (
               <li key={channel.id}>
-
                 {channel.name}</li>
             ))}
           </ul>
         )}
+    
       </div>
     );
   };

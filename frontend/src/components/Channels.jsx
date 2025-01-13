@@ -16,6 +16,7 @@ import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useDeleteMessagesByChannelIdMutation, messagesApi } from "../API/messages";
+import ModalDeleteChannel from "./ModalDeleteChannel";
 
 const LoadingState = () => <p>Loading channels...</p>;
 const ErrorState = ({ message }) => <p>Error loading channels: {message}</p>;
@@ -37,6 +38,13 @@ const Channels = () => {
   const [channels, setChannels] = useState([]);
   const [socket, setSocket] = useState(null);
 
+  const [modalShow, setModalShow] = useState(false);
+  const [selectedChannelId, setSelectedChannelId] = useState(null);
+
+  const handleOpenModal = (channelId) => {
+    setSelectedChannelId(channelId)
+    setModalShow(true)
+  }
   //   const [activeChannel, setActiveChannel] = useState(null);
 
   const dispatch = useDispatch();
@@ -66,26 +74,25 @@ const Channels = () => {
     // setActiveChannel(channel.id);
   };
 
-  const handleDeleteChannel = async (channelId) => {
-    try {
-      await deleteChannel(channelId).unwrap();
-      // После успешного удаления поста, удаляем все связанные сообщения
-    //   dispatch(deleteAllMessages());
-      await deleteMessagesByChannelId(channelId);
-    dispatch(
-        channelsApi.util.updateQueryData("getChannels", undefined, (draft) => {
-          return draft.filter((channel) => channel.id !== channelId);
-        })
-      );
-      
-      dispatch(messagesApi.util.updateQueryData('getMessages', undefined, (draft) => {
-        return draft.filter((message) => message.channelId !== channelId);
-      }));
+//   const handleDeleteChannel = async (channelId) => {
+//     try {
+//       await deleteChannel(channelId).unwrap();
+//       // После успешного удаления поста, удаляем все связанные сообщения
+//       await deleteMessagesByChannelId(channelId);
+//     dispatch(
+//         channelsApi.util.updateQueryData("getChannels", undefined, (draft) => {
+//           return draft.filter((channel) => channel.id !== channelId);
+//         })
+//       );
 
-    } catch (error) {
-      console.error('Ошибка при удалении канала:', error);
-    }
-  };
+//       dispatch(messagesApi.util.updateQueryData('getMessages', undefined, (draft) => {
+//         return draft.filter((message) => message.channelId !== channelId);
+//       }));
+
+//     } catch (error) {
+//       console.error('Ошибка при удалении канала:', error);
+//     }
+//   };
 
   // Подключение WebSocket
   useEffect(() => {
@@ -153,13 +160,19 @@ const Channels = () => {
                 id="dropdown-split-basic"
               />
               <Dropdown.Menu>
-                <Dropdown.Item onClick={()=> handleDeleteChannel(channel.id)} >Удалить</Dropdown.Item>
+                 {/* <Dropdown.Item onClick={()=> handleDeleteChannel(channel.id)} >Удалить</Dropdown.Item> */}
+                 <Dropdown.Item onClick={() => handleOpenModal(channel.id)} >Удалить</Dropdown.Item>
                 <Dropdown.Item href="#/action-2">Переименовать</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           )}
         </li>
       ))}
+      <ModalDeleteChannel
+      show={modalShow}
+      onHide={() => setModalShow(false)}
+      channelId = {selectedChannelId}
+      />
     </ul>
   );
 };

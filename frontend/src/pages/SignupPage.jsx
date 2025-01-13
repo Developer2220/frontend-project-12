@@ -5,20 +5,24 @@ import MyVerticallyCenteredModal from "../components/ModalWindow";
 import { useState } from "react";
 import Button from 'react-bootstrap/Button';
 
-import Example from "../components/Example";
+// import Example from "../components/Example";
+
+import ModalDeleteChannel from "../components/ModalDeleteChannel";
 
 const SignupPage = () => {
     const [modalShow, setModalShow] = useState(false);
+
+
   return <div>
     <div>SignupPage</div>
     <Button variant="primary" onClick={() => setModalShow(true)}>
         Launch vertically centered modal
       </Button>
-    <MyVerticallyCenteredModal 
+    <ModalDeleteChannel 
     show={modalShow}
     onHide={() => setModalShow(false)}
     />
-<Example />
+
 
     
     </div>;
