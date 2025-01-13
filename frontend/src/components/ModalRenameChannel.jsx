@@ -2,23 +2,26 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Container from "react-bootstrap/Container";
 
-import { useAddChannelMutation } from "../API/channels";
-import { useGetChannelsQuery } from "../API/channels";
+import { useUpdateChannelMutation } from "../API/channels";
+import { useGetChannelsQuery, channelsApi } from "../API/channels";
   
 import { Formik, Form, Field } from "formik";
 
 import * as Yup from "yup";
 
-import { setCurrentChannel } from "../store/slices/dataSlices";
-import { useDispatch } from "react-redux";
+// import { setCurrentChannel } from "../store/slices/dataSlices";
+// import { useDispatch } from "react-redux";
 
 
-const ModalWindow = (props) => {
-  const [addChannel] = useAddChannelMutation();
+const ModalRenameChannel = (props) => {
+  const [updateChannel] = useUpdateChannelMutation();
   const { data: channels, error, isLoading } = useGetChannelsQuery();
 
-  const dispatch = useDispatch();
-  
+  const { channelId, ...modalProps} = props;
+
+// console.log('props.channelId', props.channelId)
+
+//   const dispatch = useDispatch();
   
   //проверка на уникальность значения в поле
   const checkChannelnameUnique = (channels, name) => {
@@ -28,7 +31,7 @@ const ModalWindow = (props) => {
       return !channelName.includes(name); 
     };
 
-    console.log('channels in ModalWindow', channels)
+    console.log('channels in ModalRenameChannel', channels)
 
 
 
@@ -58,9 +61,11 @@ const ModalWindow = (props) => {
   });
 
   return (
-    <Modal {...props} centered>
+    <Modal {...modalProps} centered>
+    {/* <Modal {...modalProps} centered> */}
+
       <Modal.Header closeButton>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>Переименовать канал</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {/* <Form>
@@ -89,10 +94,14 @@ const ModalWindow = (props) => {
           onSubmit={async (values, { setSubmitting, setFieldError }) => {
             console.log('values', values);
             try {
-              const result = await addChannel(values).unwrap();
-              console.log("Ответ от сервера:", result);
-              dispatch(setCurrentChannel(result)); // Диспатч нового канала как текущего
+              
+            //   const result = await updateChannel({id: props.channelId, newChannelName: values.name}).unwrap();
+            const result = await updateChannel({id: channelId, newChannelName: values.name}).unwrap();
+   
+              console.log("Ответ от сервера после обновления:", result);
+            //   dispatch(setCurrentChannel(result)); // Диспатч нового канала как текущего
               props.onHide();
+            // onHide()
             } catch (error) {
               console.error("Ошибка", error);
               setFieldError("name", "Ошибка сервера");
@@ -123,6 +132,8 @@ const ModalWindow = (props) => {
                   variant="secondary"
                   className="me-2"
                   onClick={props.onHide}
+                // onClick={onHide}
+
                 >
                   Отменить
                 </Button>
@@ -136,4 +147,4 @@ const ModalWindow = (props) => {
   );
 };
 
-export default ModalWindow;
+export default ModalRenameChannel;

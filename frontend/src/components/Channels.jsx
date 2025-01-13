@@ -17,6 +17,7 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useDeleteMessagesByChannelIdMutation, messagesApi } from "../API/messages";
 import ModalDeleteChannel from "./ModalDeleteChannel";
+import ModalRenameChannel from "./ModalRenameChannel";
 
 const LoadingState = () => <p>Loading channels...</p>;
 const ErrorState = ({ message }) => <p>Error loading channels: {message}</p>;
@@ -39,11 +40,19 @@ const Channels = () => {
   const [socket, setSocket] = useState(null);
 
   const [modalShow, setModalShow] = useState(false);
+  const [modalShowRenameChannel, setModalShowRenameChannel] = useState(false);
+
   const [selectedChannelId, setSelectedChannelId] = useState(null);
 
   const handleOpenModal = (channelId) => {
     setSelectedChannelId(channelId)
     setModalShow(true)
+  }
+
+
+  const handleOpenModalRenameChannel = (channelId) => {
+    setSelectedChannelId(channelId)
+    setModalShowRenameChannel(true)
   }
   //   const [activeChannel, setActiveChannel] = useState(null);
 
@@ -162,7 +171,7 @@ const Channels = () => {
               <Dropdown.Menu>
                  {/* <Dropdown.Item onClick={()=> handleDeleteChannel(channel.id)} >Удалить</Dropdown.Item> */}
                  <Dropdown.Item onClick={() => handleOpenModal(channel.id)} >Удалить</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Переименовать</Dropdown.Item>
+                <Dropdown.Item onClick={() => handleOpenModalRenameChannel(channel.id)}>Переименовать</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           )}
@@ -173,6 +182,12 @@ const Channels = () => {
       onHide={() => setModalShow(false)}
       channelId = {selectedChannelId}
       />
+      <ModalRenameChannel
+      show={modalShowRenameChannel}
+      onHide={() => setModalShowRenameChannel(false)}
+      channelId = {selectedChannelId}
+      />
+
     </ul>
   );
 };

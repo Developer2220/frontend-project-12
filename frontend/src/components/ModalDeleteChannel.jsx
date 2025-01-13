@@ -13,6 +13,7 @@ const ModalDeleteChannel = (props) => {
     const [deleteChannel] = useDeleteChannelMutation();
     const [deleteMessagesByChannelId] = useDeleteMessagesByChannelIdMutation();
     const dispatch = useDispatch();
+    const {channelId, ...modalProps} = props
 
   //   const dispatch = useDispatch();
 
@@ -41,7 +42,7 @@ const ModalDeleteChannel = (props) => {
 
 
   return (
-    <Modal {...props} centered>
+    <Modal {...modalProps} centered>
       <Modal.Header closeButton>
         <Modal.Title>Удалить канал</Modal.Title>
       </Modal.Header>
@@ -66,7 +67,7 @@ const ModalDeleteChannel = (props) => {
             Отменить
           </Button>
           <Button 
-          variant="danger" onClick={()=>handleDeleteChannel(props.channelId)}>Удалить</Button>
+          variant="danger" onClick={()=>handleDeleteChannel(channelId)}>Удалить</Button>
           </Container>
       </Modal.Body>
     </Modal>
