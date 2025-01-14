@@ -1,16 +1,15 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Container from "react-bootstrap/Container";
-
 import { useUpdateChannelMutation } from "../API/channels";
 import { useGetChannelsQuery, channelsApi } from "../API/channels";
-  
 import { Formik, Form, Field } from "formik";
-
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
-// import { setCurrentChannel } from "../store/slices/dataSlices";
-// import { useDispatch } from "react-redux";
+import socket from "../socket";
+
 
 
 const ModalRenameChannel = (props) => {
@@ -21,8 +20,10 @@ const ModalRenameChannel = (props) => {
 
 // console.log('props.channelId', props.channelId)
 
-//   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   
+// const socket = io()
+
   //проверка на уникальность значения в поле
   const checkChannelnameUnique = (channels, name) => {
     if (!channels) return true;
@@ -32,9 +33,6 @@ const ModalRenameChannel = (props) => {
     };
 
     console.log('channels in ModalRenameChannel', channels)
-
-
-
 
   const ModalSchema = Yup.object().shape({
     name: Yup.string()
@@ -48,17 +46,32 @@ const ModalRenameChannel = (props) => {
         async (value) => {
           console.log('value', value)
           if (!value || isLoading || error) return false; // Не проверять пустое значение
-        
-          // const isUnique = await checkChannelnameUnique(channels, value);
-          // return isUnique
-
           return await checkChannelnameUnique(channels, value);
-
       
         }
       ),
       
   });
+
+  useEffect(() => {
+    // Слушаем событие обновления канала от сервера
+    socket.on('renameChannel', (updatedChannel) => {
+      dispatch(
+        channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
+          const index = draft.findIndex((channel) => channel.id === updatedChannel.id);
+          if (index !== -1) {
+            draft[index].name = updatedChannel.name; // Обновляем имя канала
+          }
+        })
+      );
+    });
+
+    return () => {
+      // Очистка прослушивания события при размонтировании компонента
+      socket.off('channelUpdated');
+    };
+  }, [dispatch]);
+
 
   return (
     <Modal {...modalProps} centered>
@@ -68,22 +81,6 @@ const ModalRenameChannel = (props) => {
         <Modal.Title>Переименовать канал</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {/* <Form>
-            <Form.Group >
-              <Form.Control
-              controlId="name"
-              className="mb-3"
-              name="name"
-              />
-              <Form.Label className="visually-hidden" for='name' >Имя канала</Form.Label>
-            </Form.Group>
-    <Container className="d-flex justify-content-end">
-        <Button variant="secondary" className="me-2" onClick={props.onHide}>Отменить</Button>
-        <Button onClick={props.onHide}>Отправить</Button>
-
-    </Container>
-          </Form> */}
-
         <Formik
           initialValues={{
             name: "",
@@ -97,10 +94,8 @@ const ModalRenameChannel = (props) => {
               
             //   const result = await updateChannel({id: props.channelId, newChannelName: values.name}).unwrap();
             const result = await updateChannel({id: channelId, newChannelName: values.name}).unwrap();
-   
               console.log("Ответ от сервера после обновления:", result);
-            //   dispatch(setCurrentChannel(result)); // Диспатч нового канала как текущего
-              props.onHide();
+            props.onHide();
             // onHide()
             } catch (error) {
               console.error("Ошибка", error);

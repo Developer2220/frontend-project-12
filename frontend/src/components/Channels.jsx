@@ -8,7 +8,8 @@ import { selectCurrentChannel } from "../store/slices/dataSlices";
 import { useState, useEffect } from "react";
 import { useGetChannelsQuery, channelsApi, useDeleteChannelMutation } from "../API/channels";
 
-import io from "socket.io-client";
+// import io from "socket.io-client";
+import socket from "../socket";
 
 
 
@@ -37,7 +38,7 @@ const Channels = () => {
   const [deleteMessagesByChannelId]= useDeleteMessagesByChannelIdMutation();
 
   const [channels, setChannels] = useState([]);
-  const [socket, setSocket] = useState(null);
+  const [socketInitial, setSocket] = useState(null);
 
   const [modalShow, setModalShow] = useState(false);
   const [modalShowRenameChannel, setModalShowRenameChannel] = useState(false);
@@ -105,14 +106,17 @@ const Channels = () => {
 
   // Подключение WebSocket
   useEffect(() => {
-    const socketInstance = io(); // Создаем сокет
-    setSocket(socketInstance);
+    // const socketInstance = io(); // Создаем сокет
+    // setSocket(socketInstance);
+    setSocket(socket);
 
     // socketInstance.on("connect", () => {
     //   console.log("Соединение установлено с сервером:", socketInstance.id);
     // });
 
-    socketInstance.on("newChannel", (payload) => {
+    // socketInstance.on("newChannel", (payload) => {
+    socket.on("newChannel", (payload) => {
+
       setChannels((prevChannels) => [...prevChannels, payload]);
       // Обновляем кэш RTK Query
       dispatch(
@@ -123,7 +127,9 @@ const Channels = () => {
     });
 
     return () => {
-      socketInstance.disconnect(); // Отключаем сокет при размонтировании
+    //   socketInstance.disconnect(); // Отключаем сокет при размонтировании
+    socket.disconnect(); // Отключаем сокет при размонтировании
+
     };
   }, []);
 
