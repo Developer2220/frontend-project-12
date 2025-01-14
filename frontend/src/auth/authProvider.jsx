@@ -38,7 +38,7 @@ export const AuthContextProvider = ({ children }) => {
   const logIn = (token, user) => {
     dispatch(setAuthenticated(true));
     localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem("user", JSON.stringify(user));
+    // localStorage.setItem("user", JSON.stringify(user));
     setAuthState({token: token, user: user})
     navigate("/");
   };

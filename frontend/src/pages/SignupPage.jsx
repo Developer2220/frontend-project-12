@@ -1,31 +1,46 @@
-import Authform from "../components/AuthForm";
-import Messages from "../components/Messages";
-import MyVerticallyCenteredModal from "../components/ModalWindow";
-
 import { useState } from "react";
 import Button from 'react-bootstrap/Button';
+import NavBar from "../components/NavBar";
+import useCreateNewUser from "../hooks/useCreateNewUser";
 
-// import Example from "../components/Example";
 
-import ModalDeleteChannel from "../components/ModalDeleteChannel";
+// const formData = { username: 'newuser1', password: '123456' }
+
 
 const SignupPage = () => {
-    const [modalShow, setModalShow] = useState(false);
+
+    // const {create} = useCreateNewUser()
+
+    // create(formData)
 
 
-  return <div>
-    <div>SignupPage</div>
-    <Button variant="primary" onClick={() => setModalShow(true)}>
-        Launch vertically centered modal
-      </Button>
-    <ModalDeleteChannel 
-    show={modalShow}
-    onHide={() => setModalShow(false)}
-    />
+  return (
+    <div className="d-flex flex-column h-100">
+      <NavBar />
+      <div className="container-fluid h-100">
+        <div className="row justify-content-center align-content-center h-100">
+          <div className="col-12 col-md-8 col-xxl-6">
+            <div className="card shadow-sm">
+              <div className="card-body row p-5">
+                <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
+                  <img
+                    src="/src/assets/avatar_signup.jpg"
+                    
+                    className="rounded-circle"
+                    alt="Регистрация"
+                  ></img>
+                </div>
+         
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
-    
-    </div>;
+
+  )
 };
 
 export default SignupPage;
