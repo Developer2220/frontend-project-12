@@ -2,10 +2,13 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Container from "react-bootstrap/Container";
 
+
+import { useEffect } from "react";
 import { useGetChannelsQuery } from "../API/channels";
 import { useDeleteChannelMutation, channelsApi } from "../API/channels"; 
 import { useDeleteMessagesByChannelIdMutation, messagesApi } from "../API/messages";
 import { useDispatch } from "react-redux";
+import socket from "../socket";
 
 const ModalDeleteChannel = (props) => {
     // const [addChannel] = useAddChannelMutation();
@@ -25,20 +28,46 @@ const ModalDeleteChannel = (props) => {
       // После успешного удаления поста, удаляем все связанные сообщения
       await deleteMessagesByChannelId(channelId);
       props.onHide();
-    dispatch(
-        channelsApi.util.updateQueryData("getChannels", undefined, (draft) => {
-          return draft.filter((channel) => channel.id !== channelId);
-        })
-      );
+    // dispatch(
+    //     channelsApi.util.updateQueryData("getChannels", undefined, (draft) => {
+    //       return draft.filter((channel) => channel.id !== channelId);
+    //     })
+    //   );
 
-      dispatch(messagesApi.util.updateQueryData('getMessages', undefined, (draft) => {
-        return draft.filter((message) => message.channelId !== channelId);
-      }));
+    //   dispatch(messagesApi.util.updateQueryData('getMessages', undefined, (draft) => {
+    //     return draft.filter((message) => message.channelId !== channelId);
+    //   }));
 
     } catch (error) {
       console.error('Ошибка при удалении канала:', error);
     }
   };
+
+
+
+
+
+  useEffect(() => {
+    // Слушаем событие обновления канала от сервера
+    socket.on('removeChannel', (channelId) => {
+        dispatch(
+            channelsApi.util.updateQueryData("getChannels", undefined, (draft) => {
+              return draft.filter((channel) => channel.id !== channelId.id);
+            })
+          );
+    
+          dispatch(messagesApi.util.updateQueryData('getMessages', undefined, (draft) => {
+            return draft.filter((message) => message.channelId !== channelId.id);
+          }));
+
+    });
+
+    return () => {
+      // Очистка прослушивания события при размонтировании компонента
+      socket.off('removeChannel');
+    };
+  }, [dispatch]);
+
 
 
   return (

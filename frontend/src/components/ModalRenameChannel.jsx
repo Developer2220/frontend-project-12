@@ -68,7 +68,7 @@ const ModalRenameChannel = (props) => {
 
     return () => {
       // Очистка прослушивания события при размонтировании компонента
-      socket.off('channelUpdated');
+      socket.off('renameChannel');
     };
   }, [dispatch]);
 
