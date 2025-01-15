@@ -48,7 +48,7 @@ const filteredMessages = messages && currentChannel ? messages.filter(
 
 
 // const showNumberMessages = declOfNum(messages.length, ['сообщение', 'сообщения', 'сообщений']);
-const showNumberMessages = filteredMessages.length > 0
+const showNumberMessages = filteredMessages.length >= 0
   ? declOfNum(filteredMessages.length, ['сообщение', 'сообщения', 'сообщений'])
   : 'Загрузка сообщений...';
 

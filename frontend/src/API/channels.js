@@ -38,10 +38,8 @@ export const channelsApi = createApi({
             url: `channels/${id}`,
             method: "PATCH",
             body: {name: newChannelName},
-        })
-    })
-
-
+        }),
+    }),
   }),
 });
 
