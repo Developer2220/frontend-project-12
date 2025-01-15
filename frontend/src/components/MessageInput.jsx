@@ -64,7 +64,7 @@ const [formData, setFormData] = useState({
     channelId: null, 
     username: user,
 });
-// console.log('formData in MessageInput', formData) 
+console.log('formData in MessageInput', formData) 
 
 useEffect(()=> {
     if (currentChannel) {
@@ -90,7 +90,7 @@ useEffect(()=> {
         await addMessage(formData);
         setFormData((prev)=> ({
             ...prev, 
-            body:'',
+            body: '',
         }))
     }
 
@@ -103,8 +103,8 @@ useEffect(()=> {
             aria-label="Новое сообщение"
             placeholder="Введите сообщение..."
             className="border-0 ps-2"
-            defaultValue=""
-            // value={value}
+            // defaultValue=""
+            value={formData.body}
             // value={formData.username || ''} 
             onChange={handleChange} 
           />
