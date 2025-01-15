@@ -41,9 +41,13 @@ const Messages = () => {
   // Прокрутка вниз при добавлении сообщения
   useEffect(() => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    //   messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current.scrollIntoView({ behavior: "auto" });
+
     }
-  }, [allMessages, currentChannel]);
+//   }, [allMessages, currentChannel]);
+}, [allMessages, currentChannel]);
+
 
   // Фильтрация сообщений для текущего канала
   const filteredMessages = allMessages
