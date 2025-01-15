@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from 'react-bootstrap/Button';
 import NavBar from "../components/NavBar";
+import SignupForm from "../components/SignupForm";
 import useCreateNewUser from "../hooks/useCreateNewUser";
 
 
@@ -8,11 +9,6 @@ import useCreateNewUser from "../hooks/useCreateNewUser";
 
 
 const SignupPage = () => {
-
-    // const {create} = useCreateNewUser()
-
-    // create(formData)
-
 
   return (
     <div className="d-flex flex-column h-100">
@@ -30,7 +26,7 @@ const SignupPage = () => {
                     alt="Регистрация"
                   ></img>
                 </div>
-         
+                <SignupForm/>
               </div>
             </div>
           </div>

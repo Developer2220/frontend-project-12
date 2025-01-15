@@ -1,11 +1,15 @@
 import { Formik, Form, Field } from "formik";
 import useAuth from "../hooks/useAuth";
 import useAuthContext from "../auth/authProvider";
+import useCreateNewUser from "../hooks/useCreateNewUser";
 
 const SignupForm = () => {
 //   const { authenticate } = useAuth();
-//   const { token, logIn } = useAuthContext();
+  const { token, logIn } = useAuthContext();
 // console.log('useAuthContext', useAuthContext())
+
+const {create} = useCreateNewUser();
+
 
   return (
     <Formik
@@ -21,6 +25,9 @@ const SignupForm = () => {
 
       onSubmit={async (values, { setSubmitting, setFieldError }) => {
         console.log(values);
+        const formData = {username: values.username, password: values.password}
+        console.log('formData', formData)
+
         // fetch("/api/v1/login", {
         //     method: "POST",
         //     body: JSON.stringify(values),
@@ -36,7 +43,7 @@ const SignupForm = () => {
         // });
 
         try {
-          const result = await authenticate(values);
+          const result = await create(formData);
           console.log("Ответ от сервера:", result);
           if (result) {
             localStorage.setItem("token", result.token);
@@ -49,8 +56,9 @@ const SignupForm = () => {
           }
         } catch (error) {
           console.error("Ошибка", error);
-          setFieldError("username", "Неверные имя пользователя или пароль");
-          setFieldError("password", "Неверные имя пользователя или пароль");
+        //   setFieldError("username", "Неверные имя пользователя или пароль");
+        //   setFieldError("password", "Неверные имя пользователя или пароль");
+          setFieldError("confirmPassword", "Такой пользователь уже существует");
         } finally {
           setSubmitting(false);
         }
@@ -58,7 +66,7 @@ const SignupForm = () => {
     >
       {({ errors, touched }) => (
         <Form className="col-12 col-md-6 mt-3 mt-md-0">
-          <h1 className="text-center mb-4">Войти</h1>
+          <h1 className="text-center mb-4">Регистрация</h1>
           <div className="form-floating mb-3">
             <Field
               id="username"
@@ -82,7 +90,7 @@ const SignupForm = () => {
                 touched.password && errors.password ? "is-invalid" : ""
               }`}
               required
-              autocomplete="current-password"
+              autoComplete="current-password"
               type="password"
             />
             <label className="form-label" htmlFor="password">
@@ -90,6 +98,25 @@ const SignupForm = () => {
             </label>
             {touched.password && errors.password && (
               <div className="invalid-tooltip">{errors.password}</div>
+            )}
+          </div>
+          <div className="form-floating mb-4">
+            <Field
+              id="confirmPassword"
+              name="confirmPassword"
+              placeholder="Пароль"
+              className={`form-control ${
+                touched.confirmPassword && errors.confirmPassword ? "is-invalid" : ""
+              }`}
+              required
+              autoComplete="current-password"
+              type="password"
+            />
+            <label className="form-label" htmlFor="confirmPassword">
+              Подтвердите пароль
+            </label>
+            {touched.confirmPassword && errors.confirmPassword && (
+              <div className="invalid-tooltip">{errors.confirmPassword}</div>
             )}
           </div>
           <button type="submit" className="w-100 mb-3 btn btn-outline-primary">
