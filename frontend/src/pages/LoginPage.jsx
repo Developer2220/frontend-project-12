@@ -1,3 +1,5 @@
+import React from "react";
+import { Container, Row, Col, Card, Image } from "react-bootstrap";
 import NavBar from "../components/NavBar";
 import Authform from "../components/AuthForm";
 
@@ -5,40 +7,31 @@ const LoginPage = () => {
   return (
     <div className="d-flex flex-column h-100">
       <NavBar />
-      <div className="container-fluid h-100">
-        <div className="row justify-content-center align-content-center h-100">
-          <div className="col-12 col-md-8 col-xxl-6">
-            <div className="card shadow-sm">
-              <div className="card-body row p-5">
-                <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                  <img
+      <Container fluid className="h-100">
+        <Row className="justify-content-center align-content-center h-100">
+          <Col xs={12} md={8} xxl={6}>
+            <Card className="shadow-sm">
+              <Card.Body className="row p-5">
+                <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
+                  <Image
                     src="/src/assets/avatar.jpg"
-                    className="rounded-circle"
+                    roundedCircle
                     alt="Войти"
-                  ></img>
-                </div>
+                    fluid
+                  />
+                </Col>
                 <Authform />
-              </div>
-              <div className="card-footer p-4">
-                <div className="text-center">
-                  <span>Нет аккаунта? </span>
-                  <a href="/signup">Регистрация</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+              </Card.Body>
+              <Card.Footer className="text-center p-4">
+                <span>Нет аккаунта? </span>
+                <Card.Link href="/signup">Регистрация</Card.Link>
+              </Card.Footer>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 };
 
 export default LoginPage;
-
-// const LoginPage = () => {
-//   return (
-//     <div>LoginPage</div>
-//   )
-// }
-
-// export default LoginPage

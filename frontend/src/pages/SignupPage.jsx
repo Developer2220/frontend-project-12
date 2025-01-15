@@ -1,44 +1,33 @@
-import { useState } from "react";
-import Button from 'react-bootstrap/Button';
+import React from "react";
+import { Container, Row, Col, Card, Image } from "react-bootstrap";
 import NavBar from "../components/NavBar";
 import SignupForm from "../components/SignupForm";
-import useCreateNewUser from "../hooks/useCreateNewUser";
-
-
-// const formData = { username: 'newuser1', password: '123456' }
-
 
 const SignupPage = () => {
-
   return (
     <div className="d-flex flex-column h-100">
       <NavBar />
-      <div className="container-fluid h-100">
-        <div className="row justify-content-center align-content-center h-100">
-          <div className="col-12 col-md-8 col-xxl-6">
-            <div className="card shadow-sm">
-              <div className="card-body row p-5">
-                <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                  <img
+      <Container fluid className="h-100">
+        <Row className="justify-content-center align-content-center h-100">
+          <Col xs={12} md={8} xxl={6}>
+            <Card className="shadow-sm">
+              <Card.Body className="row p-5">
+                <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
+                  <Image
                     src="/src/assets/avatar_signup.jpg"
-                    
-                    className="rounded-circle"
+                    roundedCircle
                     alt="Регистрация"
-                  ></img>
-                </div>
-                <SignupForm/>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+                    fluid
+                  />
+                </Col>
+                  <SignupForm />
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
     </div>
-
-
-
-  )
+  );
 };
 
 export default SignupPage;
-
-
