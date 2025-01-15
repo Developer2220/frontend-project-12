@@ -2,6 +2,8 @@ import { Formik, Form, Field } from "formik";
 import useAuth from "../hooks/useAuth";
 import useAuthContext from "../auth/authProvider";
 import useCreateNewUser from "../hooks/useCreateNewUser";
+import * as Yup from "yup";
+
 
 const SignupForm = () => {
 //   const { authenticate } = useAuth();
@@ -9,6 +11,21 @@ const SignupForm = () => {
 // console.log('useAuthContext', useAuthContext())
 
 const {create} = useCreateNewUser();
+
+const ModalSchema = Yup.object().shape({
+    username: Yup.string()
+      .min(3, "От 3 до 20 символов")
+      .max(20, "От 3 до 20 символов")
+      .required("Обязательное поле"),
+      password: Yup.string()
+      .min(6, "Не менее 6 символов")
+      .required("Обязательное поле"),
+
+      confirmPassword: Yup.string()
+      .min(6, "Не менее 6 символов")
+      .required("Обязательное поле")
+      .oneOf([Yup.ref('password'), null], 'Пароли должны совпадать')      
+  });
 
 
   return (
@@ -22,7 +39,9 @@ const {create} = useCreateNewUser();
       //     await new Promise((r) => setTimeout(r, 500));
       //     alert(JSON.stringify(values, null, 2));
       //   }}
-
+      validationSchema={ModalSchema}
+      validateOnChange={false}
+      validateOnBlur={false}
       onSubmit={async (values, { setSubmitting, setFieldError }) => {
         console.log(values);
         const formData = {username: values.username, password: values.password}
@@ -71,7 +90,7 @@ const {create} = useCreateNewUser();
             <Field
               id="username"
               name="username"
-              placeholder="Ваш ник"
+              placeholder="Имя пользователя"
               className={`form-control ${
                 touched.username && errors.username ? "is-invalid" : ""
               }`}
