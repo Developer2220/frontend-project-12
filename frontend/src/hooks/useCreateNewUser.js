@@ -21,12 +21,14 @@ const useCreateNewUser = () => {
 
       if (!response.ok) {
         const errorResponse = await response.json();
-        throw new Error(errorResponse.message || 'Create failed');
+        // throw new Error(errorResponse.message || 'Create failed');
+        return {success: false, status: response.status, message: errorResponse}
       }
 
       const userData = await response.json();
       console.log('userData', userData);
-      return userData;
+      // return userData;
+      return { success: true, data: userData };
     } catch (err) {
       setError(err.message);
       return null;
@@ -40,12 +42,3 @@ const useCreateNewUser = () => {
 
 export default useCreateNewUser;
 
-
-// const {authenticate} = useAuth();
-// const formData = { username: 'admin', password: 'admin' }
-// const getData = async(formData) => {
-//     const result = await authenticate(formData);
-//     return result
-// }
-
-// console.log('data', getData(formData))

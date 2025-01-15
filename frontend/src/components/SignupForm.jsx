@@ -1,32 +1,28 @@
 import { Formik, Form, Field } from "formik";
-import useAuth from "../hooks/useAuth";
 import useAuthContext from "../auth/authProvider";
 import useCreateNewUser from "../hooks/useCreateNewUser";
 import * as Yup from "yup";
 
-
 const SignupForm = () => {
-//   const { authenticate } = useAuth();
   const { token, logIn } = useAuthContext();
-// console.log('useAuthContext', useAuthContext())
+  // console.log('useAuthContext', useAuthContext())
 
-const {create} = useCreateNewUser();
+  const { create } = useCreateNewUser();
 
-const ModalSchema = Yup.object().shape({
+  const ModalSchema = Yup.object().shape({
     username: Yup.string()
       .min(3, "От 3 до 20 символов")
       .max(20, "От 3 до 20 символов")
       .required("Обязательное поле"),
-      password: Yup.string()
+    password: Yup.string()
       .min(6, "Не менее 6 символов")
       .required("Обязательное поле"),
 
-      confirmPassword: Yup.string()
+    confirmPassword: Yup.string()
       .min(6, "Не менее 6 символов")
       .required("Обязательное поле")
-      .oneOf([Yup.ref('password'), null], 'Пароли должны совпадать')      
+      .oneOf([Yup.ref("password"), null], "Пароли должны совпадать"),
   });
-
 
   return (
     <Formik
@@ -35,49 +31,38 @@ const ModalSchema = Yup.object().shape({
         password: "",
         confirmPassword: "",
       }}
-      //   onSubmit={async (values) => {
-      //     await new Promise((r) => setTimeout(r, 500));
-      //     alert(JSON.stringify(values, null, 2));
-      //   }}
       validationSchema={ModalSchema}
       validateOnChange={false}
       validateOnBlur={false}
       onSubmit={async (values, { setSubmitting, setFieldError }) => {
         console.log(values);
-        const formData = {username: values.username, password: values.password}
-        console.log('formData', formData)
-
-        // fetch("/api/v1/login", {
-        //     method: "POST",
-        //     body: JSON.stringify(values),
-        // })
-        // .then(response => response.json())
-        // .then(data => {
-        //     console.log("Ответ от сервера:", data);
-        //     setSubmitting(false); // Сброс флага после обработки
-        // })
-        // .catch(error => {
-        //     console.error("Ошибка:", error);
-        //     setSubmitting(false); // Сброс флага даже в случае ошибки
-        // });
+        const formData = {
+          username: values.username,
+          password: values.password,
+        };
+        console.log("formData", formData);
 
         try {
           const result = await create(formData);
           console.log("Ответ от сервера:", result);
-          if (result) {
-            localStorage.setItem("token", result.token);
-            // localStorage.removeItem("token", result.token);
-            // console.log("Before calling logIn");
-            logIn(token, result.username);
-            // console.log("After calling logIn");
-          } else {
-            throw new Error("Invalid credentials");
+
+          if (!result.success) {
+            if (result.status === 409) {
+              setFieldError("username", " ");
+              setFieldError("password", " ");
+              setFieldError(
+                "confirmPassword",
+                "Такой пользователь уже существует"
+              );
+            }
+            return;
           }
+          localStorage.setItem("token", result.data.token);
+          // logIn(token, result.username);
+          logIn(token, result.data.username);
         } catch (error) {
+          // console.log('error', error)
           console.error("Ошибка", error);
-        //   setFieldError("username", "Неверные имя пользователя или пароль");
-        //   setFieldError("password", "Неверные имя пользователя или пароль");
-          setFieldError("confirmPassword", "Такой пользователь уже существует");
         } finally {
           setSubmitting(false);
         }
@@ -99,6 +84,9 @@ const ModalSchema = Yup.object().shape({
             <label className="form-label" htmlFor="username">
               Имя пользователя
             </label>
+            {touched.username && errors.username && (
+              <div className="invalid-tooltip">{errors.username}</div>
+            )}
           </div>
           <div className="form-floating mb-4">
             <Field
@@ -125,7 +113,9 @@ const ModalSchema = Yup.object().shape({
               name="confirmPassword"
               placeholder="Пароль"
               className={`form-control ${
-                touched.confirmPassword && errors.confirmPassword ? "is-invalid" : ""
+                touched.confirmPassword && errors.confirmPassword
+                  ? "is-invalid"
+                  : ""
               }`}
               required
               autoComplete="current-password"
