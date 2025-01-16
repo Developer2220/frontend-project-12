@@ -7,8 +7,11 @@ import { useSelector } from "react-redux";
 import { selectCurrentChannel } from "../store/slices/dataSlices";
 import ModalWindow from "../components/ModalWindow";
 import { useGetMessagesQuery } from "../API/messages";
+import { useTranslation } from "react-i18next";
 
 const HomePage = () => {
+const {t} = useTranslation()
+
   const { data: messages, error, isLoading } = useGetMessagesQuery();
   if (!isLoading && messages) {
     console.log("messages in Homepage", messages);
@@ -37,11 +40,12 @@ const HomePage = () => {
   const showNumberMessages =
     filteredMessages.length >= 0
       ? declOfNum(filteredMessages.length, [
-          "сообщение",
-          "сообщения",
-          "сообщений",
+          t('messages.one'),
+          t('messages.two'), 
+          t('messages.five')
         ])
-      : "Загрузка сообщений...";
+      : t("messages.loading");
+
 
   const [modalShow, setModalShow] = useState(false);
 
@@ -52,7 +56,7 @@ const HomePage = () => {
         <div className="row h-100 bg-white flex-md-row">
           <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
             <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-              <b>Кaналы</b>
+              <b>{t('channels.title')}</b>
               <button
                 onClick={() => setModalShow(true)}
                 type="button"
@@ -78,7 +82,6 @@ const HomePage = () => {
               <div className="bg-light mb-4 p-3 shadow-sm small">
                 <p className="m-0">
                   {
-                    /* <b># {currentChannel}</b> */
                     <b># {currentChannel.name}</b>
                   }
                 </p>

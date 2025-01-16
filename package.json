@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/Developer2220/frontend-project-12#readme",
   "dependencies": {
-    "@hexlet/chat-server": "^2.0.4"
+    "@hexlet/chat-server": "^2.0.4",
+    "i18next": "^24.2.1",
+    "react-i18next": "^15.4.0"
   }
 }

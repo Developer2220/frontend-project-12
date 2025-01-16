@@ -1,9 +1,11 @@
 import React from "react";
 import { Container, Row, Col, Card, Image } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import NavBar from "../components/NavBar";
 import SignupForm from "../components/SignupForm";
 
 const SignupPage = () => {
+    const {t} = useTranslation();
   return (
     <div className="d-flex flex-column h-100">
       <NavBar />
@@ -16,7 +18,7 @@ const SignupPage = () => {
                   <Image
                     src="/src/assets/avatar_signup.jpg"
                     roundedCircle
-                    alt="Регистрация"
+                    alt= {t('signupPage.imgAlt')}
                     fluid
                   />
                 </Col>

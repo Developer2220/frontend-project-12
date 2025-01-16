@@ -2,8 +2,10 @@ import React from "react";
 import { Container, Row, Col, Card, Image } from "react-bootstrap";
 import NavBar from "../components/NavBar";
 import Authform from "../components/AuthForm";
+import { useTranslation } from "react-i18next";
 
 const LoginPage = () => {
+    const {t} = useTranslation();
   return (
     <div className="d-flex flex-column h-100">
       <NavBar />
@@ -16,15 +18,15 @@ const LoginPage = () => {
                   <Image
                     src="/src/assets/avatar.jpg"
                     roundedCircle
-                    alt="Войти"
+                    alt={t('loginPage.imgAlt')}
                     fluid
                   />
                 </Col>
                 <Authform />
               </Card.Body>
               <Card.Footer className="text-center p-4">
-                <span>Нет аккаунта? </span>
-                <Card.Link href="/signup">Регистрация</Card.Link>
+                <span>{t('loginPage.footer.text')} </span>
+                <Card.Link href="/signup">{t('loginPage.footer.link')}</Card.Link>
               </Card.Footer>
             </Card>
           </Col>

@@ -2,11 +2,12 @@ import { Formik, Form, Field } from "formik";
 import useAuthContext from "../auth/authProvider";
 import useCreateNewUser from "../hooks/useCreateNewUser";
 import * as Yup from "yup";
+import { useTranslation } from "react-i18next";
 
 const SignupForm = () => {
   const { token, logIn } = useAuthContext();
   // console.log('useAuthContext', useAuthContext())
-
+ const {t} = useTranslation();
   const { create } = useCreateNewUser();
 
   const ModalSchema = Yup.object().shape({
@@ -75,14 +76,14 @@ const SignupForm = () => {
             <Field
               id="username"
               name="username"
-              placeholder="Имя пользователя"
+              placeholder={t('signupPage.username')}
               className={`form-control ${
                 touched.username && errors.username ? "is-invalid" : ""
               }`}
               required
             />
             <label className="form-label" htmlFor="username">
-              Имя пользователя
+              {t('signupPage.username')}
             </label>
             {touched.username && errors.username && (
               <div className="invalid-tooltip">{errors.username}</div>
@@ -101,7 +102,7 @@ const SignupForm = () => {
               type="password"
             />
             <label className="form-label" htmlFor="password">
-              Пароль
+            {t('signupPage.password')}
             </label>
             {touched.password && errors.password && (
               <div className="invalid-tooltip">{errors.password}</div>
@@ -122,14 +123,14 @@ const SignupForm = () => {
               type="password"
             />
             <label className="form-label" htmlFor="confirmPassword">
-              Подтвердите пароль
+            {t('signupPage.confirmPassword')}
             </label>
             {touched.confirmPassword && errors.confirmPassword && (
               <div className="invalid-tooltip">{errors.confirmPassword}</div>
             )}
           </div>
           <button type="submit" className="w-100 mb-3 btn btn-outline-primary">
-            Зарегистрироваться
+          {t('signupPage.button')}
           </button>
         </Form>
       )}
