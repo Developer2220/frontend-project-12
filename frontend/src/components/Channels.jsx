@@ -48,6 +48,22 @@ const Channels = () => {
       dispatch(setCurrentChannel(defaultChannel));
     }
   }, [channels, dispatch]);
+// useEffect(() => {
+//     if (channels && channels.length > 0) {
+//       if (!currentChannel) {
+//         const defaultChannel = channels[0];
+//         dispatch(setCurrentChannel(defaultChannel));
+//       } else {
+//         const updatedChannel = channels.find(
+//           (channel) => channel.id === currentChannel.id
+//         );
+//         if (updatedChannel) {
+//           dispatch(setCurrentChannel(updatedChannel));
+//         }
+//       }
+//     }
+//   }, [channels, currentChannel, dispatch]);
+
 
   const handleСlick = (channel) => {
     dispatch(setCurrentChannel(channel));

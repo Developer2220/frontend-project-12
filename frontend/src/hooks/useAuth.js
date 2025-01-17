@@ -26,6 +26,7 @@ const useAuth = () => {
 
       const authData = await response.json();
     //   console.log('authData', authData);
+      
       return authData;
     } catch (err) {
       setError(err.message);

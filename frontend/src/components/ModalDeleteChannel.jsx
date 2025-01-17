@@ -8,6 +8,7 @@ import { useDeleteMessagesByChannelIdMutation, messagesApi } from "../API/messag
 import { useDispatch } from "react-redux";
 import socket from "../socket";
 import { useTranslation } from "react-i18next";
+import { toast } from 'react-toastify';
 
 const ModalDeleteChannel = (props) => {
     const {t} = useTranslation();
@@ -22,6 +23,7 @@ const ModalDeleteChannel = (props) => {
       await deleteChannel(channelId).unwrap();
       await deleteMessagesByChannelId(channelId);
       props.onHide();
+      toast.success(t('toast.deleteChannel'), { autoClose: 2000 })
     } catch (error) {
       console.error(error);
     }
@@ -52,7 +54,8 @@ const ModalDeleteChannel = (props) => {
       <Modal.Header closeButton>
         <Modal.Title>{t('channels.delete')}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body className="lead">
+        {t('channels.modalDeleteSubmit')}
         <Container className="d-flex justify-content-end">
           <Button variant="secondary" className="me-2" onClick={props.onHide}>
             {t('buttons.cancel')}

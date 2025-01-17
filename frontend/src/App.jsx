@@ -4,6 +4,7 @@ import AppRoutes from "./routes/AppRoutes";
 import store from "./store/index.js";
 import { Provider } from "react-redux";
 import { AuthContextProvider } from "./auth/authProvider";
+import { ToastContainer } from 'react-toastify';
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
             <AppRoutes />
           </AuthContextProvider>
         </Provider>
+        <ToastContainer/>
       </BrowserRouter>
   );
 };

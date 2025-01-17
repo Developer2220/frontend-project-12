@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import socket from "../socket";
 import { useTranslation } from "react-i18next";
+import { toast } from 'react-toastify';
 
 const ModalRenameChannel = (props) => {
 const {t} = useTranslation();
@@ -76,10 +77,13 @@ const {t} = useTranslation();
           validateOnBlur={false}
           onSubmit={async (values, { setSubmitting }) => {
             try {
-             await updateChannel({id: channelId, newChannelName: values.name}).unwrap();
+             const result = await updateChannel({id: channelId, newChannelName: values.name}).unwrap();
             props.onHide();
+            toast.success(t('toast.renameChannel'), { autoClose: 2000 })
             } catch (error) {
               console.error(error);
+              toast.error(t('toast.errorNetwork'), { autoClose: 2000 })
+
             } finally {
               setSubmitting(false);
             }

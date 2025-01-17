@@ -11,7 +11,7 @@ export default {
             rename: "Переименовать канал",
             delete: "Удалить канал",
             add: "Добавить канал",
-            loading: "Загрузка каналов"
+            modalDeleteSubmit: "Уверены?"
         },
         messages: {
             one: 'сообщение',
@@ -63,6 +63,12 @@ export default {
             cancel: 'Отменить',
             delete: 'Удалить',
             rename: 'Переименовать'
+          },
+          toast: {
+            addChannel: 'Канал создан',
+            deleteChannel: 'Канал удалён',
+            renameChannel: 'Канал переименован',
+            errorNetwork: 'Ошибка соединения',
           },
 
     }

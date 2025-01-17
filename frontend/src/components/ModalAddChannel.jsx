@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import { setCurrentChannel } from "../store/slices/dataSlices";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { toast } from 'react-toastify';
 
 const ModalAddChannel = (props) => {
   const { t } = useTranslation();
@@ -51,6 +52,7 @@ const ModalAddChannel = (props) => {
               const result = await addChannel(values).unwrap();
               dispatch(setCurrentChannel(result));
               props.onHide();
+              toast.success(t('toast.addChannel'), { autoClose: 2000 })
             } catch (error) {
               console.error(error);
             } finally {
