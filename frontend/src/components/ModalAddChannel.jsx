@@ -9,7 +9,7 @@ import { setCurrentChannel } from "../store/slices/dataSlices";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
-const ModalWindow = (props) => {
+const ModalAddChannel = (props) => {
   const { t } = useTranslation();
   const [addChannel] = useAddChannelMutation();
   const { data: channels, error, isLoading } = useGetChannelsQuery();
@@ -93,4 +93,4 @@ const ModalWindow = (props) => {
   );
 };
 
-export default ModalWindow;
+export default ModalAddChannel;

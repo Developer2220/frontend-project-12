@@ -5,7 +5,7 @@ import Messages from "../components/Messages";
 import MessageInput from "../components/MessageInput";
 import { useSelector } from "react-redux";
 import { selectCurrentChannel } from "../store/slices/dataSlices";
-import ModalWindow from "../components/ModalWindow";
+import ModalAddChannel from "../components/ModalAddChannel";
 import { useGetMessagesQuery } from "../API/messages";
 import { useTranslation } from "react-i18next";
 
@@ -94,7 +94,7 @@ const {t} = useTranslation()
         </div>
       </div>
 
-      <ModalWindow show={modalShow} onHide={() => setModalShow(false)} />
+      <ModalAddChannel show={modalShow} onHide={() => setModalShow(false)} />
     </div>
   );
 };
