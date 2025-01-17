@@ -12,17 +12,17 @@ const SignupForm = () => {
 
   const ModalSchema = Yup.object().shape({
     username: Yup.string()
-      .min(3, "От 3 до 20 символов")
-      .max(20, "От 3 до 20 символов")
-      .required("Обязательное поле"),
+      .min(3, t('errors.range'))
+      .max(20, t('errors.range'))
+      .required(t('errors.required')),
     password: Yup.string()
-      .min(6, "Не менее 6 символов")
-      .required("Обязательное поле"),
+      .min(6, t('errors.min'))
+      .required(t('errors.required')),
 
     confirmPassword: Yup.string()
-      .min(6, "Не менее 6 символов")
-      .required("Обязательное поле")
-      .oneOf([Yup.ref("password"), null], "Пароли должны совпадать"),
+      .min(6, t('errors.min'))
+      .required(t('errors.required'))
+      .oneOf([Yup.ref("password"), null], t('errors.passwordMustMatch')),
   });
 
   return (
@@ -53,7 +53,7 @@ const SignupForm = () => {
               setFieldError("password", " ");
               setFieldError(
                 "confirmPassword",
-                "Такой пользователь уже существует"
+                t('errors.userExists')
               );
             }
             return;
@@ -63,7 +63,7 @@ const SignupForm = () => {
           logIn(token, result.data.username);
         } catch (error) {
           // console.log('error', error)
-          console.error("Ошибка", error);
+          console.error(error);
         } finally {
           setSubmitting(false);
         }
@@ -71,7 +71,7 @@ const SignupForm = () => {
     >
       {({ errors, touched }) => (
         <Form className="col-12 col-md-6 mt-3 mt-md-0">
-          <h1 className="text-center mb-4">Регистрация</h1>
+          <h1 className="text-center mb-4">{ t('signupPage.title')}</h1>
           <div className="form-floating mb-3">
             <Field
               id="username"
@@ -112,7 +112,7 @@ const SignupForm = () => {
             <Field
               id="confirmPassword"
               name="confirmPassword"
-              placeholder="Пароль"
+              placeholder={t('signupPage.password')}
               className={`form-control ${
                 touched.confirmPassword && errors.confirmPassword
                   ? "is-invalid"

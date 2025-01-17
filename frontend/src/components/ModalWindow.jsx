@@ -1,84 +1,44 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Container from "react-bootstrap/Container";
-
 import { useAddChannelMutation } from "../API/channels";
 import { useGetChannelsQuery } from "../API/channels";
-  
 import { Formik, Form, Field } from "formik";
-
 import * as Yup from "yup";
-
 import { setCurrentChannel } from "../store/slices/dataSlices";
 import { useDispatch } from "react-redux";
-
+import { useTranslation } from "react-i18next";
 
 const ModalWindow = (props) => {
+  const { t } = useTranslation();
   const [addChannel] = useAddChannelMutation();
   const { data: channels, error, isLoading } = useGetChannelsQuery();
-
   const dispatch = useDispatch();
-  
-  
-  //проверка на уникальность значения в поле
+
   const checkChannelnameUnique = (channels, name) => {
     if (!channels) return true;
-    const channelName = channels.map((channel)=> channel.name)
-    // console.log(channelName)
-      return !channelName.includes(name); 
-    };
-
-    console.log('channels in ModalWindow', channels)
-
-
-
+    const channelName = channels.map((channel) => channel.name);
+    return !channelName.includes(name);
+  };
 
   const ModalSchema = Yup.object().shape({
     name: Yup.string()
-      .min(3, "От 3 до 20 символов")
-      .max(20, "От 3 до 20 символов")
-      .required("Обязательное поле")
+      .min(3, t('errors.range'))
+      .max(20, t('errors.range'))
+      .required(t('errors.required'))
 
-      .test(
-        "unique", // Название теста
-        "Должно быть уникальным", // Сообщение об ошибке
-        async (value) => {
-          console.log('value', value)
-          if (!value || isLoading || error) return false; // Не проверять пустое значение
-        
-          // const isUnique = await checkChannelnameUnique(channels, value);
-          // return isUnique
-
-          return await checkChannelnameUnique(channels, value);
-
-      
-        }
-      ),
-      
+      .test("unique", t('errors.unique'), async (value) => {
+        if (!value || isLoading || error) return false;
+        return await checkChannelnameUnique(channels, value);
+      }),
   });
 
   return (
     <Modal {...props} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>{t("channels.add")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {/* <Form>
-            <Form.Group >
-              <Form.Control
-              controlId="name"
-              className="mb-3"
-              name="name"
-              />
-              <Form.Label className="visually-hidden" for='name' >Имя канала</Form.Label>
-            </Form.Group>
-    <Container className="d-flex justify-content-end">
-        <Button variant="secondary" className="me-2" onClick={props.onHide}>Отменить</Button>
-        <Button onClick={props.onHide}>Отправить</Button>
-
-    </Container>
-          </Form> */}
-
         <Formik
           initialValues={{
             name: "",
@@ -86,16 +46,13 @@ const ModalWindow = (props) => {
           validationSchema={ModalSchema}
           validateOnChange={false}
           validateOnBlur={false}
-          onSubmit={async (values, { setSubmitting, setFieldError }) => {
-            console.log('values', values);
+          onSubmit={async (values, { setSubmitting }) => {
             try {
               const result = await addChannel(values).unwrap();
-              console.log("Ответ от сервера:", result);
-              dispatch(setCurrentChannel(result)); // Диспатч нового канала как текущего
+              dispatch(setCurrentChannel(result));
               props.onHide();
             } catch (error) {
-              console.error("Ошибка", error);
-              setFieldError("name", "Ошибка сервера");
+              console.error(error);
             } finally {
               setSubmitting(false);
             }
@@ -112,7 +69,7 @@ const ModalWindow = (props) => {
                   }`}
                 />
                 <label className="visually-hidden" htmlFor="name">
-                  Имя канала
+                  {t("channels.name")}
                 </label>
                 {touched.name && errors.name && (
                   <div className="invalid-feedback">{errors.name}</div>
@@ -124,9 +81,9 @@ const ModalWindow = (props) => {
                   className="me-2"
                   onClick={props.onHide}
                 >
-                  Отменить
+                  {t("buttons.cancel")}
                 </Button>
-                <Button type="submit">Отправить</Button>
+                <Button type="submit">{t("buttons.submit")}</Button>
               </Container>
             </Form>
           )}

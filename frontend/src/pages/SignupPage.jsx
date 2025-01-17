@@ -18,7 +18,7 @@ const SignupPage = () => {
                   <Image
                     src="/src/assets/avatar_signup.jpg"
                     roundedCircle
-                    alt= {t('signupPage.imgAlt')}
+                    alt= {t('signupPage.title')}
                     fluid
                   />
                 </Col>

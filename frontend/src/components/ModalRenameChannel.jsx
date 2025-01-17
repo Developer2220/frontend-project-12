@@ -7,45 +7,35 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-
 import socket from "../socket";
-
-
+import { useTranslation } from "react-i18next";
 
 const ModalRenameChannel = (props) => {
+const {t} = useTranslation();
   const [updateChannel] = useUpdateChannelMutation();
   const { data: channels, error, isLoading } = useGetChannelsQuery();
 
   const { channelId, ...modalProps} = props;
 
-// console.log('props.channelId', props.channelId)
-
   const dispatch = useDispatch();
   
-// const socket = io()
-
-  //проверка на уникальность значения в поле
   const checkChannelnameUnique = (channels, name) => {
     if (!channels) return true;
     const channelName = channels.map((channel)=> channel.name)
-    // console.log(channelName)
       return !channelName.includes(name); 
     };
 
-    console.log('channels in ModalRenameChannel', channels)
-
   const ModalSchema = Yup.object().shape({
     name: Yup.string()
-      .min(3, "От 3 до 20 символов")
-      .max(20, "От 3 до 20 символов")
-      .required("Обязательное поле")
+    .min(3, t('errors.range'))
+    .max(20, t('errors.range'))
+    .required(t('errors.required'))
 
       .test(
-        "unique", // Название теста
-        "Должно быть уникальным", // Сообщение об ошибке
+        "unique",
+        t('errors.unique'), 
         async (value) => {
-          console.log('value', value)
-          if (!value || isLoading || error) return false; // Не проверять пустое значение
+          if (!value || isLoading || error) return false; 
           return await checkChannelnameUnique(channels, value);
       
         }
@@ -54,20 +44,18 @@ const ModalRenameChannel = (props) => {
   });
 
   useEffect(() => {
-    // Слушаем событие обновления канала от сервера
     socket.on('renameChannel', (updatedChannel) => {
       dispatch(
         channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
           const index = draft.findIndex((channel) => channel.id === updatedChannel.id);
           if (index !== -1) {
-            draft[index].name = updatedChannel.name; // Обновляем имя канала
+            draft[index].name = updatedChannel.name; 
           }
         })
       );
     });
 
     return () => {
-      // Очистка прослушивания события при размонтировании компонента
       socket.off('renameChannel');
     };
   }, [dispatch]);
@@ -75,10 +63,8 @@ const ModalRenameChannel = (props) => {
 
   return (
     <Modal {...modalProps} centered>
-    {/* <Modal {...modalProps} centered> */}
-
       <Modal.Header closeButton>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t('channels.rename')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Formik
@@ -88,18 +74,12 @@ const ModalRenameChannel = (props) => {
           validationSchema={ModalSchema}
           validateOnChange={false}
           validateOnBlur={false}
-          onSubmit={async (values, { setSubmitting, setFieldError }) => {
-            console.log('values', values);
+          onSubmit={async (values, { setSubmitting }) => {
             try {
-              
-            //   const result = await updateChannel({id: props.channelId, newChannelName: values.name}).unwrap();
-            const result = await updateChannel({id: channelId, newChannelName: values.name}).unwrap();
-              console.log("Ответ от сервера после обновления:", result);
+             await updateChannel({id: channelId, newChannelName: values.name}).unwrap();
             props.onHide();
-            // onHide()
             } catch (error) {
-              console.error("Ошибка", error);
-              setFieldError("name", "Ошибка сервера");
+              console.error(error);
             } finally {
               setSubmitting(false);
             }
@@ -116,7 +96,7 @@ const ModalRenameChannel = (props) => {
                   }`}
                 />
                 <label className="visually-hidden" htmlFor="name">
-                  Имя канала
+                  {t('channels.title')}
                 </label>
                 {touched.name && errors.name && (
                   <div className="invalid-feedback">{errors.name}</div>
@@ -127,12 +107,10 @@ const ModalRenameChannel = (props) => {
                   variant="secondary"
                   className="me-2"
                   onClick={props.onHide}
-                // onClick={onHide}
-
                 >
-                  Отменить
+                  {t('buttons.cancel')}
                 </Button>
-                <Button type="submit">Отправить</Button>
+                <Button type="submit">{t('buttons.submit')}</Button>
               </Container>
             </Form>
           )}

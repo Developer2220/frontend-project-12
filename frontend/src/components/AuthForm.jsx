@@ -19,7 +19,6 @@ const Authform = () => {
         console.log(values);
         try {
           const result = await authenticate(values);
-          console.log("Ответ от сервера:", result);
           if (result) {
             localStorage.setItem("token", result.token);
             logIn(token, result.username);
@@ -27,7 +26,7 @@ const Authform = () => {
             throw new Error("Invalid credentials");
           }
         } catch (error) {
-          console.error("Ошибка", error);
+          console.error(error);
           setFieldError("username", "Неверные имя пользователя или пароль");
           setFieldError("password", "Неверные имя пользователя или пароль");
         } finally {

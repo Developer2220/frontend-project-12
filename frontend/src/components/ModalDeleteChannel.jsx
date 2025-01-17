@@ -7,8 +7,10 @@ import { useDeleteChannelMutation, channelsApi } from "../API/channels";
 import { useDeleteMessagesByChannelIdMutation, messagesApi } from "../API/messages";
 import { useDispatch } from "react-redux";
 import socket from "../socket";
+import { useTranslation } from "react-i18next";
 
 const ModalDeleteChannel = (props) => {
+    const {t} = useTranslation();
     const [deleteChannel] = useDeleteChannelMutation();
     const [deleteMessagesByChannelId] = useDeleteMessagesByChannelIdMutation();
     const dispatch = useDispatch();
@@ -18,17 +20,15 @@ const ModalDeleteChannel = (props) => {
   const handleDeleteChannel = async (channelId) => {
     try {
       await deleteChannel(channelId).unwrap();
-      // После успешного удаления поста, удаляем все связанные сообщения
       await deleteMessagesByChannelId(channelId);
       props.onHide();
     } catch (error) {
-      console.error('Ошибка при удалении канала:', error);
+      console.error(error);
     }
   };
 
 
   useEffect(() => {
-    // Слушаем событие обновления канала от сервера
     socket.on('removeChannel', (channelId) => {
         dispatch(
             channelsApi.util.updateQueryData("getChannels", undefined, (draft) => {
@@ -42,7 +42,6 @@ const ModalDeleteChannel = (props) => {
     });
 
     return () => {
-      // Очистка прослушивания события при размонтировании компонента
       socket.off('removeChannel');
     };
   }, [dispatch]);
@@ -51,15 +50,15 @@ const ModalDeleteChannel = (props) => {
   return (
     <Modal {...modalProps} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Удалить канал</Modal.Title>
+        <Modal.Title>{t('channels.delete')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Container className="d-flex justify-content-end">
           <Button variant="secondary" className="me-2" onClick={props.onHide}>
-            Отменить
+            {t('buttons.cancel')}
           </Button>
           <Button 
-          variant="danger" onClick={()=>handleDeleteChannel(channelId)}>Удалить</Button>
+          variant="danger" onClick={()=>handleDeleteChannel(channelId)}>{t('buttons.delete')}</Button>
           </Container>
       </Modal.Body>
     </Modal>
