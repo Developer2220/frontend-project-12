@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Form, InputGroup, Button } from "react-bootstrap";
 import { useAddMessageMutation } from "../API/messages";
 import { useSelector } from "react-redux";
-import { selectCurrentChannel } from "../store/slices/dataSlices";
+import { selectCurrentChannel } from "../store/slices/channelsSlices";
 import useAuthContext from "../auth/authProvider";
 import { useTranslation } from "react-i18next";
 

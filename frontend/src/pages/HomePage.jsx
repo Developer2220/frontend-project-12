@@ -4,7 +4,7 @@ import Channels from "../components/Channels";
 import Messages from "../components/Messages";
 import MessageInput from "../components/MessageInput";
 import { useSelector } from "react-redux";
-import { selectCurrentChannel } from "../store/slices/dataSlices";
+import { selectCurrentChannel } from "../store/slices/channelsSlices";
 import ModalAddChannel from "../components/ModalAddChannel";
 import { useGetMessagesQuery } from "../API/messages";
 import { useTranslation } from "react-i18next";
@@ -20,6 +20,7 @@ const {t} = useTranslation()
 
   const currentChannel = useSelector(selectCurrentChannel);
   console.log("currentChannel in HomePage", currentChannel.id);
+
 
   const declOfNum = (number, titles) => {
     let cases = [2, 0, 1, 1, 1, 2];

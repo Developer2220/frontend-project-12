@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrentChannel } from "../store/slices/dataSlices";
-import { selectCurrentChannel } from "../store/slices/dataSlices";
+import { setCurrentChannel } from "../store/slices/channelsSlices";
+import { selectCurrentChannel } from "../store/slices/channelsSlices";
 import { useState, useEffect } from "react";
 import { useGetChannelsQuery, channelsApi } from "../API/channels";
 import socket from "../socket";
@@ -15,6 +15,7 @@ import filterWords from '../initLeoProfanity'
 const Channels = () => {
   const { t } = useTranslation();
   const { data: initialChannels } = useGetChannelsQuery();
+  console.log('initialChannels', initialChannels)
   const [channels, setChannels] = useState([]);
   const [socketInitial, setSocket] = useState(null);
   const [modalShow, setModalShow] = useState(false);
@@ -44,24 +45,17 @@ const Channels = () => {
   }, [initialChannels]);
 
   useEffect(() => {
-    if (channels && channels.length > 0) {
+    if (channels && channels.length > 0 && !currentChannel) {
       const defaultChannel = channels[0];
       dispatch(setCurrentChannel(defaultChannel));
     }
-  }, [channels, dispatch]);
+  }, [channels, dispatch, currentChannel]);
+
+// // Устанавливаем начальный канал только при первой загрузке
 // useEffect(() => {
-//     if (channels && channels.length > 0) {
-//       if (!currentChannel) {
-//         const defaultChannel = channels[0];
-//         dispatch(setCurrentChannel(defaultChannel));
-//       } else {
-//         const updatedChannel = channels.find(
-//           (channel) => channel.id === currentChannel.id
-//         );
-//         if (updatedChannel) {
-//           dispatch(setCurrentChannel(updatedChannel));
-//         }
-//       }
+//     if (channels?.length > 0 && !currentChannel) {
+//       const defaultChannel = channels.find(channel => channel.name === 'general') || channels[0];
+//       dispatch(setCurrentChannel(defaultChannel));
 //     }
 //   }, [channels, currentChannel, dispatch]);
 

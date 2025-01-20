@@ -78,12 +78,11 @@ const {t} = useTranslation();
           onSubmit={async (values, { setSubmitting }) => {
             try {
              const result = await updateChannel({id: channelId, newChannelName: values.name}).unwrap();
-            props.onHide();
+             props.onHide();
             toast.success(t('toast.renameChannel'), { autoClose: 2000 })
             } catch (error) {
               console.error(error);
               toast.error(t('toast.errorNetwork'), { autoClose: 2000 })
-
             } finally {
               setSubmitting(false);
             }

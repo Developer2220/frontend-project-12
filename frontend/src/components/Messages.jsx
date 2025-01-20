@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useGetMessagesQuery, messagesApi } from "../API/messages";
-import { selectCurrentChannel } from "../store/slices/dataSlices";
+import { selectCurrentChannel } from "../store/slices/channelsSlices";
 import { useRef, useEffect } from "react";
 import socket from "../socket";
 import filterWords from '../initLeoProfanity'

@@ -5,7 +5,7 @@ import { useAddChannelMutation } from "../API/channels";
 import { useGetChannelsQuery } from "../API/channels";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { setCurrentChannel } from "../store/slices/dataSlices";
+import { setCurrentChannel } from "../store/slices/channelsSlices";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { toast } from 'react-toastify';
