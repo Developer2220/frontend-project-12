@@ -3,6 +3,7 @@ import { useGetMessagesQuery, messagesApi } from "../API/messages";
 import { selectCurrentChannel } from "../store/slices/dataSlices";
 import { useRef, useEffect } from "react";
 import socket from "../socket";
+import filterWords from '../initLeoProfanity'
 
 const Messages = () => {
   const currentChannel = useSelector(selectCurrentChannel); 
@@ -44,7 +45,8 @@ const Messages = () => {
       {filteredMessages.map((message) => (
         <div key={message.id} className="text-break mb-2">
           <b>{message.username}: </b>
-          {message.body}
+          {filterWords.clean(message.body)}
+          {/* {message.body} */}
         </div>
       ))}
       <div ref={messagesEndRef} />

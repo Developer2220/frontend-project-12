@@ -8,6 +8,7 @@ import { selectCurrentChannel } from "../store/slices/dataSlices";
 import ModalAddChannel from "../components/ModalAddChannel";
 import { useGetMessagesQuery } from "../API/messages";
 import { useTranslation } from "react-i18next";
+import filterWords from '../initLeoProfanity/'
 
 const HomePage = () => {
 const {t} = useTranslation()
@@ -82,7 +83,7 @@ const {t} = useTranslation()
               <div className="bg-light mb-4 p-3 shadow-sm small">
                 <p className="m-0">
                   {
-                    <b># {currentChannel.name}</b>
+                    <b># {filterWords.clean(currentChannel.name)}</b>
                   }
                 </p>
                 <span className="text-muted">{showNumberMessages}</span>

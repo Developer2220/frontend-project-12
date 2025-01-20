@@ -10,6 +10,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import ModalDeleteChannel from "./ModalDeleteChannel";
 import ModalRenameChannel from "./ModalRenameChannel";
 import { useTranslation } from "react-i18next";
+import filterWords from '../initLeoProfanity'
 
 const Channels = () => {
   const { t } = useTranslation();
@@ -101,7 +102,7 @@ const Channels = () => {
               onClick={() => handleСlick(channel)}
             >
               <span className="me-1">#</span>
-              {channel.name}
+              {filterWords.clean(channel.name)}
             </button>
           ) : (
             <Dropdown as={ButtonGroup} className="d-flex">
@@ -113,7 +114,7 @@ const Channels = () => {
                 onClick={() => handleСlick(channel)}
               >
                 <span className="me-1">#</span>
-                {channel.name}
+                {filterWords.clean(channel.name)}
               </Button>
               <Dropdown.Toggle
                 split
