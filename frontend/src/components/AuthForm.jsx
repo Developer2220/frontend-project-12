@@ -2,13 +2,13 @@ import { Formik, Form, Field } from "formik";
 // import useAuth from "../hooks/useAuth";
 import useAuthContext from "../auth/authProvider";
 import { useTranslation } from "react-i18next";
-import { useLoginMutation } from "../API/auth";
+import { useAuthenticateMutation } from "../API/auth";
 import { toast } from "react-toastify";
 
 const Authform = () => {
   const { t } = useTranslation();
   const { token, logIn } = useAuthContext();
-  const [authenticate] = useLoginMutation();
+  const [authenticate] = useAuthenticateMutation();
 
   return (
     <Formik
@@ -66,7 +66,7 @@ const Authform = () => {
                 touched.password && errors.password ? "is-invalid" : ""
               }`}
               required
-              autocomplete="current-password"
+              autoComplete="current-password"
               type="password"
             />
             <label className="form-label" htmlFor="password">
