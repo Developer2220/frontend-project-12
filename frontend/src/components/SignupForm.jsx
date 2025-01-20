@@ -1,28 +1,27 @@
 import { Formik, Form, Field } from "formik";
 import useAuthContext from "../auth/authProvider";
-import useCreateNewUser from "../hooks/useCreateNewUser";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
+import { useCreateMutation } from "../API/auth";
 
 const SignupForm = () => {
   const { token, logIn } = useAuthContext();
-  // console.log('useAuthContext', useAuthContext())
- const {t} = useTranslation();
-  const { create } = useCreateNewUser();
+  const { t } = useTranslation();
+  const [create] = useCreateMutation();
 
   const ModalSchema = Yup.object().shape({
     username: Yup.string()
-      .min(3, t('errors.range'))
-      .max(20, t('errors.range'))
-      .required(t('errors.required')),
+      .min(3, t("errors.range"))
+      .max(20, t("errors.range"))
+      .required(t("errors.required")),
     password: Yup.string()
-      .min(6, t('errors.min'))
-      .required(t('errors.required')),
+      .min(6, t("errors.min"))
+      .required(t("errors.required")),
 
     confirmPassword: Yup.string()
-      .min(6, t('errors.min'))
-      .required(t('errors.required'))
-      .oneOf([Yup.ref("password"), null], t('errors.passwordMustMatch')),
+      .min(6, t("errors.min"))
+      .required(t("errors.required"))
+      .oneOf([Yup.ref("password"), null], t("errors.passwordMustMatch")),
   });
 
   return (
@@ -44,25 +43,20 @@ const SignupForm = () => {
         console.log("formData", formData);
 
         try {
-          const result = await create(formData);
-          console.log("Ответ от сервера:", result);
+          const { data, error } = await create(formData);
+          console.log("Ответ от сервера:", data);
 
-          if (!result.success) {
-            if (result.status === 409) {
+          if (!data) {
+            if (error.status === 409) {
               setFieldError("username", " ");
               setFieldError("password", " ");
-              setFieldError(
-                "confirmPassword",
-                t('errors.userExists')
-              );
+              setFieldError("confirmPassword", t("errors.userExists"));
             }
             return;
           }
-          localStorage.setItem("token", result.data.token);
-          // logIn(token, result.username);
-          logIn(token, result.data.username);
+          localStorage.setItem("token", data.token);
+          logIn(token, data.username);
         } catch (error) {
-          // console.log('error', error)
           console.error(error);
         } finally {
           setSubmitting(false);
@@ -71,19 +65,19 @@ const SignupForm = () => {
     >
       {({ errors, touched }) => (
         <Form className="col-12 col-md-6 mt-3 mt-md-0">
-          <h1 className="text-center mb-4">{ t('signupPage.title')}</h1>
+          <h1 className="text-center mb-4">{t("signupPage.title")}</h1>
           <div className="form-floating mb-3">
             <Field
               id="username"
               name="username"
-              placeholder={t('signupPage.username')}
+              placeholder={t("signupPage.username")}
               className={`form-control ${
                 touched.username && errors.username ? "is-invalid" : ""
               }`}
               required
             />
             <label className="form-label" htmlFor="username">
-              {t('signupPage.username')}
+              {t("signupPage.username")}
             </label>
             {touched.username && errors.username && (
               <div className="invalid-tooltip">{errors.username}</div>
@@ -102,7 +96,7 @@ const SignupForm = () => {
               type="password"
             />
             <label className="form-label" htmlFor="password">
-            {t('signupPage.password')}
+              {t("signupPage.password")}
             </label>
             {touched.password && errors.password && (
               <div className="invalid-tooltip">{errors.password}</div>
@@ -112,7 +106,7 @@ const SignupForm = () => {
             <Field
               id="confirmPassword"
               name="confirmPassword"
-              placeholder={t('signupPage.password')}
+              placeholder={t("signupPage.password")}
               className={`form-control ${
                 touched.confirmPassword && errors.confirmPassword
                   ? "is-invalid"
@@ -123,14 +117,14 @@ const SignupForm = () => {
               type="password"
             />
             <label className="form-label" htmlFor="confirmPassword">
-            {t('signupPage.confirmPassword')}
+              {t("signupPage.confirmPassword")}
             </label>
             {touched.confirmPassword && errors.confirmPassword && (
               <div className="invalid-tooltip">{errors.confirmPassword}</div>
             )}
           </div>
           <button type="submit" className="w-100 mb-3 btn btn-outline-primary">
-          {t('signupPage.button')}
+            {t("signupPage.button")}
           </button>
         </Form>
       )}

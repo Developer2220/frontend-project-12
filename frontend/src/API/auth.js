@@ -21,6 +21,14 @@ export const authApi = createApi({
           body: user,
         }),
     }),
+    // endpoints: (builder) => ({
+        create: builder.mutation({
+            query: (newUser) => ({
+              url: "signup",
+              method: "POST",
+              body: newUser,
+            }),
+        }),
     // deleteChannel: builder.mutation({
     //     query: (id) =>({
     //         url: `channels/${id}`,
@@ -35,6 +43,7 @@ export const authApi = createApi({
     //     }),
     // }),
   }),
+
 });
 
-export const { useAuthenticateMutation } = authApi;
+export const { useAuthenticateMutation, useCreateMutation } = authApi;
