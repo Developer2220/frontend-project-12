@@ -14,10 +14,7 @@ import filterWords from '../initLeoProfanity'
 
 const Channels = () => {
   const { t } = useTranslation();
-  const { data: initialChannels } = useGetChannelsQuery();
-  console.log('initialChannels', initialChannels)
-  const [channels, setChannels] = useState([]);
-  const [socketInitial, setSocket] = useState(null);
+const { data: channels = [] } = useGetChannelsQuery();
   const [modalShow, setModalShow] = useState(false);
   const [modalShowRenameChannel, setModalShowRenameChannel] = useState(false);
   const [selectedChannelId, setSelectedChannelId] = useState(null);
@@ -37,12 +34,6 @@ const Channels = () => {
   const currentChannel = useSelector(selectCurrentChannel);
   console.log("currentChannel in Channels", currentChannel);
 
-  //загрузка каналов
-  useEffect(() => {
-    if (initialChannels) {
-      setChannels(initialChannels);
-    }
-  }, [initialChannels]);
 
   useEffect(() => {
     if (channels && channels.length > 0 && !currentChannel) {
@@ -51,23 +42,21 @@ const Channels = () => {
     }
   }, [channels, dispatch, currentChannel]);
 
-// // Устанавливаем начальный канал только при первой загрузке
-// useEffect(() => {
-//     if (channels?.length > 0 && !currentChannel) {
-//       const defaultChannel = channels.find(channel => channel.name === 'general') || channels[0];
-//       dispatch(setCurrentChannel(defaultChannel));
-//     }
-//   }, [channels, currentChannel, dispatch]);
 
 
   const handleСlick = (channel) => {
     dispatch(setCurrentChannel(channel));
   };
 
+ 
+
   useEffect(() => {
-    setSocket(socket);
+    // setSocket(socket);
+    socket.on("connect", () => {
+        console.log("WebSocket in Channels connected:", socket.id);
+      });
     socket.on("newChannel", (payload) => {
-      setChannels((prevChannels) => [...prevChannels, payload]);
+    //   setChannels((prevChannels) => [...prevChannels, payload]);
       dispatch(
         channelsApi.util.updateQueryData("getChannels", undefined, (draft) => {
           draft.push(payload);
@@ -76,9 +65,15 @@ const Channels = () => {
     });
 
     return () => {
-      socket.disconnect();
-    };
+        socket.off("newChannel");
+      };
   }, []);
+
+  console.log("Socket connected?", socket.connected);
+  socket.on("connect_error", (err) => {
+    console.error("Connection error:", err);
+  });
+  
 
   return (
     <ul

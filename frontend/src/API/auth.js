@@ -21,7 +21,6 @@ export const authApi = createApi({
           body: user,
         }),
     }),
-    // endpoints: (builder) => ({
         create: builder.mutation({
             query: (newUser) => ({
               url: "signup",
@@ -29,19 +28,6 @@ export const authApi = createApi({
               body: newUser,
             }),
         }),
-    // deleteChannel: builder.mutation({
-    //     query: (id) =>({
-    //         url: `channels/${id}`,
-    //         method: "DELETE",
-    //     }),
-    // }),
-    // updateChannel: builder.mutation({
-    //     query: ({id, newChannelName}) =>({
-    //         url: `channels/${id}`,
-    //         method: "PATCH",
-    //         body: {name: newChannelName},
-    //     }),
-    // }),
   }),
 
 });

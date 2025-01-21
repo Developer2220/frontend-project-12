@@ -15,10 +15,12 @@ export const channelsApi = createApi({
       
         return headers;
       },
+      tagTypes: ['Channel'],
 }),
   endpoints: (builder) => ({
     getChannels: builder.query({
       query: () => "channels",
+      providesTags: ['Channel'],
     }),
     addChannel: builder.mutation({
         query: (newChannel) => ({

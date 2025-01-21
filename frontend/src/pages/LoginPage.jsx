@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 
 const LoginPage = () => {
     const {t} = useTranslation();
+    
   return (
     <div className="d-flex flex-column h-100">
       <NavBar />
