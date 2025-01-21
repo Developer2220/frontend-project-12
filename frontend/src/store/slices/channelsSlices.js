@@ -24,6 +24,7 @@ const channelsSlices = createSlice({
 
     setCurrentChannel: (state, action)=> {
         state.currentChannel = action.payload;
+        console.log('state.currentChannel', state.currentChannel)
     }
   },
 });
