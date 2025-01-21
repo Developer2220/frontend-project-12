@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import NavBar from "../components/NavBar";
 import Channels from "../components/Channels";
 import Messages from "../components/Messages";
@@ -8,10 +9,10 @@ import { selectCurrentChannel } from "../store/slices/channelsSlices";
 import ModalAddChannel from "../components/ModalAddChannel";
 import { useGetMessagesQuery } from "../API/messages";
 import { useTranslation } from "react-i18next";
-import filterWords from '../initLeoProfanity/'
+import filterWords from "../initLeoProfanity/";
 
 const HomePage = () => {
-const {t} = useTranslation()
+  const { t } = useTranslation();
 
   const { data: messages, error, isLoading } = useGetMessagesQuery();
   if (!isLoading && messages) {
@@ -20,7 +21,6 @@ const {t} = useTranslation()
 
   const currentChannel = useSelector(selectCurrentChannel);
   console.log("currentChannel in HomePage", currentChannel.id);
-
 
   const declOfNum = (number, titles) => {
     let cases = [2, 0, 1, 1, 1, 2];
@@ -42,27 +42,30 @@ const {t} = useTranslation()
   const showNumberMessages =
     filteredMessages.length >= 0
       ? declOfNum(filteredMessages.length, [
-          t('messages.one'),
-          t('messages.two'), 
-          t('messages.five')
+          t("messages.one"),
+          t("messages.two"),
+          t("messages.five"),
         ])
       : t("messages.loading");
-
 
   const [modalShow, setModalShow] = useState(false);
 
   return (
     <div className="d-flex flex-column h-100">
       <NavBar showLogout={true} />
-      <div className="container h-100 my-4 overflow-hidden rounded shadow">
-        <div className="row h-100 bg-white flex-md-row">
-          <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
+      <Container className="h-100 my-4 overflow-hidden rounded shadow">
+        <Row className="h-100 bg-white">
+          <Col
+            xs={4}
+            md={2}
+            className="border-end bg-light px-0 d-flex flex-column"
+          >
             <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-              <b>{t('channels.title')}</b>
-              <button
+              <b>{t("channels.title")}</b>
+              <Button
                 onClick={() => setModalShow(true)}
-                type="button"
-                className="p-0 text-primary btn btn-group-vertical"
+                variant="link"
+                className="p-0 text-primary"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -75,26 +78,24 @@ const {t} = useTranslation()
                   <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"></path>
                 </svg>
                 <span className="visually-hidden">+</span>
-              </button>
+              </Button>
             </div>
             <Channels />
-          </div>
-          <div className="col p-0 h-100">
+          </Col>
+          <Col className="p-0 h-100">
             <div className="d-flex flex-column h-100">
               <div className="bg-light mb-4 p-3 shadow-sm small">
                 <p className="m-0">
-                  {
-                    <b># {filterWords.clean(currentChannel.name)}</b>
-                  }
+                  {<b># {filterWords.clean(currentChannel.name)}</b>}
                 </p>
                 <span className="text-muted">{showNumberMessages}</span>
               </div>
               <Messages />
               <MessageInput />
             </div>
-          </div>
-        </div>
-      </div>
+          </Col>
+        </Row>
+      </Container>
 
       <ModalAddChannel show={modalShow} onHide={() => setModalShow(false)} />
     </div>

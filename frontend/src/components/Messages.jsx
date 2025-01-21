@@ -46,7 +46,6 @@ const Messages = () => {
         <div key={message.id} className="text-break mb-2">
           <b>{message.username}: </b>
           {filterWords.clean(message.body)}
-          {/* {message.body} */}
         </div>
       ))}
       <div ref={messagesEndRef} />
