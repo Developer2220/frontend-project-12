@@ -64,6 +64,9 @@ export default {
             delete: 'Удалить',
             rename: 'Переименовать'
           },
+          dropdown: {
+            toggle: 'Управление каналом',
+          },
           toast: {
             addChannel: 'Канал создан',
             deleteChannel: 'Канал удалён',

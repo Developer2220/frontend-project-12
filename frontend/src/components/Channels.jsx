@@ -109,10 +109,12 @@ const { data: channels = [] } = useGetChannelsQuery();
                 split
                 variant=""
                 className={`${
-                  currentChannel.id === channel.id ? "btn-secondary" : ""
+                    currentChannel.id === channel.id ? "btn-secondary" : ""
                 }`}
                 id="dropdown-split-basic"
-              />
+              >
+                <span className="visually-hidden">{t('dropdown.toggle')}</span>
+                </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item onClick={() => handleOpenModal(channel.id)}>
                   {t("buttons.delete")}
