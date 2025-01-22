@@ -12,7 +12,6 @@ const NotFoundPage = () => {
         <Image
           alt={t("notFoundPage.title")}
           className="img-fluid h-25"
-          // src="/src/assets/Search.svg"
           src="/public/Search.svg"
         />
         <h1 className="h4 text-muted mt-4">{t("notFoundPage.title")}</h1>

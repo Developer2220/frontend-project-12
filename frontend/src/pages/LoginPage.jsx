@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Image } from "react-bootstrap";
 import NavBar from "../components/NavBar";
 import Authform from "../components/AuthForm";
 import { useTranslation } from "react-i18next";
+import avatar from '../assets/avatar.jpg'
 
 const LoginPage = () => {
     const {t} = useTranslation();
@@ -17,8 +18,7 @@ const LoginPage = () => {
               <Card.Body className="row p-5">
                 <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
                   <Image
-                    // src="/src/assets/avatar.jpg"
-                    src="/public/avatar.jpg"
+                    src={avatar}
 
                     roundedCircle
                     alt={t('loginPage.imgAlt')}
