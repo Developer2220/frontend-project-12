@@ -17,7 +17,9 @@ const LoginPage = () => {
               <Card.Body className="row p-5">
                 <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
                   <Image
-                    src="/src/assets/avatar.jpg"
+                    // src="/src/assets/avatar.jpg"
+                    src="/public/avatar.jpg"
+
                     roundedCircle
                     alt={t('loginPage.imgAlt')}
                     fluid
