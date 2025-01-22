@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Container, Image } from "react-bootstrap";
 import NavBar from "../components/NavBar";
-import search from '../assets/avatar.jpg'
+import search from '../assets/search.svg'
 
 const NotFoundPage = () => {
   const { t } = useTranslation();

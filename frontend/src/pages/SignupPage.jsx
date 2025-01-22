@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, Image } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import NavBar from "../components/NavBar";
 import SignupForm from "../components/SignupForm";
-import avatarSignup from '../assets/avatarSignup'
+import avatarSignup from '../assets/avatarSignup.jpg'
 
 
 const SignupPage = () => {
@@ -19,7 +19,6 @@ const SignupPage = () => {
                 <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
                   <Image
                     src={avatarSignup}
-                    
                     roundedCircle
                     alt= {t('signupPage.title')}
                     fluid
