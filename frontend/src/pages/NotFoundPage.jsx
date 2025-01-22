@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Container, Image } from "react-bootstrap";
 import NavBar from "../components/NavBar";
+import search from '../assets/avatar.jpg'
 
 const NotFoundPage = () => {
   const { t } = useTranslation();
@@ -12,7 +13,7 @@ const NotFoundPage = () => {
         <Image
           alt={t("notFoundPage.title")}
           className="img-fluid h-25"
-          src="/public/Search.svg"
+          src={search}
         />
         <h1 className="h4 text-muted mt-4">{t("notFoundPage.title")}</h1>
         <p className="text-muted">
