@@ -1,15 +1,11 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Container from "react-bootstrap/Container";
-
-import { useEffect } from "react";
-import { useDeleteChannelMutation, channelsApi } from "../API/channels"; 
+import { useDeleteChannelMutation } from "../API/channels"; 
 import { useDeleteMessagesByChannelIdMutation, messagesApi } from "../API/messages";
 import { useDispatch, useSelector } from "react-redux";
-import socket from "../socket";
 import { useTranslation } from "react-i18next";
 import { toast } from 'react-toastify';
-
 import { setCurrentChannel } from "../store/slices/channelsSlices";
 import { selectCurrentChannel } from "../store/slices/channelsSlices";
 
@@ -37,25 +33,6 @@ const ModalDeleteChannel = (props) => {
       console.error(error);
     }
   };
-
-
-  useEffect(() => {
-    socket.on('removeChannel', (channelId) => {
-        dispatch(
-            channelsApi.util.updateQueryData("getChannels", undefined, (draft) => {
-              return draft.filter((channel) => channel.id !== channelId.id);
-            })
-          );
-    
-          dispatch(messagesApi.util.updateQueryData('getMessages', undefined, (draft) => {
-            return draft.filter((message) => message.channelId !== channelId.id);
-          }));
-    });
-
-    return () => {
-      socket.off('removeChannel');
-    };
-  }, [dispatch]);
 
 
   return (

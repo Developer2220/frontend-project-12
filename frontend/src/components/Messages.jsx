@@ -1,43 +1,23 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useGetMessagesQuery, messagesApi } from "../API/messages";
+import { useGetMessagesQuery } from "../API/messages";
 import { selectCurrentChannel } from "../store/slices/channelsSlices";
 import { useRef, useEffect } from "react";
-import socket from "../socket";
 import filterWords from '../initLeoProfanity'
 
 const Messages = () => {
   const currentChannel = useSelector(selectCurrentChannel); 
-  const { data: allMessages } = useGetMessagesQuery(); 
+  const { data: messages } = useGetMessagesQuery(); 
   const messagesEndRef = useRef(null);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    socket.on("connect", () => {
-      console.log("WebSocket connected:", socket.id);
-    });
-
-    socket.on("newMessage", (newMessage) => {
-      dispatch(
-        messagesApi.util.updateQueryData("getMessages", undefined, (draft) => {
-          draft.push(newMessage);
-        })
-      );
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, [dispatch]);
 
   useEffect(() => {
     if (messagesEndRef.current) {
     messagesEndRef.current.scrollIntoView({ behavior: "auto" });
 
     }
-}, [allMessages, currentChannel]);
+}, [messages, currentChannel]);
 
-  const filteredMessages = allMessages
-    ? allMessages.filter((message) => message.channelId === currentChannel.id)
+  const filteredMessages = messages
+    ? messages.filter((message) => message.channelId === currentChannel.id)
     : [];
 
   return (

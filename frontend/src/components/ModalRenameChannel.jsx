@@ -2,12 +2,10 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Container from "react-bootstrap/Container";
 import { useUpdateChannelMutation } from "../API/channels";
-import { useGetChannelsQuery, channelsApi } from "../API/channels";
+import { useGetChannelsQuery} from "../API/channels";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import socket from "../socket";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
@@ -23,7 +21,6 @@ const ModalRenameChannel = (props) => {
 
   const dispatch = useDispatch();
 
-  //
   const currentChannel = useSelector(selectCurrentChannel);
 
   const checkChannelnameUnique = (channels, name) => {
@@ -44,25 +41,6 @@ const ModalRenameChannel = (props) => {
       }),
   });
 
-  useEffect(() => {
-    socket.on("renameChannel", (updatedChannel) => {
-      dispatch(
-        channelsApi.util.updateQueryData("getChannels", undefined, (draft) => {
-          const index = draft.findIndex(
-            (channel) => channel.id === updatedChannel.id
-          );
-          if (index !== -1) {
-            draft[index].name = updatedChannel.name;
-          }
-        })
-      );
-    });
-
-    return () => {
-      socket.off("renameChannel");
-    };
-  }, [dispatch]);
-
   return (
     <Modal {...modalProps} centered>
       <Modal.Header closeButton>
@@ -78,12 +56,11 @@ const ModalRenameChannel = (props) => {
           validateOnBlur={false}
           onSubmit={async (values, { setSubmitting }) => {
             try {
-              const result = await updateChannel({
+              await updateChannel({
                 id: channelId,
                 newChannelName: values.name,
               }).unwrap();
 
-              // Если переименовываем текущий канал, обновляем его в Redux
               if (currentChannel && currentChannel.id === channelId) {
                 dispatch(
                   setCurrentChannel({

@@ -2,8 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCurrentChannel } from "../store/slices/channelsSlices";
 import { selectCurrentChannel } from "../store/slices/channelsSlices";
 import { useState, useEffect } from "react";
-import { useGetChannelsQuery, channelsApi } from "../API/channels";
-import socket from "../socket";
+import { useGetChannelsQuery } from "../API/channels";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -18,6 +17,7 @@ const { data: channels = [] } = useGetChannelsQuery();
   const [modalShow, setModalShow] = useState(false);
   const [modalShowRenameChannel, setModalShowRenameChannel] = useState(false);
   const [selectedChannelId, setSelectedChannelId] = useState(null);
+//   const socket = useContext(SocketContext)
 
   const handleOpenModal = (channelId) => {
     setSelectedChannelId(channelId);
@@ -47,33 +47,6 @@ const { data: channels = [] } = useGetChannelsQuery();
   const handleСlick = (channel) => {
     dispatch(setCurrentChannel(channel));
   };
-
- 
-
-  useEffect(() => {
-    // setSocket(socket);
-    socket.on("connect", () => {
-        console.log("WebSocket in Channels connected:", socket.id);
-      });
-    socket.on("newChannel", (payload) => {
-    //   setChannels((prevChannels) => [...prevChannels, payload]);
-      dispatch(
-        channelsApi.util.updateQueryData("getChannels", undefined, (draft) => {
-          draft.push(payload);
-        })
-      );
-    });
-
-    return () => {
-        socket.off("newChannel");
-      };
-  }, []);
-
-  console.log("Socket connected?", socket.connected);
-  socket.on("connect_error", (err) => {
-    console.error("Connection error:", err);
-  });
-  
 
   return (
     <ul
