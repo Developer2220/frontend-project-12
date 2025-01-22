@@ -1,5 +1,6 @@
 /* eslint-disable functional/no-expression-statement */
-
+import { Provider } from "react-redux";
+import store from "./store/index.js";
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import App from './App.jsx';
@@ -19,9 +20,11 @@ const init = async () => {
     });
 
   return (
+    <Provider store={store}>
     <I18nextProvider i18n={i18n}>
       <App />
     </I18nextProvider>
+    </Provider>
   );
 };
 

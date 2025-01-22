@@ -12,6 +12,8 @@ import { useTranslation } from "react-i18next";
 import filterWords from "../initLeoProfanity/";
 
 const HomePage = () => {
+  console.log('Rollbar Token:', import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN);
+
   const { t } = useTranslation();
 
   const { data: messages, error, isLoading } = useGetMessagesQuery();
