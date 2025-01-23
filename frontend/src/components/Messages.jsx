@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useGetMessagesQuery } from "../API/messages";
 import { selectCurrentChannel } from "../store/slices/channelsSlices";
 import { useRef, useEffect } from "react";

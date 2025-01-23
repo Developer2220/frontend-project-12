@@ -1,27 +1,27 @@
 export default {
-    translation: 
+  translation:
         {
-        header: {
-            brand: "Hexlet Chat", 
-            logOut: "Выйти"
-        }, 
-        channels: {
-            title: "Каналы", 
-            name: "Имя канала", 
-            rename: "Переименовать канал",
-            delete: "Удалить канал",
-            add: "Добавить канал",
-            modalDeleteSubmit: "Уверены?"
-        },
-        messages: {
+          header: {
+            brand: 'Hexlet Chat',
+            logOut: 'Выйти',
+          },
+          channels: {
+            title: 'Каналы',
+            name: 'Имя канала',
+            rename: 'Переименовать канал',
+            delete: 'Удалить канал',
+            add: 'Добавить канал',
+            modalDeleteSubmit: 'Уверены?',
+          },
+          messages: {
             one: 'сообщение',
             two: 'сообщения',
             five: 'сообщений',
             loading: 'Загрузка сообщений',
             send: 'Отправить',
-            new: 'Новое сообщение', 
-            enter: 'Введите сообщение...', 
-          }, 
+            new: 'Новое сообщение',
+            enter: 'Введите сообщение...',
+          },
           loginPage: {
             imgAlt: 'Войти',
             footer: {
@@ -34,19 +34,19 @@ export default {
             password: 'Пароль',
             button: 'Войти',
           },
-        signupPage: {
+          signupPage: {
             title: 'Регистрация',
             username: 'Имя пользователя',
             password: 'Пароль',
             confirmPassword: 'Подтвердите пароль',
             button: 'Зарегистрироваться',
-        },
-        notFoundPage: {
-            title: "Страница не найдена",
-            nav: "Но вы можете перейти",
-            link: "на главную страницу",
-        },
-        errors: {
+          },
+          notFoundPage: {
+            title: 'Страница не найдена',
+            nav: 'Но вы можете перейти',
+            link: 'на главную страницу',
+          },
+          errors: {
             required: 'Обязательное поле',
             channelExists: 'Такой канал уже существует',
             range: 'От 3 до 20 символов',
@@ -56,13 +56,13 @@ export default {
             password: 'Неверные имя пользователя или пароль',
             passwordConfirm: 'Неверные имя пользователя или пароль',
             passwordMustMatch: 'Пароли должны совпадать',
-            unique: 'Должно быть уникальным'
+            unique: 'Должно быть уникальным',
           },
           buttons: {
             submit: 'Отправить',
             cancel: 'Отменить',
             delete: 'Удалить',
-            rename: 'Переименовать'
+            rename: 'Переименовать',
           },
           dropdown: {
             toggle: 'Управление каналом',
@@ -74,5 +74,5 @@ export default {
             errorNetwork: 'Ошибка соединения',
           },
 
-    }
+        },
 };

@@ -1,16 +1,14 @@
-import LeoProfanity from "leo-profanity"
-
+import LeoProfanity from 'leo-profanity';
 
 const addWords = () => {
-    LeoProfanity.list()
-    LeoProfanity.clearList()
-    LeoProfanity.add(LeoProfanity.getDictionary('en'))
-    LeoProfanity.add(LeoProfanity.getDictionary('fr'))
-    LeoProfanity.add(LeoProfanity.getDictionary('ru'))
-    LeoProfanity.list()
+  LeoProfanity.list();
+  LeoProfanity.clearList();
+  LeoProfanity.add(LeoProfanity.getDictionary('en'));
+  LeoProfanity.add(LeoProfanity.getDictionary('fr'));
+  LeoProfanity.add(LeoProfanity.getDictionary('ru'));
+  LeoProfanity.list();
 };
 
 addWords();
-
 
 export default LeoProfanity;

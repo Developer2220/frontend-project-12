@@ -34,10 +34,10 @@ export default defineConfig({
         changeOrigin: false,
         secure: false,
       },
-      cors:false,
+      cors: false,
       // Проксируем WebSocket соединения
       '/socket.io': {
-        // target: 'ws://localhost:5001',  
+        // target: 'ws://localhost:5001',
         target: 'ws://127.0.0.1:5001',
         ws: true,
         rewriteWsOrigin: true,
