@@ -5,7 +5,6 @@ import { useAuthenticateMutation } from "../API/auth";
 import { toast } from "react-toastify";
 
 
-
 const Authform = () => {
   const { t } = useTranslation();
   const { token, logIn } = useAuthContext();
@@ -18,22 +17,25 @@ const Authform = () => {
         password: "",
       }}
       onSubmit={async (values, { setSubmitting, setFieldError }) => {
-        console.log(values);
         try {
           const { data, error } = await authenticate(values);
           if (data) {
             localStorage.setItem("token", data.token);
             logIn(token, data.username);
           }
-          if (error.status === "FETCH_ERROR") {
-            toast.error(t("toast.errorNetwork"), { autoClose: 2000 });
-          }
-          if (error.status === 401) {
-            setFieldError("username", t("errors.password"));
-            setFieldError("password", t("errors.password"));
-          } else {
+          if (error) {
+            if (error.status === "FETCH_ERROR") {
+              toast.error(t("toast.errorNetwork"), { autoClose: 2000 });
+            }
+            if (error.status === 401) {
+              setFieldError("username", t("errors.password"));
+              setFieldError("password", t("errors.password"));
+            }
+            else {
             throw new Error();
           }
+          }
+         
         } catch (error) {
           console.error(error);
         } finally {

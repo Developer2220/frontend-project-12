@@ -17,7 +17,6 @@ const { data: channels = [] } = useGetChannelsQuery();
   const [modalShow, setModalShow] = useState(false);
   const [modalShowRenameChannel, setModalShowRenameChannel] = useState(false);
   const [selectedChannelId, setSelectedChannelId] = useState(null);
-//   const socket = useContext(SocketContext)
 
   const handleOpenModal = (channelId) => {
     setSelectedChannelId(channelId);
@@ -30,10 +29,8 @@ const { data: channels = [] } = useGetChannelsQuery();
   };
 
   const dispatch = useDispatch();
-
+  
   const currentChannel = useSelector(selectCurrentChannel);
-  console.log("currentChannel in Channels", currentChannel);
-
 
   useEffect(() => {
     if (channels && channels.length > 0 && !currentChannel) {
@@ -41,8 +38,6 @@ const { data: channels = [] } = useGetChannelsQuery();
       dispatch(setCurrentChannel(defaultChannel));
     }
   }, [channels, dispatch, currentChannel]);
-
-
 
   const handleСlick = (channel) => {
     dispatch(setCurrentChannel(channel));

@@ -7,12 +7,9 @@ export const messagesApi = createApi({
     baseUrl: "/api/v1/",
     prepareHeaders: (headers) => {
       const token = getToken();
-      console.log("token in messagesApi:", token);
-
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
-
       return headers;
     },
   }),

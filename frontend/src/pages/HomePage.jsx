@@ -15,7 +15,6 @@ const HomePage = () => {
   const { t } = useTranslation();
   const { data: messages} = useGetMessagesQuery();
  
-
   const currentChannel = useSelector(selectCurrentChannel);
 
   const declOfNum = (number, titles) => {

@@ -10,17 +10,12 @@ const useAuthContext = () => useContext(AuthContext);
 
 export const AuthContextProvider = ({ children }) => {
   const token = localStorage.getItem('token');
-  console.log('token>>>>', token)
-
   const storedUser = localStorage.getItem('user');
-
   const [authState, setAuthState] = useState({
     token: token || null,
     user: storedUser ? JSON.parse(storedUser) : null,
     isAuthenticated: !!localStorage.getItem('token')
   });
-
-  console.log('authState', authState)
 
   const navigate = useNavigate();
 

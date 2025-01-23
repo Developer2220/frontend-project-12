@@ -61,7 +61,10 @@ const SocketManager = () => {
     });
 
     return () => {
-      socket.disconnect();
+      socket.off('newChannel');
+      socket.off('removeChannel');
+      socket.off('renameChannel');
+      socket.off('newMessage');
     };
   }, [dispatch]);
 
