@@ -12,17 +12,11 @@ import { useTranslation } from "react-i18next";
 import filterWords from "../initLeoProfanity/";
 
 const HomePage = () => {
-  console.log('Rollbar Token:', import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN);
-
   const { t } = useTranslation();
-
-  const { data: messages, error, isLoading } = useGetMessagesQuery();
-  if (!isLoading && messages) {
-    console.log("messages in Homepage", messages);
-  }
+  const { data: messages} = useGetMessagesQuery();
+ 
 
   const currentChannel = useSelector(selectCurrentChannel);
-  console.log("currentChannel in HomePage", currentChannel.id);
 
   const declOfNum = (number, titles) => {
     let cases = [2, 0, 1, 1, 1, 2];
@@ -39,7 +33,6 @@ const HomePage = () => {
     messages && currentChannel
       ? messages.filter((message) => message.channelId === currentChannel.id)
       : [];
-  console.log("filteredMessages", filteredMessages);
 
   const showNumberMessages =
     filteredMessages.length >= 0

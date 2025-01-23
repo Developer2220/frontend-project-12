@@ -4,13 +4,10 @@ import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
 import { useCreateMutation } from "../API/auth";
 
-import { useRollbar } from "@rollbar/react";
-
 const SignupForm = () => {
   const { token, logIn } = useAuthContext();
   const { t } = useTranslation();
   const [create] = useCreateMutation();
-  const rollbar = useRollbar();
 
   const ModalSchema = Yup.object().shape({
     username: Yup.string()
@@ -54,9 +51,6 @@ const SignupForm = () => {
               setFieldError("username", " ");
               setFieldError("password", " ");
               setFieldError("confirmPassword", t("errors.userExists"));
-
-              // Логируем 409 ошибку в Rollbar
-      rollbar.warning("User already exists", error);
             }
             return;
           }
