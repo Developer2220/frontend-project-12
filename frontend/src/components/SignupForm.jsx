@@ -35,16 +35,13 @@ const SignupForm = () => {
       validateOnChange={false}
       validateOnBlur={false}
       onSubmit={async (values, { setSubmitting, setFieldError }) => {
-        console.log(values);
         const formData = {
           username: values.username,
           password: values.password,
         };
-        console.log("formData", formData);
 
         try {
           const { data, error } = await create(formData);
-          console.log("Ответ от сервера:", data);
 
           if (!data) {
             if (error.status === 409) {

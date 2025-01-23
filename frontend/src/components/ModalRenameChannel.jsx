@@ -17,7 +17,7 @@ const ModalRenameChannel = (props) => {
   const [updateChannel] = useUpdateChannelMutation();
   const { data: channels, error, isLoading } = useGetChannelsQuery();
 
-  const { channelId, ...modalProps } = props;
+  const { channelId, channelName, ...modalProps } = props;
 
   const dispatch = useDispatch();
 
@@ -49,17 +49,18 @@ const ModalRenameChannel = (props) => {
       <Modal.Body>
         <Formik
           initialValues={{
-            name: currentChannel.name,
+            name: channelName,
           }}
           validationSchema={ModalSchema}
           validateOnChange={false}
           validateOnBlur={false}
           onSubmit={async (values, { setSubmitting }) => {
             try {
-              await updateChannel({
+              const result = await updateChannel({
                 id: channelId,
                 newChannelName: values.name,
               }).unwrap();
+              console.log('result', result)
 
               if (currentChannel && currentChannel.id === channelId) {
                 dispatch(

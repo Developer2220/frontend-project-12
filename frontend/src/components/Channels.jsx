@@ -17,19 +17,26 @@ const { data: channels = [] } = useGetChannelsQuery();
   const [modalShow, setModalShow] = useState(false);
   const [modalShowRenameChannel, setModalShowRenameChannel] = useState(false);
   const [selectedChannelId, setSelectedChannelId] = useState(null);
+  const [selectedChannelName, setSelectedChannelName] = useState(null);
 
   const handleOpenModal = (channelId) => {
     setSelectedChannelId(channelId);
     setModalShow(true);
   };
 
-  const handleOpenModalRenameChannel = (channelId) => {
-    setSelectedChannelId(channelId);
+//   const handleOpenModalRenameChannel = (channelId) => {
+//     setSelectedChannelId(channelId);
+//     setModalShowRenameChannel(true);
+//   };
+
+const handleOpenModalRenameChannel = (channel) => {
+    setSelectedChannelId(channel.id);
     setModalShowRenameChannel(true);
+    setSelectedChannelName(channel.name)
   };
 
   const dispatch = useDispatch();
-  
+
   const currentChannel = useSelector(selectCurrentChannel);
 
   useEffect(() => {
@@ -88,7 +95,8 @@ const { data: channels = [] } = useGetChannelsQuery();
                   {t("buttons.delete")}
                 </Dropdown.Item>
                 <Dropdown.Item
-                  onClick={() => handleOpenModalRenameChannel(channel.id)}
+                //   onClick={() => handleOpenModalRenameChannel(channel.id)}
+                onClick={() => handleOpenModalRenameChannel(channel)}
                 >
                   {t("buttons.rename")}
                 </Dropdown.Item>
@@ -106,6 +114,7 @@ const { data: channels = [] } = useGetChannelsQuery();
         show={modalShowRenameChannel}
         onHide={() => setModalShowRenameChannel(false)}
         channelId={selectedChannelId}
+        channelName={selectedChannelName}
       />
     </ul>
   );
