@@ -49,7 +49,7 @@ const ModalRenameChannel = (props) => {
       <Modal.Body>
         <Formik
           initialValues={{
-            name: "",
+            name: currentChannel.name,
           }}
           validationSchema={ModalSchema}
           validateOnChange={false}
