@@ -1,4 +1,4 @@
-### Hexlet tests and linter status:
+### tests and linter status:
 [![Actions Status](https://github.com/Developer2220/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Developer2220/frontend-project-12/actions)
 
 ### Deployed on [Render](https://chat-xnrx.onrender.com/)
@@ -6,9 +6,9 @@
 ### Description
 
 Chat is application that allows users to communicate with each other. It is built with React. 
-For testing you can use test account: username: 
+For testing you can use test account: 
 ```
-admin, password: admin
+username: admin, password: admin
 ```
 
 
@@ -26,21 +26,31 @@ admin, password: admin
 
 ### Clone repository
 ```
-    git clone https://github.com/Developer2220/frontend-project-12.git
+git clone https://github.com/Developer2220/frontend-project-12.git
 ```
 
 
 ### Install dependencies
-    make install
+```
+make install
+```
 
 ### Run server
-    make start
+```
+make start
+```
 
 ### Run frontend
-    make start-frontend
+```
+make start-frontend
+```
 
 ### Or you can run both in dev-mode
-    make develop
+```
+make develop
+```
 
 ### Build project
-    make build
+```
+make build
+```
