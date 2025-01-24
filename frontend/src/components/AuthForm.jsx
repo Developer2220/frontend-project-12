@@ -6,7 +6,7 @@ import { useAuthenticateMutation } from '../API/auth';
 
 const Authform = () => {
   const { t } = useTranslation();
-  const { token, logIn } = useAuthContext();
+  const { logIn } = useAuthContext();
   const [authenticate] = useAuthenticateMutation();
 
   return (
@@ -19,8 +19,7 @@ const Authform = () => {
         try {
           const { data, error } = await authenticate(values);
           if (data) {
-            localStorage.setItem('token', data.token);
-            logIn(token, data.username);
+            logIn(data.token, data.username);
           }
           if (error) {
             if (error.status === 'FETCH_ERROR') {
