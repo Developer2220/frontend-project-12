@@ -72,7 +72,7 @@ const handleOpenModalRenameChannel = (channel) => {
             <Dropdown as={ButtonGroup} className="d-flex">
               <Button
                 variant=""
-                className={`w-100 rounded-0 text-start btn ${
+                className={`w-100 rounded-0 text-start text-truncate ${
                   currentChannel.id === channel.id ? "btn-secondary" : ""
                 }`}
                 onClick={() => handleСlick(channel)}
