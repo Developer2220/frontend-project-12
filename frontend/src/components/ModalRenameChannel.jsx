@@ -92,7 +92,7 @@ const ModalRenameChannel = (props) => {
                   }`}
                 />
                 <label className="visually-hidden" htmlFor="name">
-                  {t("channels.title")}
+                  {t("channels.name")}
                 </label>
                 {touched.name && errors.name && (
                   <div className="invalid-feedback">{errors.name}</div>
