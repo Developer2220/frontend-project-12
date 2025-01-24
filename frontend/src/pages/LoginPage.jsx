@@ -1,13 +1,15 @@
-import React from "react";
-import { Container, Row, Col, Card, Image } from "react-bootstrap";
-import NavBar from "../components/NavBar";
-import Authform from "../components/AuthForm";
-import { useTranslation } from "react-i18next";
-import avatar from '../assets/avatar.jpg'
+import React from 'react';
+import {
+  Container, Row, Col, Card, Image,
+} from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import NavBar from '../components/NavBar';
+import Authform from '../components/AuthForm';
+import avatar from '../assets/avatar.jpg';
 
 const LoginPage = () => {
-    const {t} = useTranslation();
-    
+  const { t } = useTranslation();
+
   return (
     <div className="d-flex flex-column h-100">
       <NavBar />
@@ -19,7 +21,6 @@ const LoginPage = () => {
                 <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
                   <Image
                     src={avatar}
-
                     roundedCircle
                     alt={t('loginPage.imgAlt')}
                     fluid
@@ -28,7 +29,10 @@ const LoginPage = () => {
                 <Authform />
               </Card.Body>
               <Card.Footer className="text-center p-4">
-                <span>{t('loginPage.footer.text')} </span>
+                <span>
+                  {t('loginPage.footer.text')}
+                  {' '}
+                </span>
                 <Card.Link href="/signup">{t('loginPage.footer.link')}</Card.Link>
               </Card.Footer>
             </Card>

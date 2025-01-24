@@ -1,19 +1,18 @@
-import { useDispatch, useSelector } from "react-redux";
-import { setCurrentChannel } from "../store/slices/channelsSlices";
-import { selectCurrentChannel } from "../store/slices/channelsSlices";
-import { useState, useEffect } from "react";
-import { useGetChannelsQuery } from "../API/channels";
-import Button from "react-bootstrap/Button";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
-import Dropdown from "react-bootstrap/Dropdown";
-import ModalDeleteChannel from "./ModalDeleteChannel";
-import ModalRenameChannel from "./ModalRenameChannel";
-import { useTranslation } from "react-i18next";
-import filterWords from '../initLeoProfanity'
+import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Dropdown from 'react-bootstrap/Dropdown';
+import { useTranslation } from 'react-i18next';
+import { setCurrentChannel, selectCurrentChannel } from '../store/slices/channelsSlices';
+import { useGetChannelsQuery } from '../API/channels';
+// import Button from "react-bootstrap/Button";
+import ModalDeleteChannel from './ModalDeleteChannel';
+import ModalRenameChannel from './ModalRenameChannel';
+import filterWords from '../initLeoProfanity';
 
 const Channels = () => {
   const { t } = useTranslation();
-const { data: channels = [] } = useGetChannelsQuery();
+  const { data: channels = [] } = useGetChannelsQuery();
   const [modalShow, setModalShow] = useState(false);
   const [modalShowRenameChannel, setModalShowRenameChannel] = useState(false);
   const [selectedChannelId, setSelectedChannelId] = useState(null);
@@ -24,15 +23,15 @@ const { data: channels = [] } = useGetChannelsQuery();
     setModalShow(true);
   };
 
-//   const handleOpenModalRenameChannel = (channelId) => {
-//     setSelectedChannelId(channelId);
-//     setModalShowRenameChannel(true);
-//   };
+  //   const handleOpenModalRenameChannel = (channelId) => {
+  //     setSelectedChannelId(channelId);
+  //     setModalShowRenameChannel(true);
+  //   };
 
-const handleOpenModalRenameChannel = (channel) => {
+  const handleOpenModalRenameChannel = (channel) => {
     setSelectedChannelId(channel.id);
     setModalShowRenameChannel(true);
-    setSelectedChannelName(channel.name)
+    setSelectedChannelName(channel.name);
   };
 
   const dispatch = useDispatch();
@@ -61,7 +60,7 @@ const handleOpenModalRenameChannel = (channel) => {
             <button
               type="button"
               className={`w-100 rounded-0 text-start btn ${
-                currentChannel.id === channel.id ? "btn-secondary" : ""
+                currentChannel.id === channel.id ? 'btn-secondary' : ''
               }`}
               onClick={() => handleСlick(channel)}
             >
@@ -70,35 +69,35 @@ const handleOpenModalRenameChannel = (channel) => {
             </button>
           ) : (
             <Dropdown as={ButtonGroup} className="d-flex">
-         <button
-              type="button"
-              className={`w-100 rounded-0 text-start text-truncate btn ${
-                currentChannel.id === channel.id ? "btn-secondary" : ""
-              }`}
-              onClick={() => handleСlick(channel)}
-            >
-              <span className="me-1">#</span>
-              {filterWords.clean(channel.name)}
-            </button>
+              <button
+                type="button"
+                className={`w-100 rounded-0 text-start text-truncate btn ${
+                  currentChannel.id === channel.id ? 'btn-secondary' : ''
+                }`}
+                onClick={() => handleСlick(channel)}
+              >
+                <span className="me-1">#</span>
+                {filterWords.clean(channel.name)}
+              </button>
               <Dropdown.Toggle
                 split
                 variant=""
                 className={`${
-                    currentChannel.id === channel.id ? "btn-secondary" : ""
+                  currentChannel.id === channel.id ? 'btn-secondary' : ''
                 }`}
                 id="dropdown-split-basic"
               >
                 <span className="visually-hidden">{t('dropdown.toggle')}</span>
-                </Dropdown.Toggle>
+              </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item onClick={() => handleOpenModal(channel.id)}>
-                  {t("buttons.delete")}
+                  {t('buttons.delete')}
                 </Dropdown.Item>
                 <Dropdown.Item
                 //   onClick={() => handleOpenModalRenameChannel(channel.id)}
-                onClick={() => handleOpenModalRenameChannel(channel)}
+                  onClick={() => handleOpenModalRenameChannel(channel)}
                 >
-                  {t("buttons.rename")}
+                  {t('buttons.rename')}
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>

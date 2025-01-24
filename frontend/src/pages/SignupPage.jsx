@@ -1,13 +1,14 @@
-import React from "react";
-import { Container, Row, Col, Card, Image } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import NavBar from "../components/NavBar";
-import SignupForm from "../components/SignupForm";
-import avatarSignup from '../assets/avatarSignup.jpg'
-
+import React from 'react';
+import {
+  Container, Row, Col, Card, Image,
+} from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import NavBar from '../components/NavBar';
+import SignupForm from '../components/SignupForm';
+import avatarSignup from '../assets/avatarSignup.jpg';
 
 const SignupPage = () => {
-    const {t} = useTranslation();
+  const { t } = useTranslation();
   return (
     <div className="d-flex flex-column h-100">
       <NavBar />
@@ -20,11 +21,11 @@ const SignupPage = () => {
                   <Image
                     src={avatarSignup}
                     roundedCircle
-                    alt= {t('signupPage.title')}
+                    alt={t('signupPage.title')}
                     fluid
                   />
                 </Col>
-                  <SignupForm />
+                <SignupForm />
               </Card.Body>
             </Card>
           </Col>

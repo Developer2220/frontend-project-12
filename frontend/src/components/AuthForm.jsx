@@ -1,9 +1,8 @@
-import { Formik, Form, Field } from "formik";
-import useAuthContext from "../auth/authProvider";
-import { useTranslation } from "react-i18next";
-import { useAuthenticateMutation } from "../API/auth";
-import { toast } from "react-toastify";
-
+import { Formik, Form, Field } from 'formik';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import useAuthContext from '../auth/authProvider';
+import { useAuthenticateMutation } from '../API/auth';
 
 const Authform = () => {
   const { t } = useTranslation();
@@ -13,29 +12,27 @@ const Authform = () => {
   return (
     <Formik
       initialValues={{
-        username: "",
-        password: "",
+        username: '',
+        password: '',
       }}
       onSubmit={async (values, { setSubmitting, setFieldError }) => {
         try {
           const { data, error } = await authenticate(values);
           if (data) {
-            localStorage.setItem("token", data.token);
+            localStorage.setItem('token', data.token);
             logIn(token, data.username);
           }
           if (error) {
-            if (error.status === "FETCH_ERROR") {
-              toast.error(t("toast.errorNetwork"), { autoClose: 2000 });
+            if (error.status === 'FETCH_ERROR') {
+              toast.error(t('toast.errorNetwork'), { autoClose: 2000 });
             }
             if (error.status === 401) {
-              setFieldError("username", t("errors.password"));
-              setFieldError("password", t("errors.password"));
+              setFieldError('username', t('errors.password'));
+              setFieldError('password', t('errors.password'));
+            } else {
+              throw new Error();
             }
-            else {
-            throw new Error();
           }
-          }
-         
         } catch (error) {
           console.error(error);
         } finally {
@@ -50,37 +47,37 @@ const Authform = () => {
             <Field
               id="username"
               name="username"
-              placeholder={t("authForm.username")}
+              placeholder={t('authForm.username')}
               className={`form-control ${
-                touched.username && errors.username ? "is-invalid" : ""
+                touched.username && errors.username ? 'is-invalid' : ''
               }`}
               required
             />
             <label className="form-label" htmlFor="username">
-              {t("authForm.username")}
+              {t('authForm.username')}
             </label>
           </div>
           <div className="form-floating mb-4">
             <Field
               id="password"
               name="password"
-              placeholder={t("authForm.password")}
+              placeholder={t('authForm.password')}
               className={`form-control ${
-                touched.password && errors.password ? "is-invalid" : ""
+                touched.password && errors.password ? 'is-invalid' : ''
               }`}
               required
               autoComplete="current-password"
               type="password"
             />
             <label className="form-label" htmlFor="password">
-              {t("authForm.password")}
+              {t('authForm.password')}
             </label>
             {touched.password && errors.password && (
               <div className="invalid-tooltip">{errors.password}</div>
             )}
           </div>
           <button type="submit" className="w-100 mb-3 btn btn-outline-primary">
-            {t("authForm.button")}
+            {t('authForm.button')}
           </button>
         </Form>
       )}

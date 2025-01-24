@@ -1,28 +1,25 @@
-import { BrowserRouter } from "react-router-dom";
-import AppRoutes from "./routes/AppRoutes";
-
-import { AuthContextProvider } from "./auth/authProvider";
+import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import SocketManager from "./components/SocketManager";
-import { Provider, ErrorBoundary } from '@rollbar/react'; 
-import rollbarConfig from './config/rollbarConfig.js'
+import { Provider, ErrorBoundary } from '@rollbar/react';
+import AppRoutes from './routes/AppRoutes';
 
-const App = () => {
-  return (
-    <Provider config={rollbarConfig}>
+import { AuthContextProvider } from './auth/authProvider';
+import SocketManager from './components/SocketManager';
+import rollbarConfig from './config/rollbarConfig.js';
+
+const App = () => (
+  <Provider config={rollbarConfig}>
     <ErrorBoundary>
-    <BrowserRouter>
-          <AuthContextProvider>
-          <SocketManager /> 
-            <AppRoutes />
-          </AuthContextProvider>
-        <ToastContainer/>
+      <BrowserRouter>
+        <AuthContextProvider>
+          <SocketManager />
+          <AppRoutes />
+        </AuthContextProvider>
+        <ToastContainer />
       </BrowserRouter>
     </ErrorBoundary>
-    </Provider>
-   
-   
-  );
-};
+  </Provider>
+
+);
 
 export default App;

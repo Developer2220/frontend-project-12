@@ -1,8 +1,8 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import io from "socket.io-client";
-import { channelsApi } from "../API/channels";
-import { messagesApi } from "../API/messages";
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import io from 'socket.io-client';
+import { channelsApi } from '../API/channels';
+import { messagesApi } from '../API/messages';
 
 const socket = io();
 
@@ -10,54 +10,51 @@ const SocketManager = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    socket.on("connect", () => {
-      console.log("WebSocket connected:", socket.id);
+    socket.on('connect', () => {
+      console.log('WebSocket connected:', socket.id);
     });
 
-    socket.on("newChannel", (payload) => {
+    socket.on('newChannel', (payload) => {
       dispatch(
-        channelsApi.util.updateQueryData("getChannels", undefined, (draft) => {
+        channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
           draft.push(payload);
-        })
+        }),
       );
     });
 
-    socket.on("removeChannel", (channelId) => {
+    socket.on('removeChannel', (channelId) => {
       dispatch(
-        channelsApi.util.updateQueryData("getChannels", undefined, (draft) =>
-          draft.filter((channel) => channel.id !== channelId.id)
-        )
+        channelsApi.util.updateQueryData('getChannels', undefined, (draft) => draft.filter((channel) => channel.id !== channelId.id)),
       );
       dispatch(
-        messagesApi.util.updateQueryData("getMessages", undefined, (draft) =>
-          draft.filter((message) => message.channelId !== channelId.id)
-        )
+        messagesApi.util.updateQueryData('getMessages', undefined, (draft) => draft.filter((message) => message.channelId !== channelId.id)),
       );
     });
 
-    socket.on("renameChannel", (updatedChannel) => {
+    socket.on('renameChannel', (updatedChannel) => {
       dispatch(
-        channelsApi.util.updateQueryData("getChannels", undefined, (draft) => {
+        channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
           const index = draft.findIndex(
-            (channel) => channel.id === updatedChannel.id
+            (channel) => channel.id === updatedChannel.id,
           );
           if (index !== -1) {
+            // eslint-disable-next-line no-param-reassign
             draft[index].name = updatedChannel.name;
           }
-        })
+        }),
       );
     });
 
-    socket.on("newMessage", (newMessage) => {
+    socket.on('newMessage', (newMessage) => {
       dispatch(
-        messagesApi.util.updateQueryData("getMessages", undefined, (draft) => {
+        messagesApi.util.updateQueryData('getMessages', undefined, (draft) => {
           draft.push(newMessage);
-        })
+        }),
       );
     });
 
-    socket.on("connect_error", (err) => {
-      console.error("Connection error:", err);
+    socket.on('connect_error', (err) => {
+      console.error('Connection error:', err);
     });
 
     return () => {
@@ -68,7 +65,7 @@ const SocketManager = () => {
     };
   }, [dispatch]);
 
-  return null; 
+  return null;
 };
 
 export default SocketManager;
