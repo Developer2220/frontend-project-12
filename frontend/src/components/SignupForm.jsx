@@ -5,7 +5,7 @@ import useAuthContext from '../auth/authProvider';
 import { useCreateMutation } from '../API/auth';
 
 const SignupForm = () => {
-  const { token, logIn } = useAuthContext();
+  const { logIn } = useAuthContext();
   const { t } = useTranslation();
   const [create] = useCreateMutation();
 
@@ -51,8 +51,7 @@ const SignupForm = () => {
             }
             return;
           }
-          localStorage.setItem('token', data.token);
-          logIn(token, data.username);
+          logIn(data.token, data.username);
         } catch (error) {
           console.error(error);
         } finally {
