@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {
-  Container, Row, Col, Button,
+  Container, Row, Col, Button, Spinner,
 } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -12,10 +12,23 @@ import { selectCurrentChannel } from '../store/slices/channelsSlices';
 import ModalAddChannel from '../components/ModalAddChannel';
 import { useGetMessagesQuery } from '../API/messages';
 import filterWords from '../initLeoProfanity/';
+import { useGetChannelsQuery } from '../API/channels';
+
+const SpinnerPage = () => (
+  <Container
+    className="d-flex justify-content-center align-items-center"
+    style={{ height: '100vh' }}
+  >
+    <Spinner animation="border" variant="primary" role="status">
+      <span className="visually-hidden">Loading...</span>
+    </Spinner>
+  </Container>
+);
 
 const HomePage = () => {
   const { t } = useTranslation();
-  const { data: messages } = useGetMessagesQuery();
+  const { data: messages, isLoading: isLoadingMessages } = useGetMessagesQuery();
+  const { isLoading: isLoadingChannels } = useGetChannelsQuery();
 
   const currentChannel = useSelector(selectCurrentChannel);
 
@@ -43,6 +56,10 @@ const HomePage = () => {
     : t('messages.loading');
 
   const [modalShow, setModalShow] = useState(false);
+
+  if (isLoadingChannels || isLoadingMessages) {
+    return <SpinnerPage />;
+  }
 
   return (
     <div className="d-flex flex-column h-100">
