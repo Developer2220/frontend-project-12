@@ -13,6 +13,7 @@ import ModalAddChannel from '../components/ModalAddChannel';
 import { useGetMessagesQuery } from '../API/messages';
 import filterWords from '../initLeoProfanity/';
 import { useGetChannelsQuery } from '../API/channels';
+import { useNavigate } from 'react-router-dom';
 
 const SpinnerPage = () => (
   <Container
@@ -27,9 +28,9 @@ const SpinnerPage = () => (
 
 const HomePage = () => {
   const { t } = useTranslation();
-  const { data: messages, isLoading: isLoadingMessages } = useGetMessagesQuery();
+  const { data: messages, isLoading: isLoadingMessages, isError, error } = useGetMessagesQuery();
   const { isLoading: isLoadingChannels } = useGetChannelsQuery();
-
+  const navigate = useNavigate()
   const currentChannel = useSelector(selectCurrentChannel);
 
   const declOfNum = (number, titles) => {
@@ -59,6 +60,12 @@ const HomePage = () => {
 
   if (isLoadingChannels || isLoadingMessages) {
     return <SpinnerPage />;
+  }
+
+  if (isError) {
+    if (error.status === 401) {
+       return navigate('./login')
+    }
   }
 
   return (
