@@ -9,6 +9,6 @@ const addWords = () => {
   LeoProfanity.list();
 };
 
-addWords();
+export default addWords;
 
-export default LeoProfanity;
+

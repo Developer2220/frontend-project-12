@@ -11,7 +11,7 @@ import MessageInput from '../components/MessageInput';
 import { selectCurrentChannel } from '../store/slices/channelsSlices';
 import ModalAddChannel from '../components/ModalAddChannel';
 import { useGetMessagesQuery } from '../API/messages';
-import filterWords from '../initLeoProfanity/';
+import filterWords from 'leo-profanity';
 import { useGetChannelsQuery } from '../API/channels';
 import { useNavigate } from 'react-router-dom';
 

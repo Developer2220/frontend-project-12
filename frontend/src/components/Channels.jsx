@@ -4,10 +4,10 @@ import { Nav, ButtonGroup,Dropdown  } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { setCurrentChannel, selectCurrentChannel } from '../store/slices/channelsSlices';
 import { useGetChannelsQuery } from '../API/channels';
-// import Button from "react-bootstrap/Button";
 import ModalDeleteChannel from './ModalDeleteChannel';
 import ModalRenameChannel from './ModalRenameChannel';
-import filterWords from '../initLeoProfanity';
+import filterWords from 'leo-profanity';
+
 
 const Channels = () => {
   const { t } = useTranslation();
