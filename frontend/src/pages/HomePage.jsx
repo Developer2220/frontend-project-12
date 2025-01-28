@@ -77,7 +77,7 @@ const HomePage = () => {
           <Col
             xs={4}
             md={2}
-            className="border-end bg-light px-0 d-flex flex-column"
+            className="border-end bg-light px-0 d-flex flex-column h-100"
           >
             <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
               <b>{t('channels.title')}</b>

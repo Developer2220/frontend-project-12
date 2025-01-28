@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import Dropdown from 'react-bootstrap/Dropdown';
+import { Nav, ButtonGroup,Dropdown  } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { setCurrentChannel, selectCurrentChannel } from '../store/slices/channelsSlices';
 import { useGetChannelsQuery } from '../API/channels';
@@ -50,11 +49,8 @@ const Channels = () => {
   };
 
   return (
-    <ul
-      id="channels-box"
-      className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
-    >
-      {channels.map((channel) => (
+    <Nav className="flex-column nav-fill px-2 mb-3 overflow-auto h-100 d-block">
+  {channels.map((channel) => (
         <li key={channel.id} className="nav-item w-100">
           {channel.removable === false ? (
             <button
@@ -115,7 +111,7 @@ const Channels = () => {
         channelId={selectedChannelId}
         channelName={selectedChannelName}
       />
-    </ul>
+    </Nav>
   );
 };
 
