@@ -30,11 +30,6 @@ const HomePage = () => {
   const { t } = useTranslation();
   const { data: messages, isLoading: isLoadingMessages, isError, error } = useGetMessagesQuery();
   const { isLoading: isLoadingChannels } = useGetChannelsQuery();
-  const [isAddingChannel, setIsAddingChannel] = useState(false); 
-  const handleLoadingChange = (loadingState) => {
-      setIsAddingChannel(loadingState); 
-    };
-
   
   const navigate = useNavigate()
   const currentChannel = useSelector(selectCurrentChannel);
@@ -90,7 +85,6 @@ const HomePage = () => {
                 onClick={() => setModalShow(true)}
                 variant="link"
                 className="p-0 text-primary"
-                disabled={isAddingChannel}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -125,9 +119,7 @@ const HomePage = () => {
         </Row>
       </Container>
 
-      <ModalAddChannel show={modalShow} onHide={() => setModalShow(false)}
-        onLoadingChange={handleLoadingChange}
-      />
+      <ModalAddChannel show={modalShow} onHide={() => setModalShow(false)}/>
     </div>
   );
 };

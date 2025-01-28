@@ -13,16 +13,13 @@ import checkChannelnameUnique from '../helpers/checkChannelnameUnique.js';
 
 const ModalAddChannel = (props) => {
   // console.log('props on ModalAddChannel', props)
-  const { onHide, show, onLoadingChange } = props;
+  const { onHide, show } = props;
   const { t } = useTranslation();
-  const [addChannel, {isLoading: isLoadingAddChannels}] = useAddChannelMutation();
+  const [addChannel, {isLoading}] = useAddChannelMutation();
 
   const { data: channels } = useGetChannelsQuery();
   const dispatch = useDispatch();
   
-    useEffect(() => {
-      onLoadingChange(isLoadingAddChannels);
-    }, [isLoadingAddChannels, onLoadingChange]);
 
   const ModalSchema = Yup.object().shape({
     name: Yup.string()
@@ -84,10 +81,11 @@ const ModalAddChannel = (props) => {
                   variant="secondary"
                   className="me-2"
                   onClick={onHide}
+                  disabled={isLoading}
                 >
                   {t('buttons.cancel')}
                 </Button >
-                <Button type="submit">{t('buttons.submit')}</Button>
+                <Button type="submit" disabled={isLoading}>{t('buttons.submit')}</Button>
               </Container>
             </Form>
           )}
