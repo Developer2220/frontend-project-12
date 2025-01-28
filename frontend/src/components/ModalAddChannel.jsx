@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Container from 'react-bootstrap/Container';
@@ -12,11 +13,16 @@ import checkChannelnameUnique from '../helpers/checkChannelnameUnique.js';
 
 const ModalAddChannel = (props) => {
   // console.log('props on ModalAddChannel', props)
-  const { onHide, show } = props;
+  const { onHide, show, onLoadingChange } = props;
   const { t } = useTranslation();
-  const [addChannel] = useAddChannelMutation();
+  const [addChannel, {isLoading: isLoadingAddChannels}] = useAddChannelMutation();
+
   const { data: channels } = useGetChannelsQuery();
   const dispatch = useDispatch();
+  
+    useEffect(() => {
+      onLoadingChange(isLoadingAddChannels);
+    }, [isLoadingAddChannels, onLoadingChange]);
 
   const ModalSchema = Yup.object().shape({
     name: Yup.string()
@@ -80,7 +86,7 @@ const ModalAddChannel = (props) => {
                   onClick={onHide}
                 >
                   {t('buttons.cancel')}
-                </Button>
+                </Button >
                 <Button type="submit">{t('buttons.submit')}</Button>
               </Container>
             </Form>
