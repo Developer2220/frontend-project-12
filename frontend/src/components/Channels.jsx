@@ -4,8 +4,8 @@ import { Nav, ButtonGroup,Dropdown  } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { setCurrentChannel, selectCurrentChannel } from '../store/slices/channelsSlices';
 import { useGetChannelsQuery } from '../API/channels';
-import ModalDeleteChannel from './ModalDeleteChannel';
-import ModalRenameChannel from './ModalRenameChannel';
+import ModalDeleteChannel from './Modals/ModalDeleteChannel';
+import ModalRenameChannel from './Modals/ModalRenameChannel';
 import filterWords from 'leo-profanity';
 
 

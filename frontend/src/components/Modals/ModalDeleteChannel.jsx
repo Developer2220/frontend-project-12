@@ -4,9 +4,9 @@ import Container from 'react-bootstrap/Container';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { useDeleteMessagesByChannelIdMutation } from '../API/messages';
-import { useDeleteChannelMutation } from '../API/channels';
-import { setCurrentChannel, selectCurrentChannel } from '../store/slices/channelsSlices';
+import { useDeleteMessagesByChannelIdMutation } from '../../API/messages';
+import { useDeleteChannelMutation } from '../../API/channels';
+import { setCurrentChannel, selectCurrentChannel } from '../../store/slices/channelsSlices';
 
 const ModalDeleteChannel = (props) => {
   console.log('props', props);

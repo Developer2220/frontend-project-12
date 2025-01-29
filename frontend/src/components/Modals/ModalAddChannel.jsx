@@ -4,21 +4,25 @@ import Modal from 'react-bootstrap/Modal';
 import Container from 'react-bootstrap/Container';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { setCurrentChannel } from '../store/slices/channelsSlices';
-import { useGetChannelsQuery, useAddChannelMutation } from '../API/channels';
-import checkChannelnameUnique from '../helpers/checkChannelnameUnique.js';
+import { setCurrentChannel } from '../../store/slices/channelsSlices';
+import { useGetChannelsQuery, useAddChannelMutation } from '../../API/channels';
+import checkChannelnameUnique from '../../helpers/checkChannelnameUnique.js';
+import {changeModalShow, selectChangeModalShow } from '../../store/slices/modalsSlices';
 
-const ModalAddChannel = (props) => {
+// const ModalAddChannel = (props) => {
+const ModalAddChannel = () => {
   // console.log('props on ModalAddChannel', props)
-  const { onHide, show } = props;
+  // const { onHide, show } = props;
+  const dispatch = useDispatch();
+  const onHide = () => dispatch(changeModalShow(false));
+  const show = useSelector(selectChangeModalShow)
   const { t } = useTranslation();
   const [addChannel, {isLoading}] = useAddChannelMutation();
 
   const { data: channels } = useGetChannelsQuery();
-  const dispatch = useDispatch();
   
 
   const ModalSchema = Yup.object().shape({

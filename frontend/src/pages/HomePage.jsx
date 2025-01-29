@@ -2,18 +2,19 @@ import { useState } from 'react';
 import {
   Container, Row, Col, Button, Spinner,
 } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import NavBar from '../components/NavBar';
 import Channels from '../components/Channels';
 import Messages from '../components/Messages';
 import MessageInput from '../components/MessageInput';
 import { selectCurrentChannel } from '../store/slices/channelsSlices';
-import ModalAddChannel from '../components/ModalAddChannel';
+import ModalAddChannel from '../components/Modals/ModalAddChannel';
 import { useGetMessagesQuery } from '../API/messages';
 import filterWords from 'leo-profanity';
 import { useGetChannelsQuery } from '../API/channels';
 import { useNavigate } from 'react-router-dom';
+import { changeModalShow, selectChangeModalShow } from '../store/slices/modalsSlices';
 
 const SpinnerPage = () => (
   <Container
@@ -33,6 +34,10 @@ const HomePage = () => {
   
   const navigate = useNavigate()
   const currentChannel = useSelector(selectCurrentChannel);
+  
+  const dispatch = useDispatch();
+  // const currentModalShow = useSelector(selectChangeModalShow);
+  // console.log('currentModalShow', currentModalShow)
 
   const declOfNum = (number, titles) => {
     const cases = [2, 0, 1, 1, 1, 2];
@@ -57,7 +62,7 @@ const HomePage = () => {
     ])
     : t('messages.loading');
 
-  const [modalShow, setModalShow] = useState(false);
+  // const [modalShow, setModalShow] = useState(false);
 
   if (isLoadingChannels || isLoadingMessages) {
     return <SpinnerPage />;
@@ -82,7 +87,8 @@ const HomePage = () => {
             <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
               <b>{t('channels.title')}</b>
               <Button
-                onClick={() => setModalShow(true)}
+                // onClick={() => setModalShow(true)}
+                onClick={() => dispatch(changeModalShow(true))}
                 variant="link"
                 className="p-0 text-primary"
               >
@@ -119,7 +125,12 @@ const HomePage = () => {
         </Row>
       </Container>
 
-      <ModalAddChannel show={modalShow} onHide={() => setModalShow(false)}/>
+      <ModalAddChannel 
+      // show={modalShow} 
+      // show={currentModalShow} 
+      // onHide={() => setModalShow(false)}
+      // onHide={() => dispatch(changeModalShow(false))}
+      />
     </div>
   );
 };

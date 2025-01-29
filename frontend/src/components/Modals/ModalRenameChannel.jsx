@@ -6,10 +6,10 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { useGetChannelsQuery, useUpdateChannelMutation } from '../API/channels';
+import { useGetChannelsQuery, useUpdateChannelMutation } from '../../API/channels';
 
-import { setCurrentChannel, selectCurrentChannel } from '../store/slices/channelsSlices';
-import checkChannelnameUnique from '../helpers/checkChannelnameUnique.js';
+import { setCurrentChannel, selectCurrentChannel } from '../../store/slices/channelsSlices';
+import checkChannelnameUnique from '../../helpers/checkChannelnameUnique.js';
 
 const ModalRenameChannel = (props) => {
   const { t } = useTranslation();
