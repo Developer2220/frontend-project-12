@@ -7,33 +7,27 @@ import { AuthContextProvider } from './auth/authProvider';
 import SocketManager from './components/SocketManager';
 import rollbarConfig from './config/rollbarConfig.js';
 import addWords from './initLeoProfanity';
-
-import { selectChangeModalShow, selectChangeModalType } from './store/slices/modalsSlices';
-import getModal from './components/Modals';
-import { useSelector } from 'react-redux';
 import ModalRenderer from './components/Modals/ModalRenderer';
-
 
 const App = () => {
   useEffect(() => {
-    addWords(); 
+    addWords();
   }, []);
 
   return (
-      <Provider config={rollbarConfig}>
-    <ErrorBoundary>
-      <BrowserRouter>
-        <AuthContextProvider>
-          <SocketManager />
-          <AppRoutes />
-        </AuthContextProvider>
-        <ToastContainer />
-       <ModalRenderer/>
-      </BrowserRouter>
-    </ErrorBoundary>
-  </Provider>
-  )
-}
- 
+    <Provider config={rollbarConfig}>
+      <ErrorBoundary>
+        <BrowserRouter>
+          <AuthContextProvider>
+            <SocketManager />
+            <AppRoutes />
+          </AuthContextProvider>
+          <ToastContainer />
+          <ModalRenderer />
+        </BrowserRouter>
+      </ErrorBoundary>
+    </Provider>
+  );
+};
 
 export default App;

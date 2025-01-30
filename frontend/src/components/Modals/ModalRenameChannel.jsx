@@ -5,12 +5,13 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { Col } from 'react-bootstrap';
 import { useGetChannelsQuery, useUpdateChannelMutation } from '../../API/channels';
 import { setCurrentChannel, selectCurrentChannel } from '../../store/slices/channelsSlices';
 import checkChannelnameUnique from '../../helpers/checkChannelnameUnique.js';
-import { changeModalShow, selectChangeModalShow, selectSetModalChannel, setModalChannel } from '../../store/slices/modalsSlices';
-import { Col } from 'react-bootstrap';
-
+import {
+  changeModalShow, selectChangeModalShow, selectSetModalChannel, setModalChannel,
+} from '../../store/slices/modalsSlices';
 
 const ModalRenameChannel = () => {
   const { t } = useTranslation();
@@ -22,12 +23,12 @@ const ModalRenameChannel = () => {
     dispatch(changeModalShow({
       modalShow: false,
       modalType: null,
-    }))
-    dispatch(setModalChannel(null))
+    }));
+    dispatch(setModalChannel(null));
   };
 
   const show = useSelector(selectChangeModalShow);
-  const currentModalChannel = useSelector(selectSetModalChannel)
+  const currentModalChannel = useSelector(selectSetModalChannel);
   const currentChannel = useSelector(selectCurrentChannel);
 
   const ModalSchema = Yup.object().shape({
@@ -57,7 +58,7 @@ const ModalRenameChannel = () => {
           validateOnBlur={false}
           onSubmit={async (values, { setSubmitting }) => {
             try {
-               await updateChannel({
+              await updateChannel({
                 id: currentModalChannel.id,
                 newChannelName: values.name,
               }).unwrap();

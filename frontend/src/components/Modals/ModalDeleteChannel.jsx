@@ -3,13 +3,13 @@ import Modal from 'react-bootstrap/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { Col } from 'react-bootstrap';
 import { useDeleteMessagesByChannelIdMutation } from '../../API/messages';
 import { useDeleteChannelMutation } from '../../API/channels';
 import { setCurrentChannel, selectCurrentChannel } from '../../store/slices/channelsSlices';
-import { selectSetModalChannel, setModalChannel } from '../../store/slices/modalsSlices';
-import { changeModalShow, selectChangeModalShow } from '../../store/slices/modalsSlices';
-import { Col } from 'react-bootstrap';
-
+import {
+  selectSetModalChannel, setModalChannel, changeModalShow, selectChangeModalShow,
+} from '../../store/slices/modalsSlices';
 
 const ModalDeleteChannel = () => {
   const { t } = useTranslation();
@@ -20,13 +20,12 @@ const ModalDeleteChannel = () => {
     dispatch(changeModalShow({
       modalShow: false,
       modalType: null,
-    }))
-    dispatch(setModalChannel(null))
+    }));
+    dispatch(setModalChannel(null));
   };
   const show = useSelector(selectChangeModalShow);
-  const currentModalChannel = useSelector(selectSetModalChannel)
+  const currentModalChannel = useSelector(selectSetModalChannel);
   const currentChannel = useSelector(selectCurrentChannel);
-  
 
   const handleDeleteChannel = async (clickedChannelId) => {
     try {

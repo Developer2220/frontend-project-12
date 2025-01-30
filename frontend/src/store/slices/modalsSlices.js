@@ -14,17 +14,16 @@ const modalsSlices = createSlice({
     changeModalShow: (state, action) => {
       state.modalShow = action.payload.modalShow;
       state.modalType = action.payload.modalType;
-},
-setModalChannel: (state, action) => {
-    state.modalChannel = action.payload
-} 
-},
+    },
+    setModalChannel: (state, action) => {
+      state.modalChannel = action.payload;
+    },
+  },
 });
 
 const selectChangeModalShow = (state) => state.modals.modalShow;
 const selectChangeModalType = (state) => state.modals.modalType;
 const selectSetModalChannel = (state) => state.modals.modalChannel;
-
 
 export const { changeModalShow, setModalChannel } = modalsSlices.actions;
 export default modalsSlices.reducer;

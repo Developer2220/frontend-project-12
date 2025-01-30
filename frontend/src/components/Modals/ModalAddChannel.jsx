@@ -5,12 +5,11 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { Col } from 'react-bootstrap';
 import { setCurrentChannel } from '../../store/slices/channelsSlices';
 import { useGetChannelsQuery, useAddChannelMutation } from '../../API/channels';
 import checkChannelnameUnique from '../../helpers/checkChannelnameUnique.js';
-import {changeModalShow, selectChangeModalShow, setModalChannel } from '../../store/slices/modalsSlices';
-import { Col } from 'react-bootstrap';
-
+import { changeModalShow, selectChangeModalShow, setModalChannel } from '../../store/slices/modalsSlices';
 
 const ModalAddChannel = () => {
   const dispatch = useDispatch();
@@ -18,14 +17,14 @@ const ModalAddChannel = () => {
     dispatch(changeModalShow({
       modalShow: false,
       modalType: null,
-    }))
-    dispatch(setModalChannel(null))
+    }));
+    dispatch(setModalChannel(null));
   };
-  const show = useSelector(selectChangeModalShow)
+  const show = useSelector(selectChangeModalShow);
   const { t } = useTranslation();
-  const [addChannel, {isLoading}] = useAddChannelMutation();
+  const [addChannel, { isLoading }] = useAddChannelMutation();
   const { data: channels } = useGetChannelsQuery();
-  
+
   const ModalSchema = Yup.object().shape({
     name: Yup.string()
       .min(3, t('errors.range'))
@@ -89,7 +88,7 @@ const ModalAddChannel = () => {
                   disabled={isLoading}
                 >
                   {t('buttons.cancel')}
-                </Button >
+                </Button>
                 <Button type="submit" disabled={isLoading}>{t('buttons.submit')}</Button>
               </Col>
             </Form>

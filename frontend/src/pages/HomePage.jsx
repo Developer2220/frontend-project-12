@@ -3,15 +3,15 @@ import {
 } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import filterWords from 'leo-profanity';
+import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import Channels from '../components/Channels';
 import Messages from '../components/Messages';
 import MessageInput from '../components/MessageInput';
 import { selectCurrentChannel } from '../store/slices/channelsSlices';
 import { useGetMessagesQuery } from '../API/messages';
-import filterWords from 'leo-profanity';
 import { useGetChannelsQuery } from '../API/channels';
-import { useNavigate } from 'react-router-dom';
 import { changeModalShow } from '../store/slices/modalsSlices';
 
 const SpinnerPage = () => (
@@ -25,15 +25,15 @@ const SpinnerPage = () => (
   </Container>
 );
 
-
 const HomePage = () => {
   const { t } = useTranslation();
-  const { data: messages, isLoading: isLoadingMessages, isError, error } = useGetMessagesQuery();
+  const {
+    data: messages, isLoading: isLoadingMessages, isError, error,
+  } = useGetMessagesQuery();
   const { isLoading: isLoadingChannels } = useGetChannelsQuery();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const currentChannel = useSelector(selectCurrentChannel);
   const dispatch = useDispatch();
-
 
   const declOfNum = (number, titles) => {
     const cases = [2, 0, 1, 1, 1, 2];
@@ -64,7 +64,7 @@ const HomePage = () => {
 
   if (isError) {
     if (error.status === 401) {
-       return navigate('./login')
+      return navigate('./login');
     }
   }
 
@@ -81,11 +81,10 @@ const HomePage = () => {
             <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
               <b>{t('channels.title')}</b>
               <Button
-                onClick={() => 
-                  dispatch(changeModalShow({modalShow: true,
-                    modalType: 'adding',})
-                  
-                  )}
+                onClick={() => dispatch(changeModalShow({
+                  modalShow: true,
+                  modalType: 'adding',
+                }))}
                 variant="link"
                 className="p-0 text-primary"
               >

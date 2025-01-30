@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux';
 import { useRef, useEffect } from 'react';
+import filterWords from 'leo-profanity';
 import { useGetMessagesQuery } from '../API/messages';
 import { selectCurrentChannel } from '../store/slices/channelsSlices';
-import filterWords from 'leo-profanity';
 
 const Messages = () => {
   const currentChannel = useSelector(selectCurrentChannel);
