@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Nav, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import filterWords from 'leo-profanity';
@@ -40,6 +40,14 @@ const Channels = () => {
   const handleСlick = (channel) => {
     dispatch(setCurrentChannel(channel));
   };
+
+  const channelsEndRef = useRef(null);
+
+  useEffect(() => {
+    if (channelsEndRef.current) {
+      channelsEndRef.current.scrollIntoView({ behavior: 'auto' });
+    }
+  }, [channels, currentChannel]);
 
   return (
     <Nav className="flex-column nav-fill px-2 mb-3 overflow-auto h-100 d-block">
@@ -92,6 +100,7 @@ const Channels = () => {
           )}
         </li>
       ))}
+      <div ref={channelsEndRef} />
     </Nav>
   );
 };
