@@ -1,39 +1,29 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Nav, ButtonGroup,Dropdown  } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { setCurrentChannel, selectCurrentChannel } from '../store/slices/channelsSlices';
 import { useGetChannelsQuery } from '../API/channels';
-import ModalDeleteChannel from './Modals/ModalDeleteChannel';
-import ModalRenameChannel from './Modals/ModalRenameChannel';
 import filterWords from 'leo-profanity';
+import { changeModalShow, setModalChannel } from '../store/slices/modalsSlices';
 
 
 const Channels = () => {
   const { t } = useTranslation();
   const { data: channels = [] } = useGetChannelsQuery();
-  const [modalShow, setModalShow] = useState(false);
-  const [modalShowRenameChannel, setModalShowRenameChannel] = useState(false);
-  const [selectedChannelId, setSelectedChannelId] = useState(null);
-  const [selectedChannelName, setSelectedChannelName] = useState(null);
+  const dispatch = useDispatch()
 
-  const handleOpenModal = (channelId) => {
-    setSelectedChannelId(channelId);
-    setModalShow(true);
+  const handleOpenModalDeleteChannel = (channel) => {
+    dispatch(setModalChannel(channel))
+    dispatch(changeModalShow({modalShow: true,
+        modalType: 'removing'}))
   };
-
-  //   const handleOpenModalRenameChannel = (channelId) => {
-  //     setSelectedChannelId(channelId);
-  //     setModalShowRenameChannel(true);
-  //   };
 
   const handleOpenModalRenameChannel = (channel) => {
-    setSelectedChannelId(channel.id);
-    setModalShowRenameChannel(true);
-    setSelectedChannelName(channel.name);
+    dispatch(setModalChannel(channel))
+    dispatch(changeModalShow({modalShow: true,
+        modalType: 'renaming'}))
   };
-
-  const dispatch = useDispatch();
 
   const currentChannel = useSelector(selectCurrentChannel);
 
@@ -86,11 +76,10 @@ const Channels = () => {
                 <span className="visually-hidden">{t('dropdown.toggle')}</span>
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item onClick={() => handleOpenModal(channel.id)}>
+                <Dropdown.Item onClick={() => handleOpenModalDeleteChannel(channel)}>
                   {t('buttons.delete')}
                 </Dropdown.Item>
                 <Dropdown.Item
-                //   onClick={() => handleOpenModalRenameChannel(channel.id)}
                   onClick={() => handleOpenModalRenameChannel(channel)}
                 >
                   {t('buttons.rename')}
@@ -100,17 +89,6 @@ const Channels = () => {
           )}
         </li>
       ))}
-      <ModalDeleteChannel
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-        channelId={selectedChannelId}
-      />
-      <ModalRenameChannel
-        show={modalShowRenameChannel}
-        onHide={() => setModalShowRenameChannel(false)}
-        channelId={selectedChannelId}
-        channelName={selectedChannelName}
-      />
     </Nav>
   );
 };

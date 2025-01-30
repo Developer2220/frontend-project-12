@@ -30,18 +30,18 @@ const SpinnerPage = () => (
 
 
 
-const renderModal = () => {
-  // const show = useSelector(selectChangeModalShow);
-  // console.log('show', show)
-  // if (!show) {
-  //   return null
-  // }
-  const currentModalType = useSelector(selectChangeModalType)
-  // console.log('currentModalType', currentModalType)
-  const Component = getModal(currentModalType)
-  // const Component = getModal('adding')
-  return <Component/>
-}
+// const renderModal = () => {
+//   // const show = useSelector(selectChangeModalShow);
+//   // console.log('show', show)
+//   // if (!show) {
+//   //   return null
+//   // }
+//   const currentModalType = useSelector(selectChangeModalType)
+//   // console.log('currentModalType', currentModalType)
+//   const Component = getModal(currentModalType)
+//   // const Component = getModal('adding')
+//   return <Component/>
+// }
 // renderModal()
 
 const HomePage = () => {
@@ -54,15 +54,11 @@ const HomePage = () => {
   // console.log('Component', Component)
 
 
-    const show = useSelector(selectChangeModalShow);
-    // console.log('show', show)
-    // if (!show) {
-    //   return null
-    // }
-    const currentModalType = useSelector(selectChangeModalType)
-    console.log('currentModalType', currentModalType)
-    const Modal = getModal(currentModalType)
-    // const Component = getModal('adding')
+    // const show = useSelector(selectChangeModalShow);
+    // const currentModalType = useSelector(selectChangeModalType)
+    // console.log('currentModalType', currentModalType)
+    // const Modal = getModal(currentModalType)
+
   
 
   const { t } = useTranslation();
@@ -173,7 +169,7 @@ const HomePage = () => {
       // onHide={() => dispatch(changeModalShow(false))} */}
       {/* /> */}
       {/* {renderModal()} */}
-{show && Modal && <Modal />}
+{/* {show && Modal && <Modal />} */}
 
 
     </div>

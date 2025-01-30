@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Container from 'react-bootstrap/Container';
@@ -10,25 +9,24 @@ import { toast } from 'react-toastify';
 import { setCurrentChannel } from '../../store/slices/channelsSlices';
 import { useGetChannelsQuery, useAddChannelMutation } from '../../API/channels';
 import checkChannelnameUnique from '../../helpers/checkChannelnameUnique.js';
-import {changeModalShow, selectChangeModalShow } from '../../store/slices/modalsSlices';
+import {changeModalShow, selectChangeModalShow, setModalChannel } from '../../store/slices/modalsSlices';
+import { Col } from 'react-bootstrap';
 
-// const ModalAddChannel = (props) => {
+
 const ModalAddChannel = () => {
-  // console.log('props on ModalAddChannel', props)
-  // const { onHide, show } = props;
   const dispatch = useDispatch();
-  const onHide = () => dispatch(changeModalShow({
-    modalShow: false,
-    modalType: null,
-  }));
+  const onHide = () => {
+    dispatch(changeModalShow({
+      modalShow: false,
+      modalType: null,
+    }))
+    dispatch(setModalChannel(null))
+  };
   const show = useSelector(selectChangeModalShow)
-  console.log('show', show)
   const { t } = useTranslation();
   const [addChannel, {isLoading}] = useAddChannelMutation();
-
   const { data: channels } = useGetChannelsQuery();
   
-
   const ModalSchema = Yup.object().shape({
     name: Yup.string()
       .min(3, t('errors.range'))
@@ -84,7 +82,7 @@ const ModalAddChannel = () => {
                   <div className="invalid-feedback">{errors.name}</div>
                 )}
               </div>
-              <Container className="d-flex justify-content-end">
+              <Col className="d-flex justify-content-end">
                 <Button
                   variant="secondary"
                   className="me-2"
@@ -94,7 +92,7 @@ const ModalAddChannel = () => {
                   {t('buttons.cancel')}
                 </Button >
                 <Button type="submit" disabled={isLoading}>{t('buttons.submit')}</Button>
-              </Container>
+              </Col>
             </Form>
           )}
         </Formik>
