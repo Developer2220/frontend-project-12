@@ -1,4 +1,5 @@
-[![Actions Status](https://github.com/Developer2220/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Developer2220/frontend-project-12/actions)
+[![Actions Status](https://github.com/Developer2220/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Developer2220/frontend-project-12/actions) [![Actions Status](https://github.com/Developer2220/frontend-project-12/actions/workflows/eslint-check.yml/badge.svg)](https://github.com/Developer2220/frontend-project-12/actions)
+
 
 ### Deployed on [Render](https://chat-xnrx.onrender.com/)
 
