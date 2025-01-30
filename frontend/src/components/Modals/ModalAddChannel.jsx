@@ -17,8 +17,12 @@ const ModalAddChannel = () => {
   // console.log('props on ModalAddChannel', props)
   // const { onHide, show } = props;
   const dispatch = useDispatch();
-  const onHide = () => dispatch(changeModalShow(false));
+  const onHide = () => dispatch(changeModalShow({
+    modalShow: false,
+    modalType: null,
+  }));
   const show = useSelector(selectChangeModalShow)
+  console.log('show', show)
   const { t } = useTranslation();
   const [addChannel, {isLoading}] = useAddChannelMutation();
 

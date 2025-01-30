@@ -14,7 +14,8 @@ import { useGetMessagesQuery } from '../API/messages';
 import filterWords from 'leo-profanity';
 import { useGetChannelsQuery } from '../API/channels';
 import { useNavigate } from 'react-router-dom';
-import { changeModalShow, selectChangeModalShow } from '../store/slices/modalsSlices';
+import { changeModalShow, selectChangeModalShow, selectChangeModalType } from '../store/slices/modalsSlices';
+import getModal from '../components/Modals';
 
 const SpinnerPage = () => (
   <Container
@@ -27,7 +28,43 @@ const SpinnerPage = () => (
   </Container>
 );
 
+
+
+const renderModal = () => {
+  // const show = useSelector(selectChangeModalShow);
+  // console.log('show', show)
+  // if (!show) {
+  //   return null
+  // }
+  const currentModalType = useSelector(selectChangeModalType)
+  // console.log('currentModalType', currentModalType)
+  const Component = getModal(currentModalType)
+  // const Component = getModal('adding')
+  return <Component/>
+}
+// renderModal()
+
 const HomePage = () => {
+  
+  // const show = useSelector(selectChangeModalShow);
+  // console.log('show', show)
+  // const currentModalType = useSelector(selectChangeModalType)
+  // console.log('currentModalType', currentModalType)
+  // const Component = getModal(currentModalType)
+  // console.log('Component', Component)
+
+
+    const show = useSelector(selectChangeModalShow);
+    // console.log('show', show)
+    // if (!show) {
+    //   return null
+    // }
+    const currentModalType = useSelector(selectChangeModalType)
+    console.log('currentModalType', currentModalType)
+    const Modal = getModal(currentModalType)
+    // const Component = getModal('adding')
+  
+
   const { t } = useTranslation();
   const { data: messages, isLoading: isLoadingMessages, isError, error } = useGetMessagesQuery();
   const { isLoading: isLoadingChannels } = useGetChannelsQuery();
@@ -88,7 +125,11 @@ const HomePage = () => {
               <b>{t('channels.title')}</b>
               <Button
                 // onClick={() => setModalShow(true)}
-                onClick={() => dispatch(changeModalShow(true))}
+                onClick={() => 
+                  dispatch(changeModalShow({modalShow: true,
+                    modalType: 'adding',})
+                  
+                  )}
                 variant="link"
                 className="p-0 text-primary"
               >
@@ -125,12 +166,16 @@ const HomePage = () => {
         </Row>
       </Container>
 
-      <ModalAddChannel 
-      // show={modalShow} 
+      {/* <ModalAddChannel  */}
+      {/* // show={modalShow} 
       // show={currentModalShow} 
       // onHide={() => setModalShow(false)}
-      // onHide={() => dispatch(changeModalShow(false))}
-      />
+      // onHide={() => dispatch(changeModalShow(false))} */}
+      {/* /> */}
+      {/* {renderModal()} */}
+{show && Modal && <Modal />}
+
+
     </div>
   );
 };
