@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Container, Row, Col, Button, Spinner,
 } from 'react-bootstrap';
@@ -9,13 +8,11 @@ import Channels from '../components/Channels';
 import Messages from '../components/Messages';
 import MessageInput from '../components/MessageInput';
 import { selectCurrentChannel } from '../store/slices/channelsSlices';
-import ModalAddChannel from '../components/Modals/ModalAddChannel';
 import { useGetMessagesQuery } from '../API/messages';
 import filterWords from 'leo-profanity';
 import { useGetChannelsQuery } from '../API/channels';
 import { useNavigate } from 'react-router-dom';
-import { changeModalShow, selectChangeModalShow, selectChangeModalType } from '../store/slices/modalsSlices';
-import getModal from '../components/Modals';
+import { changeModalShow } from '../store/slices/modalsSlices';
 
 const SpinnerPage = () => (
   <Container
@@ -29,48 +26,14 @@ const SpinnerPage = () => (
 );
 
 
-
-// const renderModal = () => {
-//   // const show = useSelector(selectChangeModalShow);
-//   // console.log('show', show)
-//   // if (!show) {
-//   //   return null
-//   // }
-//   const currentModalType = useSelector(selectChangeModalType)
-//   // console.log('currentModalType', currentModalType)
-//   const Component = getModal(currentModalType)
-//   // const Component = getModal('adding')
-//   return <Component/>
-// }
-// renderModal()
-
 const HomePage = () => {
-  
-  // const show = useSelector(selectChangeModalShow);
-  // console.log('show', show)
-  // const currentModalType = useSelector(selectChangeModalType)
-  // console.log('currentModalType', currentModalType)
-  // const Component = getModal(currentModalType)
-  // console.log('Component', Component)
-
-
-    // const show = useSelector(selectChangeModalShow);
-    // const currentModalType = useSelector(selectChangeModalType)
-    // console.log('currentModalType', currentModalType)
-    // const Modal = getModal(currentModalType)
-
-  
-
   const { t } = useTranslation();
   const { data: messages, isLoading: isLoadingMessages, isError, error } = useGetMessagesQuery();
   const { isLoading: isLoadingChannels } = useGetChannelsQuery();
-  
   const navigate = useNavigate()
   const currentChannel = useSelector(selectCurrentChannel);
-  
   const dispatch = useDispatch();
-  // const currentModalShow = useSelector(selectChangeModalShow);
-  // console.log('currentModalShow', currentModalShow)
+
 
   const declOfNum = (number, titles) => {
     const cases = [2, 0, 1, 1, 1, 2];
@@ -95,8 +58,6 @@ const HomePage = () => {
     ])
     : t('messages.loading');
 
-  // const [modalShow, setModalShow] = useState(false);
-
   if (isLoadingChannels || isLoadingMessages) {
     return <SpinnerPage />;
   }
@@ -120,7 +81,6 @@ const HomePage = () => {
             <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
               <b>{t('channels.title')}</b>
               <Button
-                // onClick={() => setModalShow(true)}
                 onClick={() => 
                   dispatch(changeModalShow({modalShow: true,
                     modalType: 'adding',})
@@ -161,17 +121,6 @@ const HomePage = () => {
           </Col>
         </Row>
       </Container>
-
-      {/* <ModalAddChannel  */}
-      {/* // show={modalShow} 
-      // show={currentModalShow} 
-      // onHide={() => setModalShow(false)}
-      // onHide={() => dispatch(changeModalShow(false))} */}
-      {/* /> */}
-      {/* {renderModal()} */}
-{/* {show && Modal && <Modal />} */}
-
-
     </div>
   );
 };

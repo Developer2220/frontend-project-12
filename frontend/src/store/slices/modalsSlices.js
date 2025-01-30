@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { createSlice, current } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   modalShow: false,
@@ -14,14 +14,9 @@ const modalsSlices = createSlice({
     changeModalShow: (state, action) => {
       state.modalShow = action.payload.modalShow;
       state.modalType = action.payload.modalType;
-      console.log('action.payload', action.payload)
-//  Используем current(state) для логирования актуального состояния
- console.log('Текущий стейт in changeModalShow:', current(state));    
-
 },
 setModalChannel: (state, action) => {
     state.modalChannel = action.payload
-    console.log('Текущий стейт:', current(state));    
 } 
 },
 });

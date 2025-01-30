@@ -7,7 +7,6 @@ import { useDeleteMessagesByChannelIdMutation } from '../../API/messages';
 import { useDeleteChannelMutation } from '../../API/channels';
 import { setCurrentChannel, selectCurrentChannel } from '../../store/slices/channelsSlices';
 import { selectSetModalChannel, setModalChannel } from '../../store/slices/modalsSlices';
-
 import { changeModalShow, selectChangeModalShow } from '../../store/slices/modalsSlices';
 import { Col } from 'react-bootstrap';
 
